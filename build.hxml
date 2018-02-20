@@ -1,3 +1,9 @@
 -cp src
 -main samples.HelloWorld
 -js build/haxeCode.js
+
+--next
+
+-cp src
+-main samples.MakeLibrary
+--interp

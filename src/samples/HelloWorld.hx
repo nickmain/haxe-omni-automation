@@ -4,11 +4,11 @@ import omni.automation.graffle.Selection;
 
 @:expose
 class HelloWorld {
-    static function helloWorld(selection: Selection) {
+    public static function helloWorld(selection: Selection) {
         for(solid in selection.solids) {
-            solid.text = "Hello World !!!";
+            solid.text = "Hello World !!";
         }
     }
 
-    static function main() {}
+    public static function main() {}
 }
