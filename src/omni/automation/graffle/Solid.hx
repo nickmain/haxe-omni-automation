@@ -1,7 +1,10 @@
 package omni.automation.graffle;
 
-extern class Solid { //TODO extends Graphic
+@:native("Solid")
+extern class Solid extends Graphic {
     //TODO
 
-    var text (default, default): String;
+
+
+    var text: String;
 }

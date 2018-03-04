@@ -1,5 +1,6 @@
 package samples;
 
+import omni.automation.plugin.Builder;
 import sys.io.File;
 
 // Wrap the Haxe JS output in order to export it as an OmniAutomation plugin library
@@ -7,19 +8,13 @@ class MakeLibrary {
 
     public static function main() {
         trace("Building omniautomation library...");
-        var jsCode = File.getContent("./build/haxeCode.js");
 
-        var omniAutoLib = '
-var _ = function() {
-    var exports = new PlugIn.Library(new Version("0.1"));
+        var builder = new Builder();
 
-${jsCode}
-
-    return exports;
-}();
-_;
-';
-
-        File.saveContent("./samples/helloworld.omnigrafflejs/Resources/haxeCode.js", omniAutoLib);
+        builder.wrapLibrary(
+            "./build/haxeCode.js",
+            "./samples/helloworld.omnigrafflejs/Resources/haxeCode.js",
+            "0.1"
+        );
     }
 }
