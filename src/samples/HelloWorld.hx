@@ -6,7 +6,7 @@ import omni.automation.graffle.Selection;
 class HelloWorld {
     public static function helloWorld(selection: Selection) {
         for(solid in selection.solids) {
-            solid.text = "Hello World !!";
+            solid.text = "hello !";
         }
     }
 

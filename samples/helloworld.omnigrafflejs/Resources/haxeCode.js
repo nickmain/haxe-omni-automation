@@ -12,7 +12,7 @@ samples_HelloWorld.helloWorld = function(selection) {
 	while(_g < _g1.length) {
 		var solid = _g1[_g];
 		++_g;
-		solid.text = "Hello World !!";
+		solid.text = "hello !";
 	}
 };
 samples_HelloWorld.main = function() {

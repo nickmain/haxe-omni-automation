@@ -2,7 +2,7 @@ package samples;
 
 import sys.io.File;
 
-
+// Wrap the Haxe JS output in order to export it as an OmniAutomation plugin library
 class MakeLibrary {
 
     public static function main() {
