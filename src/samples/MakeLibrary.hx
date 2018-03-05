@@ -1,7 +1,6 @@
 package samples;
 
 import omni.automation.plugin.Builder;
-import sys.io.File;
 
 // Wrap the Haxe JS output in order to export it as an OmniAutomation plugin library
 class MakeLibrary {

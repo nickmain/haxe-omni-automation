@@ -7,8 +7,7 @@ import omni.automation.common.Point;
  * its head and tail ends.
  */
 @:native("Line")
-extern class Line {
-    function new();
+extern class Line extends Graphic {
 
     static var allLineEndingTypes (default,null): Array<String>;
 
