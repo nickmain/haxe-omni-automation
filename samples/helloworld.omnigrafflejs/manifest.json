@@ -14,5 +14,10 @@
       "identifier": "helloWorld"
     }
   ],
-  "defaultLocale": "en"
+  "defaultLocale": "en",
+  "handlers": [
+    {
+      "identifier": "handlerFoo"
+    }
+  ]
 }

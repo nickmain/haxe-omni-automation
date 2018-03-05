@@ -11,6 +11,8 @@ var _ = function(){
         if (selection.solids.length > 0){return true} else {return false}
     };
 
+    console.log("Plugin.Action helloWorld");
+
     return action;
 }();
 _;

@@ -1,5 +1,7 @@
 package omni.automation.graffle;
 
+import omni.automation.common.PlugInHandlerRegistration;
+import omni.automation.common.PlugInHandler;
 import omni.automation.common.Rect;
 import omni.automation.common.Size;
 import omni.automation.common.Point;
@@ -141,5 +143,5 @@ extern class Canvas {
     function graphicWithUserDataForKey(data: String, key: String): Null<Graphic>;
 
     // A handler called when any graphic on this canvas changes any properties.
-    // TODO: function onGraphicChanged(handler: PlugInHandler): Null<PlugInHandlerRegistration>;
+    function onGraphicChanged(handler: PlugInHandler): Null<PlugInHandlerRegistration>;
 }
