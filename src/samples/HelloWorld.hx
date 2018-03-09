@@ -2,7 +2,7 @@ package samples;
 
 import omni.automation.common.Console;
 import omni.automation.common.PlugIn;
-import omni.automation.graffle.Application;
+import omni.automation.common.Application;
 import omni.automation.graffle.FillType;
 import omni.automation.common.Color;
 import omni.automation.graffle.Selection;
@@ -17,7 +17,7 @@ class HelloWorld {
         Console.log("Plugin - " + plugin.identifier);
         var handler = plugin.handlers[0];
         Console.log("Handler - " + handler);
-        canvas.onGraphicChanged(handler);
+        //canvas.onGraphicChanged(handler);
 
         for(solid in selection.solids) {
             solid.text = "Hello";

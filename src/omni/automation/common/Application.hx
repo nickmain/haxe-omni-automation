@@ -1,4 +1,4 @@
-package omni.automation.graffle;
+package omni.automation.common;
 
 import haxe.extern.EitherType;
 import omni.automation.common.URL;
@@ -30,9 +30,6 @@ extern class Application {
 
     // Application name.
     static var name (default,null): String;
-
-    // List of stencils that OmniGraffle currently has available.
-    static var stencils (default,null): Array<Stencil>;
 
     // Application version number.
     static var version (default,null): String;

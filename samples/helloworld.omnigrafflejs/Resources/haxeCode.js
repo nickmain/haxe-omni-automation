@@ -109,7 +109,6 @@ samples_HelloWorld.helloWorld = function(selection) {
 	console.log("Plugin - " + plugin.identifier);
 	var handler = plugin.handlers[0];
 	console.log("Handler - " + Std.string(handler));
-	canvas.onGraphicChanged(handler);
 	var _g = 0;
 	var _g1 = selection.solids;
 	while(_g < _g1.length) {
