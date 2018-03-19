@@ -1,0 +1,12 @@
+{
+  "author": "Nick Main",
+  "libraries": [{ "identifier": "utilities" }],
+  "identifier": "org.epistem.omnigraffle.utilities",
+  "version": "1.0",
+  "description": "A collection of automation utilities",
+  "actions": [
+    { "image": "icon.png",  "identifier": "textToShapes" }
+  ],
+  "defaultLocale": "en",
+  "handlers": []
+}
