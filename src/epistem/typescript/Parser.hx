@@ -11,6 +11,7 @@ enum Result {
     error(message: String);
 }
 
+// Minimum viable parser for Omni typescript definitions
 class Parser {
     public var definitions = new StringMap<Definition>();
 
@@ -21,21 +22,35 @@ class Parser {
     public function parse(input: Input): Result {
         lexer = new Lexer(input);
 
-        while(true) {
-            final result = parseDeclaration();
-            if(result != null) return result;
-        }
+        while(parseDeclaration()) {}
+
+        return finished;
     }
 
-    function parseDeclaration(): Null<Result> {
-        final token = lexer.read();
-        return switch(token) {
-            case finished: finished;
-            case error(msg): error(msg);
-            case word(w) if(w == "declare"): {
-                null;
-            }
-            default: error('unexpected token $token at line ${lexer.lineNum}');
+    function parseDeclaration(): Bool {
+        final token1 = lexer.read();
+        final token2 = lexer.read();
+
+        switch [token1, token2] {
+            case [finished, finished]: return false;
+            case [word("declare"), word("class")]: parseClass();
+            case [word("declare"), word("namespace")]: parseNamespace();
+            default: throw 'unexpected tokens "$token1 $token2" at line ${lexer.lineNum} - expected "declare class/namespace"';
         }
+
+        return true;
+    }
+
+    function parseClass() {
+
+        // extends
+    }
+
+    function parseNamespace() {
+        
+    }
+
+    function parseDeclarationName(): Array<String> {
+
     }
 }

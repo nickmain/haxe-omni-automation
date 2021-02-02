@@ -8,16 +8,21 @@ class Main {
         final input = File.read("api/OmniGraffle.d.ts", false);
         final parser = new Parser();
 
-        final result = parser.parse(input);
+        try {
+            final result = parser.parse(input);
 
-        switch(result) {
-            case finished: {
-                trace("FINISHED");
-            }
+            switch(result) {
+                case finished: {
+                    trace("FINISHED");
+                }
 
-            case error(message): {
-                trace('ERROR : $message');
+                case error(message): {
+                    trace('ERROR : $message');
+                }
             }
+        }
+        catch(e) {
+            trace(e.message);
         }
     }
 }

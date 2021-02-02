@@ -20,7 +20,6 @@ enum Token {
     period;
 
     finished;
-    error(message: String);
 }
 
 class Char {
@@ -88,7 +87,6 @@ class Char {
 enum LexerState {
     ready;
     finished;
-    error(message: String);
 }
 
 class Lexer {
@@ -111,7 +109,6 @@ class Lexer {
 
         return switch(state) {
             case finished: finished;
-            case error(msg): error(msg);
             case ready: {
                 final c = line.charAt(index++);
 
@@ -130,7 +127,7 @@ class Lexer {
                     case Char.lessThan: lessThan;
                     case Char.greaterThan: greaterThan;
                     case Char.period: period;
-                    default: error('Unexpected char "$c" in line $lineNum');
+                    default: throw 'Unexpected char "$c" in line $lineNum';
                 }
             }
         }
@@ -153,7 +150,7 @@ class Lexer {
             read();
         }
         else {
-            error('Expected another slash after slash in line $lineNum');
+            throw 'Expected another slash after slash in line $lineNum';
         }
     }
 
@@ -171,7 +168,7 @@ class Lexer {
             state = finished;
         }
         catch(e) {
-            state = error(e.message);
+            throw e;
         }
     }
 }
