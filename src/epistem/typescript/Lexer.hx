@@ -15,8 +15,8 @@ enum Token {
     comma;
     bar;
     semicolon;
-    lessThan;
-    greaterThan;
+    openAngle;
+    closeAngle;
     period;
 
     finished;
@@ -31,8 +31,8 @@ class Char {
     public static inline final comma       = ",";
     public static inline final bar         = "|";
     public static inline final semicolon   = ";";
-    public static inline final lessThan    = "<";
-    public static inline final greaterThan = ">";
+    public static inline final openAngle   = "<";
+    public static inline final closeAngle  = ">";
     public static inline final period      = ".";
     public static inline final slash       = "/";
 
@@ -124,8 +124,8 @@ class Lexer {
                     case Char.comma: comma;
                     case Char.bar: bar;
                     case Char.semicolon: semicolon;
-                    case Char.lessThan: lessThan;
-                    case Char.greaterThan: greaterThan;
+                    case Char.openAngle: openAngle;
+                    case Char.closeAngle: closeAngle;
                     case Char.period: period;
                     default: throw 'Unexpected char "$c" in line $lineNum';
                 }

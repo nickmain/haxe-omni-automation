@@ -4,8 +4,8 @@
 package epistem.typescript;
 
 class Definition {
-    public var packageName = new Array<String>();
     public var name: String;
+    public var superclass: Null<String>;
     public var constructor: Null<Array<Argument>>;
     public var statics = new Array<Member>();
     public var members = new Array<Member>();
@@ -23,7 +23,8 @@ enum Member {
 typedef Argument = {name: String, type: Type}; 
 
 enum Type {
+    name(name: String);
     nullable(type: Type);
-    generic(type: Array<String>, params: Array<Type>);
+    generic(name: String, params: Array<Type>);
     union(types: Array<Type>);
 }
