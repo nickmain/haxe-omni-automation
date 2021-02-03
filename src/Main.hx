@@ -4,25 +4,30 @@ import epistem.typescript.Parser;
 
 class Main {
 
-    public static function main() {
-        final input = File.read("api/OmniGraffle.d.ts", false);
+    static function parseFile(path: String) {
         final parser = new Parser();
+        final input = File.read(path, false);
 
         try {
             final result = parser.parse(input);
 
             switch(result) {
                 case finished: {
-                    trace("FINISHED");
+                    trace(path + " => FINISHED");
                 }
 
                 case error(message): {
-                    trace('ERROR : $message');
+                    trace('$path => ERROR : $message');
                 }
             }
         }
         catch(e) {
             trace(e.message);
         }
+    }
+
+    public static function main() {
+        parseFile("api/OmniGraffle.d.ts");
+        parseFile("api/OmniFocus.d.ts");
     }
 }

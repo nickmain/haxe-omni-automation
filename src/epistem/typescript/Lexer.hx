@@ -37,7 +37,7 @@ class Char {
     public static inline final slash       = "/";
 
     public static inline function isAlphanumeric(char: String): Bool {
-        return isLetter(char) || isDecimalDigit(char);
+        return isLetter(char) || isDecimalDigit(char) || char == "_";
     }
 
     public static inline function isLetter(char: String): Bool {

@@ -226,6 +226,7 @@ class Parser {
 
         switch [token1, token2] {
             case [word("const"), word(w)]: parseConst(w, definition);
+            case [word("let"), word(w)]: parseLet(w, definition);
             case [word("function"), word(w)]: parseNamespaceFunction(w, definition);
             case [word("class"), word(w)]: parseNamespaceClass('${definition.name}_$w');
             default: {
@@ -239,8 +240,6 @@ class Parser {
     }
 
     function parseNamespaceClass(name: String) {
-        trace('namespace class: $name');
-
         final definition = getDefinition(name);
         definition.superclass = parseSuperclass();
 
@@ -275,6 +274,13 @@ class Parser {
         final type = parseType();
         expectSemicolon();
         definition.statics.push(prop(name, true, type));
+    }
+
+    function parseLet(name: String, definition: Definition) {
+        expectColon();
+        final type = parseType();
+        expectSemicolon();
+        definition.statics.push(prop(name, false, type));
     }
 
     function parseSuperclass(): Null<String> {
