@@ -228,7 +228,7 @@ class Parser {
             case [word("const"), word(w)]: parseConst(w, definition);
             case [word("let"), word(w)]: parseLet(w, definition);
             case [word("function"), word(w)]: parseNamespaceFunction(w, definition);
-            case [word("class"), word(w)]: parseNamespaceClass('${definition.name}_$w');
+            case [word("class"), word(w)]: parseNamespaceClass('${definition.name}.$w');
             default: {
                 pushBack(token2);
                 pushBack(token1);
@@ -322,7 +322,7 @@ class Parser {
             }
         }
 
-        return words.join("_");
+        return words.join(".");
     }
 
     function msg(found: Token, expected: String): String {
