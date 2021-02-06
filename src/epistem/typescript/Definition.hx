@@ -25,6 +25,6 @@ typedef Argument = {name: String, type: Type};
 enum Type {
     name(name: String);
     nullable(type: Type);
-    generic(name: String, params: Array<Type>);
+    generic(type: Type, params: Array<Type>);
     union(types: Array<Type>);
 }

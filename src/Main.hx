@@ -9,5 +9,11 @@ class Main {
         gen.rootDir = "api/externs";
         gen.packageName = "omni.graffle";
         gen.generate("api/OmniGraffle.d.ts");
+
+        final gen2 = new ExternGenerator();
+        gen2.rootDir = "api/externs";
+        gen2.packageName = "omni.focus";
+        gen2.generate("api/OmniFocus.d.ts");
+
     }
 }

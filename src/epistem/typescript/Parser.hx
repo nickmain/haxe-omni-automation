@@ -142,7 +142,7 @@ class Parser {
             final token = nextToken();
             switch(token) {
                 case comma: continue;
-                case closeAngle: return generic(name, params);
+                case closeAngle: return generic(Definition.Type.name(name), params);
                 default: throw msg(token, "comma or closeAngle");
             }
         }
@@ -162,6 +162,8 @@ class Parser {
             if(! token.match(colon)) throw msg(token, "colon");
             
             final type = parseType();
+
+            args.push({name: name, type: type});
 
             token = nextToken();
             switch(token) {

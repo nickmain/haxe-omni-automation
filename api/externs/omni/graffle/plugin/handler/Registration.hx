@@ -5,4 +5,5 @@ package omni.graffle.plugin.handler;
 @:native("PlugIn.Handler.Registration")
 extern class Registration {
 
+    function remove(): Void;
 }
