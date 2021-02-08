@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "Generate_Omni_Externs": "haxe -cp src -cp scripts --main GenerateOmniExterns --interp"
+    }
+}

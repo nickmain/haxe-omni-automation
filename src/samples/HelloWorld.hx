@@ -1,42 +1,37 @@
 package samples;
 
-import omni.automation.common.Console;
-import omni.automation.common.PlugIn;
-import omni.automation.common.Application;
-import omni.automation.graffle.FillType;
-import omni.automation.common.Color;
-import omni.automation.graffle.Selection;
-import omni.automation.graffle.Canvas;
+import omni.graffle.Selection;
+import epistem.omni.graffle.Action;
+import omni.graffle.ToolbarItem;
+import omni.graffle.MenuItem;
+import epistem.typescript.Helpers.Union2;
 
 @:expose
-class HelloWorld {
-    public static function helloWorld(selection: Selection) {
-        var canvas: Canvas = selection.canvas;
+class HelloWorld extends Action {
+    public function new() {
+        super();
+    }
 
-        var plugin = PlugIn.all[0];
-        Console.log("Plugin - " + plugin.identifier);
-        var handler = plugin.handlers[0];
-        Console.log("Handler - " + handler);
-        //canvas.onGraphicChanged(handler);
+    // Perform the action
+    override public function perform(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>) {
+        if(sender != null) {
+            trace('sender is menu item: ${Std.isOfType(sender, MenuItem)}');
+            trace('sender is toolbar  : ${Std.isOfType(sender, ToolbarItem)}');
+        } else {
+            trace("No sender");
+        }
 
-        for(solid in selection.solids) {
-            solid.text = "Hello";
-
-            var rect = solid.geometry;
-            var newRect = rect.offsetBy(rect.width + 20, 0);
-            var circle = canvas.addShape("Circle", newRect);
-            circle.text = "World";
-            circle.shadowColor = null;
-            circle.fillColor = Application.optionKeyDown ? Color.orange : Color.yellow;
-            circle.fillType = FillType.Solid;
-
-            circle.automationAction = ["org.epistem.omnigraffle.helloworld","helloWorld"];
-
-            var line = canvas.connect(solid, circle);
-            line.headType = "FilledArrow";
-            line.shadowColor = null;
+        if(selection.solids.length > 0) {
+            for(solid in selection.solids) {
+                trace('Selected --> ${solid.text}');
+            }
+        } else {
+            trace("No solids selected");
         }
     }
 
-    public static function main() {}
+    // Determine whether this action can be invoked on the given selection
+    override public function validate(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>): Bool {
+        return true;
+    }
 }

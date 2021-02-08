@@ -1,20 +1,12 @@
 -cp src
+
 --each
 
---main Main
+-cp api/externs
+samples.HelloWorld
+-js build/testAction.js
+
+--next
+
+-main samples.MakePlugins
 --interp
-
-#-main samples.HelloWorld
-#-js build/haxeCode.js
-
-#--next
-#-main samples.MakeLibrary
-#--interp
-
-#--next
-#-main org.epistem.omnigraffle.utilities.Utilities
-#-js build/utilities.js
-
-#--next
-#-main org.epistem.omnigraffle.utilities.MakeLibrary
-#--interp
