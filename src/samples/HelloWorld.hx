@@ -1,7 +1,9 @@
 package samples;
 
+import omni.graffle.LayoutType;
 import omni.graffle.Selection;
 import epistem.omni.graffle.Action;
+import epistem.omni.graffle.Globals;
 import omni.graffle.ToolbarItem;
 import omni.graffle.MenuItem;
 import epistem.typescript.Helpers.Union2;
@@ -14,19 +16,15 @@ class HelloWorld extends Action {
 
     // Perform the action
     override public function perform(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>) {
-        if(sender != null) {
-            trace('sender is menu item: ${Std.isOfType(sender, MenuItem)}');
-            trace('sender is toolbar  : ${Std.isOfType(sender, ToolbarItem)}');
-        } else {
-            trace("No sender");
-        }
 
-        if(selection.solids.length > 0) {
-            for(solid in selection.solids) {
-                trace('Selected --> ${solid.text}');
-            }
-        } else {
-            trace("No solids selected");
+        final canvas = Globals.document.portfolio.canvases[0];
+        if(canvas != null) {
+            final layoutInfo = canvas.layoutInfo;
+            final allTypes = LayoutType.all;
+
+            // rotate the layout type
+            layoutInfo.type = allTypes[(allTypes.indexOf(layoutInfo.type) + 1) % allTypes.length];
+            canvas.layout();
         }
     }
 
