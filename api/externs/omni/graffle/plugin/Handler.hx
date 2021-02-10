@@ -4,12 +4,12 @@ package omni.graffle.plugin;
 
 @:native("PlugIn.Handler")
 extern class Handler {
-    var invoke (default,never): js.lib.Function;
+    var invoke (default,never): (Dynamic) -> Void;
     var name (default,never): String;
     var plugIn (default,never): omni.graffle.PlugIn;
-    var willAttach: Null<js.lib.Function>;
-    var willDetach: Null<js.lib.Function>;
+    var willAttach: Null<(Dynamic) -> Void>;
+    var willDetach: Null<(Dynamic) -> Void>;
 
-    function new(invoke: js.lib.Function);
+    function new(invoke: (Dynamic) -> Void);
 
 }

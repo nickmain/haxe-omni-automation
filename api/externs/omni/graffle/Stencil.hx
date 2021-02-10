@@ -9,5 +9,5 @@ extern class Stencil {
     var isLoaded (default,never): Bool;
     var name (default,never): String;
 
-    function load(completed: js.lib.Function): Void;
+    function load(completed: (Dynamic) -> Void): Void;
 }

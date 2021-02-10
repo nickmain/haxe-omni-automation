@@ -7,5 +7,5 @@ extern class Tags extends TagArray {
     var beginning (default,never): omni.focus.tag.ChildInsertionLocation;
     var ending (default,never): omni.focus.tag.ChildInsertionLocation;
 
-    function apply(f: js.lib.Function): Null<omni.focus.ApplyResult>;
+    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
 }

@@ -10,11 +10,11 @@ extern class Action {
     var mediumLabel (default,never): String;
     var name (default,never): String;
     var paletteLabel (default,never): String;
-    var perform (default,never): js.lib.Function;
+    var perform (default,never): (Dynamic) -> Void;
     var plugIn (default,never): omni.focus.PlugIn;
     var shortLabel (default,never): String;
-    var validate: Null<js.lib.Function>;
+    var validate: Null<(Dynamic) -> Void>;
 
-    function new(perform: js.lib.Function);
+    function new(perform: (Dynamic) -> Void);
 
 }

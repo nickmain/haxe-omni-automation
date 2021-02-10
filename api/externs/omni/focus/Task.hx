@@ -61,7 +61,7 @@ extern class Task extends ActiveObject {
     function markComplete(date: Null<js.lib.Date>): omni.focus.Task;
     function markIncomplete(): Void;
     function drop(allOccurrences: Bool): Void;
-    function apply(f: js.lib.Function): Null<omni.focus.ApplyResult>;
+    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
     function addNotification(info: epistem.typescript.Helpers.Union2<Float, js.lib.Date>): omni.focus.task.Notification;
     function removeNotification(notification: omni.focus.task.Notification): Void;
 }

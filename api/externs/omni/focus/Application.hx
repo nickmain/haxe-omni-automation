@@ -14,5 +14,5 @@ extern class Application {
     var userVersion (default,never): omni.focus.Version;
     var version (default,never): String;
 
-    function openDocument(from: Null<omni.focus.Document>, url: omni.focus.URL, completed: js.lib.Function): Void;
+    function openDocument(from: Null<omni.focus.Document>, url: omni.focus.URL, completed: (Dynamic) -> Void): Void;
 }

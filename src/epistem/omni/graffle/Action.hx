@@ -8,13 +8,11 @@ import omni.graffle.MenuItem;
 import epistem.typescript.Helpers.Union2;
 import omni.graffle.Selection;
 
-class Action {    
+abstract class Action {    
     function new() {}
 
     // Perform the action
-    public function perform(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>) {
-        // nothing
-    }
+    public abstract function perform(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>): Void;
 
     // Determine whether this action can be invoked on the given selection
     public function validate(selection: Selection, sender: Null<Union2<ToolbarItem, MenuItem>>): Bool {

@@ -117,7 +117,7 @@ class ExternGenerator {
             case name("Promise"): return "js.lib.Promise";
             case name("Array"): return "Array";
             case name("Date"): return "js.lib.Date";
-            case name("Function"): return "js.lib.Function";
+            case name("Function"): return "(Dynamic) -> Void";
             case name("number"): return "Float";
             case name(n): return haxeName(n).fullName;
             case nullable(t): return 'Null<${typeString(t)}>';

@@ -27,5 +27,5 @@ extern class Tag extends ActiveObject {
 
     function tagNamed(name: String): Null<omni.focus.Tag>;
     function childNamed(name: String): Null<omni.focus.Tag>;
-    function apply(f: js.lib.Function): Null<omni.focus.ApplyResult>;
+    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
 }
