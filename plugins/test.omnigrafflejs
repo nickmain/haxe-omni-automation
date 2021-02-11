@@ -21,14 +21,22 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
+Math.__name__ = true;
+var Std = function() { };
+Std.__name__ = true;
+Std.string = function(s) {
+	return js_Boot.__string_rec(s,"");
+};
 var epistem_omni_graffle_Action = function() {
 };
+epistem_omni_graffle_Action.__name__ = true;
 epistem_omni_graffle_Action.prototype = {
 	validate: function(selection,sender) {
 		return true;
 	}
 };
 var epistem_omni_graffle_Globals = function() { };
+epistem_omni_graffle_Globals.__name__ = true;
 epistem_omni_graffle_Globals.get_app = function() {
 	return app;
 };
@@ -41,10 +49,41 @@ epistem_omni_graffle_Globals.get_document = function() {
 epistem_omni_graffle_Globals.get_thisPlugin = function() {
 	return $global;
 };
+var haxe_Exception = function(message,previous,native) {
+	Error.call(this,message);
+	this.message = message;
+	this.__previousException = previous;
+	this.__nativeException = native != null ? native : this;
+};
+haxe_Exception.__name__ = true;
+haxe_Exception.caught = function(value) {
+	if(((value) instanceof haxe_Exception)) {
+		return value;
+	} else if(((value) instanceof Error)) {
+		return new haxe_Exception(value.message,null,value);
+	} else {
+		return new haxe_ValueException(value,null,value);
+	}
+};
+haxe_Exception.__super__ = Error;
+haxe_Exception.prototype = $extend(Error.prototype,{
+	get_message: function() {
+		return this.message;
+	}
+});
+var haxe_ValueException = function(value,previous,native) {
+	haxe_Exception.call(this,String(value),previous,native);
+	this.value = value;
+};
+haxe_ValueException.__name__ = true;
+haxe_ValueException.__super__ = haxe_Exception;
+haxe_ValueException.prototype = $extend(haxe_Exception.prototype,{
+});
 var haxe_iterators_ArrayIterator = function(array) {
 	this.current = 0;
 	this.array = array;
 };
+haxe_iterators_ArrayIterator.__name__ = true;
 haxe_iterators_ArrayIterator.prototype = {
 	hasNext: function() {
 		return this.current < this.array.length;
@@ -53,52 +92,151 @@ haxe_iterators_ArrayIterator.prototype = {
 		return this.array[this.current++];
 	}
 };
+var js_Boot = function() { };
+js_Boot.__name__ = true;
+js_Boot.__string_rec = function(o,s) {
+	if(o == null) {
+		return "null";
+	}
+	if(s.length >= 5) {
+		return "<...>";
+	}
+	var t = typeof(o);
+	if(t == "function" && (o.__name__ || o.__ename__)) {
+		t = "object";
+	}
+	switch(t) {
+	case "function":
+		return "<function>";
+	case "object":
+		if(((o) instanceof Array)) {
+			var str = "[";
+			s += "\t";
+			var _g = 0;
+			var _g1 = o.length;
+			while(_g < _g1) {
+				var i = _g++;
+				str += (i > 0 ? "," : "") + js_Boot.__string_rec(o[i],s);
+			}
+			str += "]";
+			return str;
+		}
+		var tostr;
+		try {
+			tostr = o.toString;
+		} catch( _g ) {
+			return "???";
+		}
+		if(tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
+			var s2 = o.toString();
+			if(s2 != "[object Object]") {
+				return s2;
+			}
+		}
+		var str = "{\n";
+		s += "\t";
+		var hasp = o.hasOwnProperty != null;
+		var k = null;
+		for( k in o ) {
+		if(hasp && !o.hasOwnProperty(k)) {
+			continue;
+		}
+		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
+			continue;
+		}
+		if(str.length != 2) {
+			str += ", \n";
+		}
+		str += s + k + " : " + js_Boot.__string_rec(o[k],s);
+		}
+		s = s.substring(1);
+		str += "\n" + s + "}";
+		return str;
+	case "string":
+		return o;
+	default:
+		return String(o);
+	}
+};
 var samples_HelloWorld = $hx_exports["samples"]["HelloWorld"] = function() {
 	epistem_omni_graffle_Action.call(this);
 };
+samples_HelloWorld.__name__ = true;
 samples_HelloWorld.__super__ = epistem_omni_graffle_Action;
 samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 	perform: function(selection,sender) {
-		if(selection.solids.length > 0) {
-			var solids = selection.solids.concat([]);
-			var endY = solids[0].geometry.y + 100;
-			Timer.repeating(0.03,function(timer) {
-				if(solids[0].geometry.y > endY) {
-					timer.cancel();
-					return;
-				}
-				var _g = 0;
-				while(_g < solids.length) {
-					var solid = solids[_g];
-					++_g;
-					solid.geometry = solid.geometry.offsetBy(0,10);
-				}
-			});
-			return;
-		}
-		var canvas = epistem_omni_graffle_Globals.get_document().portfolio.canvases[0];
-		if(canvas != null) {
-			var layoutInfo = canvas.layoutInfo;
-			if(layoutInfo.type == LayoutType.Hierarchical) {
-				var dirs = HierarchicalDirection.all;
-				var dirIndex = dirs.indexOf(layoutInfo.direction);
-				if(dirIndex < dirs.length - 1) {
-					layoutInfo.direction = dirs[dirIndex + 1];
-					canvas.layout();
-					return;
-				} else {
-					layoutInfo.direction = dirs[0];
-				}
+		try {
+			if(((sender) instanceof MenuItem)) {
+				var form = new Form();
+				form.addField(new Form.Field.String("name","Name","do not type capitals in this field",null),null);
+				form.addField(new Form.Field.String("alias","Alias",null,null),null);
+				form.validate = function(form) {
+					form.values.alias = form.values.name;
+					if(Std.string(form.values.name).toLowerCase() != form.values.name) {
+						throw new Error("No uppercase allowed!");
+					}
+					return true;
+				};
+				form.show("Test Form","Do It").then(function(form) {
+					console.log("src/samples/HelloWorld.hx:43:",form.values.name);
+				},function(err) {
+					console.log("src/samples/HelloWorld.hx:44:",err.message);
+				});
+				return;
 			}
-			var allTypes = LayoutType.all;
-			layoutInfo.type = allTypes[(allTypes.indexOf(layoutInfo.type) + 1) % allTypes.length];
-			canvas.layout();
+			if(selection.solids.length > 0) {
+				var solids = selection.solids.concat([]);
+				var endY = solids[0].geometry.y + 100;
+				Timer.repeating(0.03,function(timer) {
+					try {
+						if(solids[0].geometry.y > endY) {
+							timer.cancel();
+							return;
+						}
+						var _g = 0;
+						while(_g < solids.length) {
+							var solid = solids[_g];
+							++_g;
+							solid.geometry = solid.geometry.offsetBy(0,10);
+						}
+					} catch( _g ) {
+						var e = haxe_Exception.caught(_g);
+						console.log("src/samples/HelloWorld.hx:66:",e.get_message());
+						timer.cancel();
+					}
+				});
+				return;
+			}
+			var canvas = epistem_omni_graffle_Globals.get_document().portfolio.canvases[0];
+			if(canvas != null) {
+				var layoutInfo = canvas.layoutInfo;
+				if(layoutInfo.type == LayoutType.Hierarchical) {
+					var dirs = HierarchicalDirection.all;
+					var dirIndex = dirs.indexOf(layoutInfo.direction);
+					if(dirIndex < dirs.length - 1) {
+						layoutInfo.direction = dirs[dirIndex + 1];
+						canvas.layout();
+						return;
+					} else {
+						layoutInfo.direction = dirs[0];
+					}
+				}
+				var allTypes = LayoutType.all;
+				layoutInfo.type = allTypes[(allTypes.indexOf(layoutInfo.type) + 1) % allTypes.length];
+				canvas.layout();
+			}
+		} catch( _g ) {
+			var e = haxe_Exception.caught(_g);
+			console.log("src/samples/HelloWorld.hx:98:",e.get_message());
 		}
 	}
 	,validate: function(selection,sender) {
 		return true;
 	}
 });
+String.__name__ = true;
+Array.__name__ = true;
+js_Boot.__toStr = ({ }).toString;
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
     

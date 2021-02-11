@@ -21,6 +21,10 @@ class ExternGenerator {
     public var rootDir = "";
     public var packageName = "";
 
+    var definition: Definition;
+    var memberName: String; // for function specialization
+    var argName: String; // for function specialization
+
     public function new() {}
 
     public function generate(typeDefFile: String) {
@@ -29,12 +33,12 @@ class ExternGenerator {
 
         final defs = parser.definitions;
         for(key in defs.keys()) {
-            final def = defs.get(key);
-            generateDef(def);
+            definition = defs.get(key);
+            generateDef();
         }
     }
 
-    public function generateDef(definition: Definition) {
+    public function generateDef() {
         final name = haxeName(definition.name);
 
         final dirname = rootDir + "/" + name.pkgParts.join("/");
@@ -72,6 +76,7 @@ class ExternGenerator {
         for(member in members) {
             switch member {
                 case prop(name, readonly, type): {
+                    this.memberName = name;
                     props.push({
                         name: name,
                         readonly: readonly,
@@ -91,6 +96,7 @@ class ExternGenerator {
         for(member in members) {
             switch member {
                 case func(name, args, type): {
+                    this.memberName = name;
                     props.push({
                         name: name,
                         args: args.map(argString).join(", "),
@@ -105,6 +111,7 @@ class ExternGenerator {
     }
 
     function argString(arg: Definition.Argument): String {
+        this.argName = arg.name;
         return '${arg.name}: ${typeString(arg.type)}';
     }
 
@@ -117,7 +124,8 @@ class ExternGenerator {
             case name("Promise"): return "js.lib.Promise";
             case name("Array"): return "Array";
             case name("Date"): return "js.lib.Date";
-            case name("Function"): return "(Dynamic) -> Void";
+            case name("Error"): return "js.lib.Error";
+            case name("Function"): return functionSpecialization();
             case name("number"): return "Float";
             case name(n): return haxeName(n).fullName;
             case nullable(t): return 'Null<${typeString(t)}>';
@@ -130,6 +138,16 @@ class ExternGenerator {
         return 'epistem.typescript.Helpers.Union${types.length}<${types.map(typeString).join(", ")}>';
     }
 
+    function functionSpecialization(): String {
+        return switch [definition.name, memberName, argName] {
+            case ["Alert", "show"     , "callback"]: "(index: Float) -> Void";
+            case ["Timer", "once"     , "action"  ]: "(Timer) -> Void";
+            case ["Timer", "repeating", "action"  ]: "(Timer) -> Void";
+            case ["Form" , "validate" , _         ]: "(Form) -> Null<Bool>";
+            default: "(Dynamic) -> Void";
+        }
+    }
+
     function haxeName(name: String): HaxeName {
         final parts = name.split(".");
         var packageParts = packageName.split(".");
@@ -137,9 +155,11 @@ class ExternGenerator {
             packageParts.push(parts[i].toLowerCase());
         }
 
-        final className = parts.pop();
+        var className = parts.pop();
         final fullName = packageParts.join(".") + "." + className;
         final pkg = packageParts.join(".");
+
+        if(className == "String") className = "StringField";
 
         return {
             name: className,

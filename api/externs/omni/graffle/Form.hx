@@ -5,7 +5,7 @@ package omni.graffle;
 @:native("Form")
 extern class Form {
     var fields (default,never): Array<omni.graffle.form.Field>;
-    var validate: Null<(Dynamic) -> Void>;
+    var validate: Null<(Form) -> Null<Bool>>;
     var values (default,never): Dynamic;
 
     function new();
