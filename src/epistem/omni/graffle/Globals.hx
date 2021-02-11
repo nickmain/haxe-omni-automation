@@ -6,7 +6,6 @@ package epistem.omni.graffle;
 import js.Syntax;
 import omni.graffle.PlugIn;
 import omni.graffle.GraffleDocument;
-import omni.graffle.Canvas;
 import omni.graffle.Console;
 import omni.graffle.Application;
 
@@ -18,8 +17,8 @@ class Globals {
     public static var document(get,never): GraffleDocument;
     public static var thisPlugin(get,never): PlugIn;
 
-    static function get_app(): Application { return Syntax.plainCode("app"); }
-    static function get_console(): Console { return Syntax.plainCode("console"); }
-    static function get_document(): GraffleDocument { return Syntax.plainCode("document"); }
-    static function get_thisPlugin(): PlugIn { return js.Lib.global; }
+    static inline function get_app(): Application { return Syntax.plainCode("app"); }
+    static inline function get_console(): Console { return Syntax.plainCode("console"); }
+    static inline function get_document(): GraffleDocument { return Syntax.plainCode("document"); }
+    static inline function get_thisPlugin(): PlugIn { return js.Lib.global; }
 }

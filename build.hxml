@@ -5,6 +5,7 @@
 -cp api/externs
 samples.HelloWorld
 -js build/testAction.js
+-dce full
 
 --next
 

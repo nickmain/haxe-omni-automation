@@ -30,25 +30,6 @@ Std.string = function(s) {
 var epistem_omni_graffle_Action = function() {
 };
 epistem_omni_graffle_Action.__name__ = true;
-epistem_omni_graffle_Action.prototype = {
-	validate: function(selection,sender) {
-		return true;
-	}
-};
-var epistem_omni_graffle_Globals = function() { };
-epistem_omni_graffle_Globals.__name__ = true;
-epistem_omni_graffle_Globals.get_app = function() {
-	return app;
-};
-epistem_omni_graffle_Globals.get_console = function() {
-	return console;
-};
-epistem_omni_graffle_Globals.get_document = function() {
-	return document;
-};
-epistem_omni_graffle_Globals.get_thisPlugin = function() {
-	return $global;
-};
 var haxe_Exception = function(message,previous,native) {
 	Error.call(this,message);
 	this.message = message;
@@ -198,7 +179,7 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 				}
 				return;
 			}
-			var canvas = epistem_omni_graffle_Globals.get_document().portfolio.canvases[0];
+			var canvas = document.portfolio.canvases[0];
 			if(canvas != null) {
 				var layoutInfo = canvas.layoutInfo;
 				if(layoutInfo.type == LayoutType.Hierarchical) {
@@ -228,7 +209,7 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 String.__name__ = true;
 Array.__name__ = true;
 js_Boot.__toStr = ({ }).toString;
-})(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+})(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, {});
 
     
 	const hxaction = new exports.samples.HelloWorld();
