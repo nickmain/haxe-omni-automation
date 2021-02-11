@@ -1,0 +1,6 @@
+Feature Ideas:
+	- Generate graphviz of inter-type references from extern generator
+	
+Development Tasks:
+	- Function specialization for URL
+	- Function specialization for all other types
