@@ -179,33 +179,23 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 					return true;
 				};
 				form.show("Test Form","Do It").then(function(form) {
-					console.log("src/samples/HelloWorld.hx:45:",form.values.opts);
+					console.log("src/samples/HelloWorld.hx:47:",form.values.opts);
 				},function(err) {
-					console.log("src/samples/HelloWorld.hx:46:",err.message);
+					console.log("src/samples/HelloWorld.hx:48:",err.message);
 				});
 				return;
 			}
 			if(selection.solids.length > 0) {
-				var solids = selection.solids.concat([]);
-				var endY = solids[0].geometry.y + 100;
-				Timer.repeating(0.03,function(timer) {
-					try {
-						if(solids[0].geometry.y > endY) {
-							timer.cancel();
-							return;
-						}
-						var _g = 0;
-						while(_g < solids.length) {
-							var solid = solids[_g];
-							++_g;
-							solid.geometry = solid.geometry.offsetBy(0,10);
-						}
-					} catch( _g ) {
-						var e = haxe_Exception.caught(_g);
-						console.log("src/samples/HelloWorld.hx:68:",e.get_message());
-						timer.cancel();
+				var _g = 0;
+				var _g1 = selection.solids;
+				while(_g < _g1.length) {
+					var solid = _g1[_g];
+					++_g;
+					var color = solid.fillColor;
+					if(color != null) {
+						solid.fillColor = Color.RGB(color.green,color.blue,color.red,color.alpha);
 					}
-				});
+				}
 				return;
 			}
 			var canvas = epistem_omni_graffle_Globals.get_document().portfolio.canvases[0];
@@ -228,7 +218,7 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 			}
 		} catch( _g ) {
 			var e = haxe_Exception.caught(_g);
-			console.log("src/samples/HelloWorld.hx:100:",e.get_message());
+			console.log("src/samples/HelloWorld.hx:90:",e.get_message());
 		}
 	}
 	,validate: function(selection,sender) {

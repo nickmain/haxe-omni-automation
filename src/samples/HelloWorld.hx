@@ -1,6 +1,8 @@
 package samples;
 
+import js.lib.intl.Collator;
 import js.lib.Error;
+import omni.graffle.Color;
 import omni.graffle.Form;
 import omni.graffle.form.field.StringField;
 import omni.graffle.form.field.MultipleOptions;
@@ -51,24 +53,12 @@ class HelloWorld extends Action {
             }
 
             if(selection.solids.length > 0) {
-                final solids = selection.solids.concat([]);
-                final endY = solids[0].geometry.y + 100;
-
-                Timer.repeating(0.03, (timer: Timer) -> {
-                    try {
-                        if(solids[0].geometry.y > endY) {
-                            timer.cancel();
-                            return;
-                        }
-
-                        for(solid in solids) {
-                            solid.geometry = solid.geometry.offsetBy(0, 10);
-                        }
-                    } catch(e) {
-                        trace(e.message);
-                        timer.cancel();
+                for(solid in selection.solids) {
+                    final color = solid.fillColor;
+                    if(color != null) {
+                        solid.fillColor = Color.RGB(color.green, color.blue, color.red, color.alpha);
                     }
-                });
+                }
 
                 return;
             }
