@@ -3,6 +3,7 @@ package samples;
 import js.lib.Error;
 import omni.graffle.Form;
 import omni.graffle.form.field.StringField;
+import omni.graffle.form.field.MultipleOptions;
 import omni.graffle.Alert;
 import omni.graffle.Timer;
 import omni.graffle.HierarchicalDirection;
@@ -28,6 +29,7 @@ class HelloWorld extends Action {
                 final form = new Form();
                 form.addField(new StringField("name", "Name", "do not type capitals in this field", null), null);
                 form.addField(new StringField("alias", "Alias", null, null), null);
+                form.addField(new MultipleOptions("opts", "Things", [1,2,3], ["One", "Two", "Three"], [2]), null);
                 form.validate = (form) -> {
                     form.values.alias = form.values.name;
                     
@@ -40,7 +42,7 @@ class HelloWorld extends Action {
 
                 form.show("Test Form", "Do It")
                     .then(
-                        (form: Form) -> trace(form.values.name),
+                        (form: Form) -> trace(form.values.opts),
                         (err: Error) -> trace(err.message)
                     );
 

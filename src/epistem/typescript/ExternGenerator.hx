@@ -116,21 +116,21 @@ class ExternGenerator {
     }
 
     function typeString(type: Definition.Type): String {
-        switch type {
-            case name("string"): return "String";
-            case name("boolean"): return "Bool";
-            case name("Object"): return "Dynamic";
-            case name("object"): return "Dynamic";
-            case name("Promise"): return "js.lib.Promise";
-            case name("Array"): return "Array";
-            case name("Date"): return "js.lib.Date";
-            case name("Error"): return "js.lib.Error";
-            case name("Function"): return functionSpecialization();
-            case name("number"): return "Float";
-            case name(n): return haxeName(n).fullName;
-            case nullable(t): return 'Null<${typeString(t)}>';
-            case generic(t, ps): return '${typeString(t)}<${ps.map(typeString).join(",")}>';
-            case union(types): return unionTypeString(types);
+        return switch type {
+            case name("string")  : "String";
+            case name("boolean") : "Bool";
+            case name("Object")  : "Dynamic";
+            case name("object")  : "Dynamic";
+            case name("Promise") : "js.lib.Promise";
+            case name("Array")   : "Array";
+            case name("Date")    : "js.lib.Date";
+            case name("Error")   : "js.lib.Error";
+            case name("Function"): functionSpecialization();
+            case name("number")  : "Float";
+            case name(n)         : haxeName(n).fullName;
+            case nullable(t)     : 'Null<${typeString(t)}>';
+            case generic(t, ps)  : '${typeString(t)}<${ps.map(typeString).join(",")}>';
+            case union(types)    : unionTypeString(types);
         }
     }
 
