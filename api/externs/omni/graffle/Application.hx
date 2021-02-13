@@ -15,5 +15,5 @@ extern class Application {
     var userVersion (default,never): omni.graffle.Version;
     var version (default,never): String;
 
-    function openDocument(from: Null<omni.graffle.Document>, url: omni.graffle.URL, completed: (Dynamic) -> Void): Void;
+    function openDocument(from: Null<omni.graffle.Document>, url: omni.graffle.URL, completed: (epistem.typescript.Helpers.Union2<omni.graffle.Document, js.lib.Error>, Bool) -> Void): Void;
 }

@@ -1,5 +1,6 @@
 package samples;
 
+import omni.graffle.Document;
 import js.lib.intl.Collator;
 import js.lib.Error;
 import omni.graffle.Color;
@@ -50,6 +51,22 @@ class HelloWorld extends Action {
 
                 // new Alert("Hello", "This is a test").show((index: Float) -> trace('Alert index: $index'));
                 return;
+            }
+
+            if(selection.graphics.length == 1) {
+                final url = selection.graphics[0].actionURL;
+                if(url != null) {
+                    Globals.app.openDocument(Globals.document, url, (result, wasOpen) -> {
+                        if(Std.isOfType(result, Document)) {
+                            final doc: Document = result;
+                            trace('opened ${doc.name} wasOpen=$wasOpen');
+                        } else {
+                            final err: Error = result;
+                            trace('Error: ${err.message}');
+                        }
+                    });
+                    return;
+                }
             }
 
             if(selection.solids.length > 0) {

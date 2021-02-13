@@ -144,6 +144,9 @@ class ExternGenerator {
             case ["Timer", "once"     , "action"  ]: "(Timer) -> Void";
             case ["Timer", "repeating", "action"  ]: "(Timer) -> Void";
             case ["Form" , "validate" , _         ]: "(Form) -> Null<Bool>";
+
+            case ["Application", "openDocument", "completed"]: '(epistem.typescript.Helpers.Union2<$packageName.Document, js.lib.Error>, Bool) -> Void';
+            
             default: "(Dynamic) -> Void";
         }
     }
