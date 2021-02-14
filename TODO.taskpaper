@@ -2,5 +2,6 @@ Feature Ideas:
 	- Generate graphviz of inter-type references from extern generator
 	
 Development Tasks:
-	- Function specialization for URL
+	- Plugin bundle generator
+	- Function specialization for URL and FetchRequest
 	- Function specialization for all other types
