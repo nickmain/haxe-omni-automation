@@ -1,4 +1,5 @@
 Feature Ideas:
+	- Use pasteboard for generating custom shapes
 	- Generate graphviz of inter-type references from extern generator
 	
 Development Tasks:
