@@ -19,6 +19,12 @@ class GenerateOmniExterns {
         gen2.packageName = "omni.focus";
         gen2.generate("api/OmniFocus.d.ts");
 
+        trace("api/OmniOutliner.d.ts");
+        final gen2 = new ExternGenerator();
+        gen2.rootDir = "api/externs";
+        gen2.packageName = "omni.outliner";
+        gen2.generate("api/OmniOutliner.d.ts");
+
         trace("... done");
     }
 }

@@ -18,4 +18,6 @@ extern class URL {
     function open(): Void;
     function find(types: Array<omni.focus.TypeIdentifier>, recurse: Null<Bool>): js.lib.Promise<Array<omni.focus.URL>>;
     function toString(): String;
+    function appendingPathComponent(component: String): omni.focus.URL;
+    function deletingLastPathComponent(): omni.focus.URL;
 }

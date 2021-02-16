@@ -1,7 +1,7 @@
-// TypeScript definitions for OmniFocus 3.11.4 (149.8) on macOS 11.2.1
-// Generated on 2021-02-16 22:29:01 +0000
+// TypeScript definitions for OmniOutliner 5.8.2 (206.5) on macOS 11.2.1
+// Generated on 2021-02-16 22:30:37 +0000
 
-// To use these definitions, save this file as `OmniFocus.d.ts`
+// To use these definitions, save this file as `OmniOutliner.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
 // an appropriate set of implicitly defined TypeScript libraries:
 //
@@ -35,70 +35,10 @@ declare class Application {
     readonly version: string;
 }
 
-// ApplyResult
+// ColumnArray
 
-declare namespace ApplyResult {
-    const SkipChildren: ApplyResult;
-    const SkipPeers: ApplyResult;
-    const Stop: ApplyResult;
-    const all: Array<ApplyResult>;
-}
-
-declare class ApplyResult {
-}
-
-// FolderArray
-
-declare class FolderArray extends Array {
-    byName(name: string): Folder | null;
-}
-
-// ProjectArray
-
-declare class ProjectArray extends Array {
-    byName(name: string): Project | null;
-}
-
-// SectionArray
-
-declare class SectionArray extends Array {
-    byName(name: string): Project | Folder | null;
-}
-
-// Library
-
-declare class Library extends SectionArray {
-    apply(f: Function): ApplyResult | null;
-    readonly beginning: Folder.ChildInsertionLocation;
-    readonly ending: Folder.ChildInsertionLocation;
-}
-
-// TagArray
-
-declare class TagArray extends Array {
-    byName(name: string): Tag | null;
-}
-
-// Tags
-
-declare class Tags extends TagArray {
-    apply(f: Function): ApplyResult | null;
-    readonly beginning: Tag.ChildInsertionLocation;
-    readonly ending: Tag.ChildInsertionLocation;
-}
-
-// TaskArray
-
-declare class TaskArray extends Array {
-    byName(name: string): Task | null;
-}
-
-// Inbox
-
-declare class Inbox extends TaskArray {
-    apply(f: Function): ApplyResult | null;
-    readonly beginning: Task.ChildInsertionLocation;
-    readonly ending: Task.ChildInsertionLocation;
+declare class ColumnArray extends Array {
+    byTitle(title: string): Column | null;
 }
 
 // Calendar
@@ -185,6 +125,52 @@ declare namespace ColorSpace {
 declare class ColorSpace {
 }
 
+// Column
+
+declare class Column {
+    remove();
+    readonly enumeration: Enumeration | null;
+    formatter: Formatter | null;
+    readonly outline: Outline;
+    readonly style: Style;
+    textAlignment: TextAlignment;
+    title: string;
+    readonly type: Column.Type;
+}
+
+// Column.Summary
+
+declare namespace Column.Summary {
+    const AverageLeaves: Column.Summary;
+    const Hidden: Column.Summary;
+    const Maximum: Column.Summary;
+    const Minimum: Column.Summary;
+    const State: Column.Summary;
+    const Total: Column.Summary;
+}
+
+declare namespace Column {
+    class Summary {
+    }
+}
+
+// Column.Type
+
+declare namespace Column.Type {
+    const Checkbox: Column.Type;
+    const Date: Column.Type;
+    const Duration: Column.Type;
+    const Enumeration: Column.Type;
+    const Number: Column.Type;
+    const Text: Column.Type;
+}
+
+declare namespace Column {
+    class Type {
+        readonly identifier: string;
+    }
+}
+
 // Console
 
 declare class Console {
@@ -216,292 +202,6 @@ declare class Data {
     toBase64(): string;
     readonly length: number;
     readonly toObject: Object | null;
-}
-
-// Database
-
-declare class Database {
-    tagNamed(name: string): Tag | null;
-    folderNamed(name: string): Folder | null;
-    projectNamed(name: string): Project | null;
-    projectsMatching(search: string): Array<Project>;
-    foldersMatching(search: string): Array<Folder>;
-    tagsMatching(search: string): Array<Tag>;
-    taskNamed(name: string): Task | null;
-    save();
-    moveTasks(tasks: Array<Task>, position: Project | Task | Task.ChildInsertionLocation);
-    duplicateTasks(tasks: Array<Task>, position: Project | Task | Task.ChildInsertionLocation): TaskArray;
-    convertTasksToProjects(tasks: Array<Task>, position: Folder | Folder.ChildInsertionLocation): Array<Project>;
-    moveSections(sections: Array<Project | Folder>, position: Folder | Folder.ChildInsertionLocation);
-    duplicateSections(sections: Array<Project | Folder>, position: Folder | Folder.ChildInsertionLocation): SectionArray;
-    moveTags(tags: Array<Tag>, position: Tag | Tag.ChildInsertionLocation);
-    duplicateTags(tags: Array<Tag>, position: Tag | Tag.ChildInsertionLocation): TagArray;
-    cleanUp();
-    undo();
-    redo();
-    deleteObject(object: DatabaseObject);
-    copyTasksToPasteboard(tasks: Array<Task>, pasteboard: Pasteboard);
-    canPasteTasks(pasteboard: Pasteboard): boolean;
-    pasteTasksFromPasteboard(pasteboard: Pasteboard): Array<Task>;
-    readonly canRedo: boolean;
-    readonly canUndo: boolean;
-    readonly document: DatabaseDocument | null;
-    readonly flattenedFolders: FolderArray;
-    readonly flattenedProjects: ProjectArray;
-    readonly flattenedSections: SectionArray;
-    readonly flattenedTags: TagArray;
-    readonly flattenedTasks: TaskArray;
-    readonly folders: FolderArray;
-    readonly inbox: Inbox;
-    readonly library: Library;
-    readonly projects: ProjectArray;
-    readonly settings: Settings;
-    readonly tags: Tags;
-}
-
-// DatabaseObject
-
-declare class DatabaseObject {
-    readonly id: ObjectIdentifier;
-}
-
-// DatedObject
-
-declare class DatedObject extends DatabaseObject {
-    added: Date | null;
-    modified: Date | null;
-}
-
-// ActiveObject
-
-declare class ActiveObject extends DatedObject {
-    active: boolean;
-    readonly effectiveActive: boolean;
-}
-
-// Folder
-
-declare namespace Folder {
-    function byIdentifier(identifier: string): Folder | null;
-}
-
-declare class Folder extends ActiveObject {
-    constructor (name: string, position: Folder | Folder.ChildInsertionLocation | null);
-    folderNamed(name: string): Folder | null;
-    projectNamed(name: string): Project | null;
-    sectionNamed(name: string): Project | Folder | null;
-    childNamed(name: string): Project | Folder | null;
-    apply(f: Function): ApplyResult | null;
-    readonly after: Folder.ChildInsertionLocation;
-    readonly before: Folder.ChildInsertionLocation;
-    readonly beginning: Folder.ChildInsertionLocation;
-    readonly children: SectionArray;
-    readonly ending: Folder.ChildInsertionLocation;
-    readonly flattenedChildren: SectionArray;
-    readonly flattenedFolders: FolderArray;
-    readonly flattenedProjects: ProjectArray;
-    readonly flattenedSections: SectionArray;
-    readonly folders: FolderArray;
-    name: string;
-    readonly parent: Folder | null;
-    readonly projects: ProjectArray;
-    readonly sections: SectionArray;
-    status: Folder.Status;
-}
-
-// Tag
-
-declare namespace Tag {
-    function byIdentifier(identifier: string): Tag | null;
-    const forecastTag: Tag | null;
-}
-
-declare class Tag extends ActiveObject {
-    constructor (name: string, position: Tag | Tag.ChildInsertionLocation | null);
-    tagNamed(name: string): Tag | null;
-    childNamed(name: string): Tag | null;
-    apply(f: Function): ApplyResult | null;
-    readonly after: Tag.ChildInsertionLocation;
-    allowsNextAction: boolean;
-    readonly availableTasks: TaskArray;
-    readonly before: Tag.ChildInsertionLocation;
-    readonly beginning: Tag.ChildInsertionLocation;
-    readonly children: TagArray;
-    readonly ending: Tag.ChildInsertionLocation;
-    readonly flattenedChildren: TagArray;
-    readonly flattenedTags: TagArray;
-    name: string;
-    readonly parent: Tag | null;
-    readonly projects: ProjectArray;
-    readonly remainingTasks: TaskArray;
-    status: Tag.Status;
-    readonly tags: TagArray;
-    readonly tasks: TaskArray;
-}
-
-// Task
-
-declare namespace Task {
-    function byParsingTransportText(text: string, singleTask: boolean | null): Array<Task>;
-    function byIdentifier(identifier: string): Task | null;
-}
-
-declare class Task extends ActiveObject {
-    constructor (name: string, position: Project | Task | Task.ChildInsertionLocation | null);
-    taskNamed(name: string): Task | null;
-    childNamed(name: string): Task | null;
-    appendStringToNote(stringToAppend: string);
-    addLinkedFileURL(url: URL);
-    removeLinkedFileWithURL(url: URL);
-    addAttachment(attachment: FileWrapper);
-    removeAttachmentAtIndex(index: number);
-    addTag(tag: Tag);
-    addTags(tags: Array<Tag>);
-    removeTag(tag: Tag);
-    removeTags(tags: Array<Tag>);
-    clearTags();
-    markComplete(date: Date | null): Task;
-    markIncomplete();
-    drop(allOccurrences: boolean);
-    apply(f: Function): ApplyResult | null;
-    addNotification(info: number | Date): Task.Notification;
-    removeNotification(notification: Task.Notification);
-    readonly after: Task.ChildInsertionLocation;
-    assignedContainer: Project | Task | Inbox | null;
-    attachments: Array<FileWrapper>;
-    readonly before: Task.ChildInsertionLocation;
-    readonly beginning: Task.ChildInsertionLocation;
-    readonly children: TaskArray;
-    readonly completed: boolean;
-    completedByChildren: boolean;
-    readonly completionDate: Date | null;
-    readonly containingProject: Project | null;
-    deferDate: Date | null;
-    readonly dropDate: Date | null;
-    dueDate: Date | null;
-    readonly effectiveCompletedDate: Date | null;
-    readonly effectiveDeferDate: Date | null;
-    readonly effectiveDropDate: Date | null;
-    readonly effectiveDueDate: Date | null;
-    readonly effectiveFlagged: boolean;
-    readonly ending: Task.ChildInsertionLocation;
-    estimatedMinutes: number | null;
-    flagged: boolean;
-    readonly flattenedChildren: TaskArray;
-    readonly flattenedTasks: TaskArray;
-    readonly hasChildren: boolean;
-    readonly inInbox: boolean;
-    readonly linkedFileURLs: Array<URL>;
-    name: string;
-    note: string;
-    readonly notifications: Array<Task.Notification>;
-    readonly parent: Task | null;
-    readonly project: Project | null;
-    repetitionRule: Task.RepetitionRule | null;
-    sequential: boolean;
-    shouldUseFloatingTimeZone: boolean;
-    readonly tags: TagArray;
-    readonly taskStatus: Task.Status;
-    readonly tasks: TaskArray;
-}
-
-// Perspective.Custom
-
-declare namespace Perspective.Custom {
-    function byName(name: string): Perspective.Custom | null;
-    function byIdentifier(identifier: string): Perspective.Custom | null;
-    const all: Array<Perspective.Custom>;
-}
-
-declare namespace Perspective {
-    class Custom extends DatedObject {
-        fileWrapper(): FileWrapper;
-        writeFileRepresentationIntoDirectory(parentURL: URL): URL;
-        readonly identifier: string;
-        readonly name: string;
-    }
-}
-
-// Task.Notification
-
-declare namespace Task {
-    class Notification extends DatedObject {
-        absoluteFireDate: Date;
-        readonly initialFireDate: Date;
-        readonly isSnoozed: boolean;
-        readonly kind: Task.Notification.Kind;
-        readonly nextFireDate: Date | null;
-        relativeFireOffset: number;
-        repeatInterval: number;
-        readonly task: Task | null;
-        readonly usesFloatingTimeZone: boolean;
-    }
-}
-
-// Project
-
-declare namespace Project {
-    function byIdentifier(identifier: string): Project | null;
-}
-
-declare class Project extends DatabaseObject {
-    constructor (name: string, position: Folder | Folder.ChildInsertionLocation | null);
-    taskNamed(name: string): Task | null;
-    appendStringToNote(stringToAppend: string);
-    addAttachment(attachment: FileWrapper);
-    removeAttachmentAtIndex(index: number);
-    markComplete(date: Date | null): Task;
-    markIncomplete();
-    addNotification(info: number | Date): Task.Notification;
-    removeNotification(notification: Task.Notification);
-    addTag(tag: Tag);
-    addTags(tags: Array<Tag>);
-    removeTag(tag: Tag);
-    removeTags(tags: Array<Tag>);
-    clearTags();
-    addLinkedFileURL(url: URL);
-    removeLinkedFileWithURL(url: URL);
-    readonly after: Folder.ChildInsertionLocation;
-    attachments: Array<FileWrapper>;
-    readonly before: Folder.ChildInsertionLocation;
-    readonly beginning: Task.ChildInsertionLocation;
-    readonly children: TaskArray;
-    readonly completed: boolean;
-    completedByChildren: boolean;
-    completionDate: Date | null;
-    containsSingletonActions: boolean;
-    defaultSingletonActionHolder: boolean;
-    deferDate: Date | null;
-    dropDate: Date | null;
-    dueDate: Date | null;
-    readonly effectiveCompletedDate: Date | null;
-    readonly effectiveDeferDate: Date | null;
-    readonly effectiveDropDate: Date | null;
-    readonly effectiveDueDate: Date | null;
-    readonly effectiveFlagged: boolean;
-    readonly ending: Task.ChildInsertionLocation;
-    estimatedMinutes: number | null;
-    flagged: boolean;
-    readonly flattenedChildren: TaskArray;
-    readonly flattenedTasks: TaskArray;
-    readonly hasChildren: boolean;
-    lastReviewDate: Date | null;
-    readonly linkedFileURLs: Array<URL>;
-    name: string;
-    nextReviewDate: Date | null;
-    readonly nextTask: Task | null;
-    note: string;
-    readonly notifications: Array<Task.Notification>;
-    readonly parentFolder: Folder | null;
-    repetitionRule: Task.RepetitionRule | null;
-    reviewInterval: Project.ReviewInterval;
-    sequential: boolean;
-    shouldUseFloatingTimeZone: boolean;
-    status: Project.Status;
-    readonly tags: TagArray;
-    readonly task: Task;
-    readonly taskStatus: Task.Status;
-    readonly tasks: TaskArray;
 }
 
 // DateComponents
@@ -589,12 +289,16 @@ declare class Document {
     readonly writableTypes: Array<string>;
 }
 
-// DatabaseDocument
+// OutlineDocument
 
-declare class DatabaseDocument extends Document {
-    newWindow(): Promise<DocumentWindow>;
-    newTabOnWindow(window: DocumentWindow): Promise<DocumentWindow>;
-    readonly windows: Array<DocumentWindow>;
+declare class OutlineDocument extends Document {
+    readonly editors: Array<Editor>;
+    readonly outline: Outline;
+}
+
+// EditorColumnPosition
+
+declare class EditorColumnPosition {
 }
 
 // Email
@@ -608,6 +312,33 @@ declare class Email {
     fileWrappers: Array<FileWrapper>;
     receiver: string | null;
     subject: string | null;
+}
+
+// Enumeration
+
+declare class Enumeration {
+    memberNamed(name: string): Enumeration.Member | null;
+    add(name: string | null, at: EnumerationMemberPosition | null): Enumeration.Member;
+    move(members: Array<Enumeration.Member>, to: EnumerationMemberPosition);
+    readonly beginning: EnumerationMemberPosition;
+    readonly end: EnumerationMemberPosition;
+    readonly members: Array<Enumeration.Member>;
+}
+
+// Enumeration.Member
+
+declare namespace Enumeration {
+    class Member {
+        remove();
+        readonly after: EnumerationMemberPosition;
+        readonly before: EnumerationMemberPosition;
+        readonly name: string;
+    }
+}
+
+// EnumerationMemberPosition
+
+declare class EnumerationMemberPosition {
 }
 
 // FilePicker
@@ -660,72 +391,6 @@ declare namespace FileWrapper.Type {
 
 declare namespace FileWrapper {
     class Type {
-    }
-}
-
-// Folder.ChildInsertionLocation
-
-declare namespace Folder {
-    class ChildInsertionLocation {
-    }
-}
-
-// Folder.Status
-
-declare namespace Folder.Status {
-    const Active: Folder.Status;
-    const Dropped: Folder.Status;
-    const all: Array<Folder.Status>;
-}
-
-declare namespace Folder {
-    class Status {
-    }
-}
-
-// ForecastDay
-
-declare namespace ForecastDay {
-    let badgeCountsIncludeDeferredItems: boolean;
-}
-
-declare class ForecastDay {
-    badgeKind(): ForecastDay.Status;
-    readonly badgeCount: number;
-    readonly date: Date;
-    readonly deferredCount: number;
-    readonly kind: ForecastDay.Kind;
-    readonly name: string;
-}
-
-// ForecastDay.Kind
-
-declare namespace ForecastDay.Kind {
-    const Day: ForecastDay.Kind;
-    const DistantFuture: ForecastDay.Kind;
-    const FutureMonth: ForecastDay.Kind;
-    const Past: ForecastDay.Kind;
-    const Today: ForecastDay.Kind;
-    const all: Array<ForecastDay.Kind>;
-}
-
-declare namespace ForecastDay {
-    class Kind {
-    }
-}
-
-// ForecastDay.Status
-
-declare namespace ForecastDay.Status {
-    const Available: ForecastDay.Status;
-    const DueSoon: ForecastDay.Status;
-    const NoneAvailable: ForecastDay.Status;
-    const Overdue: ForecastDay.Status;
-    const all: Array<ForecastDay.Status>;
-}
-
-declare namespace ForecastDay {
-    class Status {
     }
 }
 
@@ -882,6 +547,57 @@ declare namespace Formatter.Date {
 declare class Image {
 }
 
+// Item
+
+declare class Item {
+    setValueForColumn(value: Object | null, column: Column);
+    valueForColumn(column: Column): Object | null;
+    addChild(position: ItemPosition | null, configure: Function | null): Item;
+    remove();
+    apply(f: Function);
+    readonly after: ItemPosition;
+    readonly ancestors: Array<Item>;
+    readonly before: ItemPosition;
+    readonly beginning: ItemPosition;
+    readonly children: Array<Item>;
+    childrenAreSections: boolean;
+    readonly descendants: Array<Item>;
+    readonly descendents: Array<Item>;
+    readonly end: ItemPosition;
+    readonly followingSiblings: Array<Item>;
+    readonly hasChildren: boolean;
+    readonly identifier: string;
+    readonly index: number;
+    readonly leaves: Array<Item>;
+    readonly level: number;
+    note: string;
+    readonly outline: Outline;
+    readonly parent: Item | null;
+    readonly precedingSiblings: Array<Item>;
+    readonly sections: Array<Item>;
+    state: State | null;
+    readonly style: Style;
+    topic: string;
+}
+
+// Item.ApplyResult
+
+declare namespace Item.ApplyResult {
+    const Skip: Item.ApplyResult;
+    const Stop: Item.ApplyResult;
+    const all: Array<Item.ApplyResult>;
+}
+
+declare namespace Item {
+    class ApplyResult {
+    }
+}
+
+// ItemPosition
+
+declare class ItemPosition {
+}
+
 // LigatureStyle
 
 declare namespace LigatureStyle {
@@ -892,6 +608,18 @@ declare namespace LigatureStyle {
 }
 
 declare class LigatureStyle {
+}
+
+// LineCap
+
+declare namespace LineCap {
+    const Butt: LineCap;
+    const Round: LineCap;
+    const Square: LineCap;
+    const all: Array<LineCap>;
+}
+
+declare class LineCap {
 }
 
 // Locale
@@ -934,11 +662,49 @@ declare namespace NamedStyle {
 declare class NamedStylePosition {
 }
 
-// ObjectIdentifier
+// NoteDisplay
 
-declare class ObjectIdentifier {
-    readonly objectClass: Object | null;
-    readonly primaryKey: string;
+declare namespace NoteDisplay {
+    const Inline: NoteDisplay;
+    const Pane: NoteDisplay;
+    const all: Array<NoteDisplay>;
+}
+
+declare class NoteDisplay {
+}
+
+// Outline
+
+declare class Outline {
+    itemWithIdentifier(identifier: string): Item | null;
+    addColumn(columnType: Column.Type, position: EditorColumnPosition, configure: Function | null): Column;
+    moveColumns(columns: Array<Column>, position: EditorColumnPosition);
+    moveItems(items: Array<Item>, position: ItemPosition);
+    duplicateItems(items: Array<Item>, position: ItemPosition);
+    levelStyle(depth: number): Style;
+    group(items: Array<Item>): Item | null;
+    ungroup(items: Array<Item>);
+    organize(items: Array<Item>, byColumns: Array<Column>, underItem: Item, pruneEmptyGroups: boolean | null);
+    topItems(items: Array<Item>): Array<Item>;
+    bottomItems(items: Array<Item>): Array<Item>;
+    itemsSortedByPosition(items: Array<Item>): Array<Item>;
+    onCellChanged(handler: PlugIn.Handler): PlugIn.Handler.Registration | null;
+    alternateRowColor: Color | null;
+    backgroundColor: Color;
+    readonly baseStyle: Style;
+    readonly columnTitleStyle: Style;
+    readonly columns: ColumnArray;
+    readonly document: OutlineDocument | null;
+    horizontalGridColor: Color | null;
+    readonly levelStyles: Array<Style>;
+    readonly namedStyles: NamedStyle.List;
+    readonly noteColumn: Column;
+    readonly outlineColumn: Column;
+    readonly plugIns: Array<PlugIn>;
+    readonly rootItem: Item;
+    readonly statusColumn: Column;
+    readonly styleAttributes: Array<Style.Attribute>;
+    verticalGridColor: Color | null;
 }
 
 // Pasteboard
@@ -982,35 +748,6 @@ declare namespace Pasteboard {
         stringForType(type: TypeIdentifier): string | null;
         setStringForType(string: string, type: TypeIdentifier);
         readonly types: Array<TypeIdentifier>;
-    }
-}
-
-// Perspective
-
-declare namespace Perspective {
-    const all: Array<Perspective.BuiltIn | Perspective.Custom>;
-}
-
-declare class Perspective {
-}
-
-// Perspective.BuiltIn
-
-declare namespace Perspective.BuiltIn {
-    const Flagged: Perspective.BuiltIn;
-    const Forecast: Perspective.BuiltIn;
-    const Inbox: Perspective.BuiltIn;
-    const Nearby: Perspective.BuiltIn;
-    const Projects: Perspective.BuiltIn;
-    const Review: Perspective.BuiltIn;
-    const Search: Perspective.BuiltIn;
-    const Tags: Perspective.BuiltIn;
-    const all: Array<Perspective.BuiltIn>;
-}
-
-declare namespace Perspective {
-    class BuiltIn {
-        readonly name: string;
     }
 }
 
@@ -1069,6 +806,14 @@ declare namespace PlugIn {
     }
 }
 
+// PlugIn.Handler.Registration
+
+declare namespace PlugIn.Handler {
+    class Registration {
+        remove();
+    }
+}
+
 // PlugIn.Library
 
 declare namespace PlugIn {
@@ -1078,6 +823,28 @@ declare namespace PlugIn {
         readonly plugIn: PlugIn;
         readonly version: Version;
     }
+}
+
+// Point
+
+declare namespace Point {
+    const unitX: Point;
+    const unitY: Point;
+    const zero: Point;
+}
+
+declare class Point {
+    constructor (x: number, y: number);
+    add(point: Point): Point;
+    subtract(point: Point): Point;
+    scale(factor: number): Point;
+    distanceTo(point: Point): number;
+    dot(point: Point): number;
+    readonly length: number;
+    readonly negative: Point;
+    readonly normalized: Point;
+    x: number;
+    y: number;
 }
 
 // Preferences
@@ -1095,56 +862,48 @@ declare class Preferences {
     readonly identifier: string;
 }
 
-// Project.ReviewInterval
+// Rect
 
-declare namespace Project {
-    class ReviewInterval {
-        steps: number;
-        unit: string;
-    }
-}
-
-// Project.Status
-
-declare namespace Project.Status {
-    const Active: Project.Status;
-    const Done: Project.Status;
-    const Dropped: Project.Status;
-    const OnHold: Project.Status;
-    const all: Array<Project.Status>;
-}
-
-declare namespace Project {
-    class Status {
-    }
+declare class Rect {
+    constructor (x: number, y: number, width: number, height: number);
+    insetBy(dx: number, dy: number): Rect;
+    offsetBy(dx: number, dy: number): Rect;
+    union(rect: Rect): Rect;
+    intersect(rect: Rect): Rect;
+    containsRect(rect: Rect): boolean;
+    containsPoint(point: Point): boolean;
+    intersects(rect: Rect): boolean;
+    readonly center: Point;
+    height: number;
+    readonly integral: Rect;
+    readonly isEmpty: boolean;
+    readonly isInfinite: boolean;
+    readonly isNull: boolean;
+    readonly maxX: number;
+    readonly maxY: number;
+    readonly midX: number;
+    readonly midY: number;
+    readonly minX: number;
+    readonly minY: number;
+    origin: Point;
+    size: Size;
+    readonly standardized: Rect;
+    width: number;
+    x: number;
+    y: number;
 }
 
 // Selection
 
 declare class Selection {
     readonly allObjects: Array<Object>;
-    readonly database: Database | null;
-    readonly databaseObjects: Array<DatabaseObject>;
-    readonly document: DatabaseDocument | null;
-    readonly folders: FolderArray;
-    readonly projects: ProjectArray;
-    readonly tags: TagArray;
-    readonly tasks: TaskArray;
-    readonly window: DocumentWindow | null;
-}
-
-// Settings
-
-declare class Settings {
-    defaultObjectForKey(key: string): Object | null;
-    hasNonDefaultObjectForKey(key: string): boolean;
-    objectForKey(key: string): Object | null;
-    setObjectForKey(value: Object | null, key: string);
-    boolForKey(key: string): boolean;
-    setBoolForKey(value: boolean, key: string);
-    integerForKey(key: string): number;
-    setIntegerForKey(value: number, key: string);
-    readonly keys: Array<string>;
+    readonly columns: Array<Column>;
+    readonly document: OutlineDocument | null;
+    readonly editor: Editor | null;
+    readonly items: Array<Item>;
+    readonly nodes: Array<ItemTreeNode>;
+    readonly outline: Outline | null;
+    readonly styles: Array<Style>;
 }
 
 // SharePanel
@@ -1158,6 +917,37 @@ declare class SharePanel {
     clearItems();
     show();
     items: Array<URL | string | Image | FileWrapper>;
+}
+
+// Size
+
+declare class Size {
+    constructor (width: number, height: number);
+    height: number;
+    width: number;
+}
+
+// SortOrdering
+
+declare namespace SortOrdering {
+    const Ascending: SortOrdering;
+    const Descending: SortOrdering;
+    const all: Array<SortOrdering>;
+}
+
+declare class SortOrdering {
+}
+
+// State
+
+declare namespace State {
+    const Checked: State;
+    const Mixed: State;
+    const Unchecked: State;
+    const all: Array<State>;
+}
+
+declare class State {
 }
 
 // Style
@@ -1239,92 +1029,6 @@ declare namespace Style {
     class Attribute {
         readonly defaultValue: Object;
         readonly key: string;
-    }
-}
-
-// Tag.ChildInsertionLocation
-
-declare namespace Tag {
-    class ChildInsertionLocation {
-    }
-}
-
-// Tag.Status
-
-declare namespace Tag.Status {
-    const Active: Tag.Status;
-    const Dropped: Tag.Status;
-    const OnHold: Tag.Status;
-    const all: Array<Tag.Status>;
-}
-
-declare namespace Tag {
-    class Status {
-    }
-}
-
-// Task.ChildInsertionLocation
-
-declare namespace Task {
-    class ChildInsertionLocation {
-    }
-}
-
-// Task.Notification.Kind
-
-declare namespace Task.Notification.Kind {
-    const Absolute: Task.Notification.Kind;
-    const DueRelative: Task.Notification.Kind;
-    const Unknown: Task.Notification.Kind;
-    const all: Array<Task.Notification.Kind>;
-}
-
-declare namespace Task.Notification {
-    class Kind {
-    }
-}
-
-// Task.RepetitionMethod
-
-declare namespace Task.RepetitionMethod {
-    const DeferUntilDate: Task.RepetitionMethod;
-    const DueDate: Task.RepetitionMethod;
-    const Fixed: Task.RepetitionMethod;
-    const None: Task.RepetitionMethod;
-    const all: Array<Task.RepetitionMethod>;
-}
-
-declare namespace Task {
-    class RepetitionMethod {
-    }
-}
-
-// Task.RepetitionRule
-
-declare namespace Task {
-    class RepetitionRule {
-        constructor (ruleString: string, method: Task.RepetitionMethod);
-        firstDateAfterDate(date: Date): Date;
-        readonly method: Task.RepetitionMethod;
-        readonly ruleString: string;
-    }
-}
-
-// Task.Status
-
-declare namespace Task.Status {
-    const Available: Task.Status;
-    const Blocked: Task.Status;
-    const Completed: Task.Status;
-    const Dropped: Task.Status;
-    const DueSoon: Task.Status;
-    const Next: Task.Status;
-    const Overdue: Task.Status;
-    const all: Array<Task.Status>;
-}
-
-declare namespace Task {
-    class Status {
     }
 }
 
@@ -1471,14 +1175,29 @@ declare class Tree {
     readonly selectedNodes: Array<TreeNode>;
 }
 
-// ContentTree
+// Editor
 
-declare class ContentTree extends Tree {
-}
-
-// SidebarTree
-
-declare class SidebarTree extends Tree {
+declare class Editor extends Tree {
+    visibilityOfColumn(column: Column): boolean;
+    setVisibilityOfColumn(column: Column, visible: boolean);
+    widthForColumn(column: Column): number;
+    setWidthForColumn(column: Column, width: number);
+    sortOrderingForColumn(column: Column): SortOrdering | null;
+    setSortOrderingForColumn(column: Column, order: SortOrdering | null);
+    withoutSorting(f: Function): Object | null;
+    summaryForColumn(column: Column): Column.Summary | null;
+    setSummaryForColumn(column: Column, summary: Column.Summary | null);
+    beforeColumn(column: Column | null): EditorColumnPosition;
+    afterColumn(column: Column | null): EditorColumnPosition;
+    nodeForItem(item: Item): TreeNode | null;
+    nodesForItems(items: Array<Item>): Array<TreeNode>;
+    scrollToNode(node: TreeNode);
+    indentNodes(nodes: Array<TreeNode>);
+    outdentNodes(nodes: Array<TreeNode>);
+    focusedItems: Array<Item>;
+    foldingEnabled: boolean;
+    noteDisplay: NoteDisplay;
+    readonly selection: Selection;
 }
 
 // TreeNode
@@ -1506,6 +1225,14 @@ declare class TreeNode {
     readonly rootNode: TreeNode;
 }
 
+// ItemTreeNode
+
+declare class ItemTreeNode extends TreeNode {
+    setValueForColumn(value: Object | null, column: Column);
+    valueForColumn(column: Column): Object | null;
+    state: State | null;
+}
+
 // TypeIdentifier
 
 declare namespace TypeIdentifier {
@@ -1517,7 +1244,6 @@ declare namespace TypeIdentifier {
     const image: TypeIdentifier;
     const jpeg: TypeIdentifier;
     const json: TypeIdentifier;
-    const ofocus: TypeIdentifier;
     const pdf: TypeIdentifier;
     const plainText: TypeIdentifier;
     const png: TypeIdentifier;
@@ -1525,9 +1251,6 @@ declare namespace TypeIdentifier {
     const readableTypes: Array<TypeIdentifier>;
     const rtf: TypeIdentifier;
     const rtfd: TypeIdentifier;
-    const taskPaper: TypeIdentifier;
-    const tasks: TypeIdentifier;
-    const tasksAndFolders: TypeIdentifier;
     const tiff: TypeIdentifier;
     const writableTypes: Array<TypeIdentifier>;
     const xmlPropertyList: TypeIdentifier;
@@ -1646,23 +1369,14 @@ declare class Version {
     readonly versionString: string;
 }
 
-// Window
+// WritingDirection
 
-declare class Window {
-    close();
+declare namespace WritingDirection {
+    const LeftToRight: WritingDirection;
+    const Natural: WritingDirection;
+    const RightToLeft: WritingDirection;
+    const all: Array<WritingDirection>;
 }
 
-// DocumentWindow
-
-declare class DocumentWindow extends Window {
-    selectObjects(objects: Array<DatabaseObject>);
-    forecastDayForDate(date: Date): ForecastDay;
-    selectForecastDays(days: Array<ForecastDay>);
-    readonly content: ContentTree | null;
-    focus: SectionArray | null;
-    readonly isTab: boolean;
-    perspective: Perspective.BuiltIn | Perspective.Custom | null;
-    readonly selection: Selection;
-    readonly sidebar: SidebarTree | null;
-    readonly tabGroupWindows: Array<DocumentWindow>;
+declare class WritingDirection {
 }
