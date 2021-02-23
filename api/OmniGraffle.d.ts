@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniGraffle 7.18.2 (204.8) on macOS 11.1
-// Generated on 2021-01-26 05:40:07 +0000
+// TypeScript definitions for OmniGraffle 7.18.3 (204.9) on macOS 11.2.1
+// Generated on 2021-02-23 03:42:34 +0000
 
 // To use these definitions, save this file as `OmniGraffle.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -187,6 +187,15 @@ declare class Console {
     info(message: Object, additional: Array<Object | null>);
     warn(message: Object, additional: Array<Object | null>);
     clear();
+}
+
+// Credentials
+
+declare class Credentials {
+    constructor ();
+    read(service: string): object | null;
+    write(service: string, username: string, password: string);
+    remove(service: string);
 }
 
 // Data
@@ -430,6 +439,14 @@ declare namespace Form.Field {
         constructor (key: string, displayName: string | null, options: Array<Object>, names: Array<string> | null, selected: Object | null, nullOptionTitle: string | null);
         allowsNull: boolean;
         nullOptionTitle: string | null;
+    }
+}
+
+// Form.Field.Password
+
+declare namespace Form.Field {
+    class Password extends Form.Field {
+        constructor (key: string, displayName: string | null, value: string | null);
     }
 }
 
@@ -1029,6 +1046,21 @@ declare class Portfolio {
     readonly images: Array<ImageReference>;
 }
 
+// Preferences
+
+declare class Preferences {
+    constructor (identifier: string | null);
+    read(key: string): Object | null;
+    readBoolean(key: string): boolean;
+    readString(key: string): string | null;
+    readNumber(key: string): number;
+    readDate(key: string): Date | null;
+    readData(key: string): Data | null;
+    write(key: string, value: boolean | string | number | Date | Data | null);
+    remove(key: string);
+    readonly identifier: string;
+}
+
 // Rect
 
 declare class Rect {
@@ -1273,6 +1305,8 @@ declare class URL {
     open();
     find(types: Array<TypeIdentifier>, recurse: boolean | null): Promise<Array<URL>>;
     toString(): string;
+    appendingPathComponent(component: string): URL;
+    deletingLastPathComponent(): URL;
     readonly string: string;
     readonly toObject: Object | null;
 }

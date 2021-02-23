@@ -18,4 +18,6 @@ extern class URL {
     function open(): Void;
     function find(types: Array<omni.graffle.TypeIdentifier>, recurse: Null<Bool>): js.lib.Promise<Array<omni.graffle.URL>>;
     function toString(): String;
+    function appendingPathComponent(component: String): omni.graffle.URL;
+    function deletingLastPathComponent(): omni.graffle.URL;
 }
