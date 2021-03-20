@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniOutliner 5.8.3 (206.6) on macOS 11.2.2
-// Generated on 2021-03-07 20:26:42 +0000
+// TypeScript definitions for OmniOutliner 5.8.3 (206.6) on macOS 11.2.3
+// Generated on 2021-03-20 04:45:12 +0000
 
 // To use these definitions, save this file as `OmniOutliner.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
