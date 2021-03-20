@@ -130,6 +130,11 @@ class Parser {
             return nullable(types[0]);
         }
 
+        if(types.length > 2 && types[types.length-1].match(name("null"))) {
+            types.pop();
+            return nullable(union(types));
+        }
+
         return union(types);
     }
 
