@@ -14,6 +14,6 @@ extern class Preferences {
     function readNumber(key: String): Float;
     function readDate(key: String): Null<js.lib.Date>;
     function readData(key: String): Null<omni.focus.Data>;
-    function write(key: String, value: epistem.typescript.Helpers.Union6<Bool, String, Float, js.lib.Date, omni.focus.Data, omni.focus.null>): Void;
+    function write(key: String, value: Null<epistem.typescript.Helpers.Union5<Bool, String, Float, js.lib.Date, omni.focus.Data>>): Void;
     function remove(key: String): Void;
 }

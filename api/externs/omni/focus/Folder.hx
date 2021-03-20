@@ -21,11 +21,11 @@ extern class Folder extends ActiveObject {
     var sections (default,never): omni.focus.SectionArray;
     var status: omni.focus.folder.Status;
 
-    function new(name: String, position: epistem.typescript.Helpers.Union3<omni.focus.Folder, omni.focus.folder.ChildInsertionLocation, omni.focus.null>);
+    function new(name: String, position: Null<epistem.typescript.Helpers.Union2<omni.focus.Folder, omni.focus.folder.ChildInsertionLocation>>);
 
     function folderNamed(name: String): Null<omni.focus.Folder>;
     function projectNamed(name: String): Null<omni.focus.Project>;
-    function sectionNamed(name: String): epistem.typescript.Helpers.Union3<omni.focus.Project, omni.focus.Folder, omni.focus.null>;
-    function childNamed(name: String): epistem.typescript.Helpers.Union3<omni.focus.Project, omni.focus.Folder, omni.focus.null>;
+    function sectionNamed(name: String): Null<epistem.typescript.Helpers.Union2<omni.focus.Project, omni.focus.Folder>>;
+    function childNamed(name: String): Null<epistem.typescript.Helpers.Union2<omni.focus.Project, omni.focus.Folder>>;
     function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
 }

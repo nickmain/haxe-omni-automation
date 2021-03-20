@@ -47,7 +47,7 @@ extern class Project extends DatabaseObject {
     var taskStatus (default,never): omni.focus.task.Status;
     var tasks (default,never): omni.focus.TaskArray;
 
-    function new(name: String, position: epistem.typescript.Helpers.Union3<omni.focus.Folder, omni.focus.folder.ChildInsertionLocation, omni.focus.null>);
+    function new(name: String, position: Null<epistem.typescript.Helpers.Union2<omni.focus.Folder, omni.focus.folder.ChildInsertionLocation>>);
 
     function taskNamed(name: String): Null<omni.focus.Task>;
     function appendStringToNote(stringToAppend: String): Void;

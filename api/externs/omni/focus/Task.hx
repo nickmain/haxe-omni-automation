@@ -7,7 +7,7 @@ extern class Task extends ActiveObject {
     static function byParsingTransportText(text: String, singleTask: Null<Bool>): Array<omni.focus.Task>;
     static function byIdentifier(identifier: String): Null<omni.focus.Task>;
     var after (default,never): omni.focus.task.ChildInsertionLocation;
-    var assignedContainer: epistem.typescript.Helpers.Union4<omni.focus.Project, omni.focus.Task, omni.focus.Inbox, omni.focus.null>;
+    var assignedContainer: Null<epistem.typescript.Helpers.Union3<omni.focus.Project, omni.focus.Task, omni.focus.Inbox>>;
     var attachments: Array<omni.focus.FileWrapper>;
     var before (default,never): omni.focus.task.ChildInsertionLocation;
     var beginning (default,never): omni.focus.task.ChildInsertionLocation;
@@ -44,7 +44,7 @@ extern class Task extends ActiveObject {
     var taskStatus (default,never): omni.focus.task.Status;
     var tasks (default,never): omni.focus.TaskArray;
 
-    function new(name: String, position: epistem.typescript.Helpers.Union4<omni.focus.Project, omni.focus.Task, omni.focus.task.ChildInsertionLocation, omni.focus.null>);
+    function new(name: String, position: Null<epistem.typescript.Helpers.Union3<omni.focus.Project, omni.focus.Task, omni.focus.task.ChildInsertionLocation>>);
 
     function taskNamed(name: String): Null<omni.focus.Task>;
     function childNamed(name: String): Null<omni.focus.Task>;

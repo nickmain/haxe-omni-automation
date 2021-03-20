@@ -16,7 +16,7 @@ extern class PlugIn {
     var libraries (default,never): Array<omni.focus.plugin.Library>;
     var version (default,never): omni.focus.Version;
 
-    function library(identifier: String): Null<Dynamic>;
+    function library(identifier: String): Null<omni.focus.plugin.Library>;
     function action(identifier: String): Null<omni.focus.plugin.Action>;
     function handler(identifier: String): Null<omni.focus.plugin.Handler>;
     function resourceNamed(name: String): Null<omni.focus.URL>;

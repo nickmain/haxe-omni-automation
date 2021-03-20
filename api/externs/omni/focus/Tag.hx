@@ -23,7 +23,7 @@ extern class Tag extends ActiveObject {
     var tags (default,never): omni.focus.TagArray;
     var tasks (default,never): omni.focus.TaskArray;
 
-    function new(name: String, position: epistem.typescript.Helpers.Union3<omni.focus.Tag, omni.focus.tag.ChildInsertionLocation, omni.focus.null>);
+    function new(name: String, position: Null<epistem.typescript.Helpers.Union2<omni.focus.Tag, omni.focus.tag.ChildInsertionLocation>>);
 
     function tagNamed(name: String): Null<omni.focus.Tag>;
     function childNamed(name: String): Null<omni.focus.Tag>;

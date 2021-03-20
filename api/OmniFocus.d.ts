@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniFocus 3.11.4 (149.8) on macOS 11.2.1
-// Generated on 2021-02-16 22:29:01 +0000
+// TypeScript definitions for OmniFocus 3.11.6 (149.12) on macOS 11.2.3
+// Generated on 2021-03-20 04:19:16 +0000
 
 // To use these definitions, save this file as `OmniFocus.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -202,6 +202,8 @@ declare class Credentials {
     read(service: string): object | null;
     write(service: string, username: string, password: string);
     remove(service: string);
+    readBookmark(service: string): URL.Bookmark | null;
+    writeBookmark(service: string, bookmark: URL.Bookmark);
 }
 
 // Data
@@ -520,6 +522,14 @@ declare class DateComponents {
     year: number | null;
 }
 
+// DateRange
+
+declare class DateRange {
+    readonly end: Date;
+    readonly name: string;
+    readonly start: Date;
+}
+
 // Decimal
 
 declare namespace Decimal {
@@ -602,11 +612,11 @@ declare class DatabaseDocument extends Document {
 declare class Email {
     constructor ();
     generate();
-    blindCarbonCopy: string | null;
+    blindCarbonCopy: string | Array<string> | null;
     body: string | null;
-    carbonCopy: string | null;
+    carbonCopy: string | Array<string> | null;
     fileWrappers: Array<FileWrapper>;
-    receiver: string | null;
+    receiver: string | Array<string> | null;
     subject: string | null;
 }
 
@@ -1022,7 +1032,7 @@ declare namespace PlugIn {
 }
 
 declare class PlugIn {
-    library(identifier: string): Object | null;
+    library(identifier: string): PlugIn.Library | null;
     action(identifier: string): PlugIn.Action | null;
     handler(identifier: string): PlugIn.Handler | null;
     resourceNamed(name: string): URL | null;
@@ -1562,6 +1572,26 @@ declare class URL {
     deletingLastPathComponent(): URL;
     readonly string: string;
     readonly toObject: Object | null;
+}
+
+// URL.Access
+
+declare namespace URL {
+    class Access {
+        readonly url: URL;
+    }
+}
+
+// URL.Bookmark
+
+declare namespace URL.Bookmark {
+    function fromURL(url: URL): URL.Bookmark;
+}
+
+declare namespace URL {
+    class Bookmark {
+        access(): Promise<URL.Access>;
+    }
 }
 
 // URL.FetchRequest
