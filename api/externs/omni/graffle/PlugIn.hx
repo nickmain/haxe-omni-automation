@@ -16,7 +16,7 @@ extern class PlugIn {
     var libraries (default,never): Array<omni.graffle.plugin.Library>;
     var version (default,never): omni.graffle.Version;
 
-    function library(identifier: String): Null<Dynamic>;
+    function library(identifier: String): Null<omni.graffle.plugin.Library>;
     function action(identifier: String): Null<omni.graffle.plugin.Action>;
     function handler(identifier: String): Null<omni.graffle.plugin.Handler>;
     function resourceNamed(name: String): Null<omni.graffle.URL>;
