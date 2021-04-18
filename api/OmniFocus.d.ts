@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniFocus 3.11.6 (149.12) on macOS 11.2.3
-// Generated on 2021-03-20 04:19:16 +0000
+// TypeScript definitions for OmniFocus 3.11.7 (149.14) on macOS 11.2.3
+// Generated on 2021-04-18 05:46:27 +0000
 
 // To use these definitions, save this file as `OmniFocus.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
