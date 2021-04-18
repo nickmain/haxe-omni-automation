@@ -1,5 +1,5 @@
 // TypeScript definitions for OmniGraffle 7.18.5 (204.16) on macOS 11.2.3
-// Generated on 2021-04-05 22:16:24 +0000
+// Generated on 2021-04-18 05:48:32 +0000
 
 // To use these definitions, save this file as `OmniGraffle.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
