@@ -16,7 +16,7 @@ extern class PlugIn {
     var libraries (default,never): Array<omni.outliner.plugin.Library>;
     var version (default,never): omni.outliner.Version;
 
-    function library(identifier: String): Null<Dynamic>;
+    function library(identifier: String): Null<omni.outliner.plugin.Library>;
     function action(identifier: String): Null<omni.outliner.plugin.Action>;
     function handler(identifier: String): Null<omni.outliner.plugin.Handler>;
     function resourceNamed(name: String): Null<omni.outliner.URL>;

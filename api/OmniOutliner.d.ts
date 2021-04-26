@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniOutliner 5.8.3 (206.6) on macOS 11.2.3
-// Generated on 2021-04-18 05:47:40 +0000
+// TypeScript definitions for OmniOutliner 5.8.4 (206.10) on macOS 11.2.3
+// Generated on 2021-04-26 19:12:34 +0000
 
 // To use these definitions, save this file as `OmniOutliner.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -188,6 +188,8 @@ declare class Credentials {
     read(service: string): object | null;
     write(service: string, username: string, password: string);
     remove(service: string);
+    readBookmark(service: string): URL.Bookmark | null;
+    writeBookmark(service: string, bookmark: URL.Bookmark);
 }
 
 // Data
@@ -306,11 +308,11 @@ declare class EditorColumnPosition {
 declare class Email {
     constructor ();
     generate();
-    blindCarbonCopy: string | null;
+    blindCarbonCopy: string | Array<string> | null;
     body: string | null;
-    carbonCopy: string | null;
+    carbonCopy: string | Array<string> | null;
     fileWrappers: Array<FileWrapper>;
-    receiver: string | null;
+    receiver: string | Array<string> | null;
     subject: string | null;
 }
 
@@ -759,7 +761,7 @@ declare namespace PlugIn {
 }
 
 declare class PlugIn {
-    library(identifier: string): Object | null;
+    library(identifier: string): PlugIn.Library | null;
     action(identifier: string): PlugIn.Action | null;
     handler(identifier: string): PlugIn.Handler | null;
     resourceNamed(name: string): URL | null;
@@ -1285,6 +1287,26 @@ declare class URL {
     deletingLastPathComponent(): URL;
     readonly string: string;
     readonly toObject: Object | null;
+}
+
+// URL.Access
+
+declare namespace URL {
+    class Access {
+        readonly url: URL;
+    }
+}
+
+// URL.Bookmark
+
+declare namespace URL.Bookmark {
+    function fromURL(url: URL): URL.Bookmark;
+}
+
+declare namespace URL {
+    class Bookmark {
+        access(): Promise<URL.Access>;
+    }
 }
 
 // URL.FetchRequest
