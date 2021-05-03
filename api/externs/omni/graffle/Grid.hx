@@ -5,9 +5,9 @@ package omni.graffle;
 @:native("Grid")
 extern class Grid {
     var drawsInFront: Bool;
-    var majorColor: omni.graffle.Color;
+    var majorColor: omni.common.Color;
     var majorSpacing: Float;
-    var minorColor: omni.graffle.Color;
+    var minorColor: omni.common.Color;
     var snaps: Bool;
     var spacing: Float;
     var visible: Bool;

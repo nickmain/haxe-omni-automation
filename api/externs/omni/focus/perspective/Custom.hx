@@ -10,6 +10,6 @@ extern class Custom extends omni.focus.DatedObject {
     var identifier (default,never): String;
     var name (default,never): String;
 
-    function fileWrapper(): omni.focus.FileWrapper;
-    function writeFileRepresentationIntoDirectory(parentURL: omni.focus.URL): omni.focus.URL;
+    function fileWrapper(): omni.common.FileWrapper;
+    function writeFileRepresentationIntoDirectory(parentURL: omni.common.URL): omni.common.URL;
 }

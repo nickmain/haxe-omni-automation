@@ -11,6 +11,6 @@ extern class Tree {
     function nodesForObjects(object: Array<Dynamic>): Array<omni.outliner.TreeNode>;
     function reveal(nodes: Array<omni.outliner.TreeNode>): Void;
     function select(nodes: Array<omni.outliner.TreeNode>, extending: Null<Bool>): Void;
-    function copyNodes(nodes: Array<omni.outliner.TreeNode>, to: omni.outliner.Pasteboard): Void;
-    function paste(from: omni.outliner.Pasteboard, parentNode: Null<omni.outliner.TreeNode>, childIndex: Null<Float>): Void;
+    function copyNodes(nodes: Array<omni.outliner.TreeNode>, to: omni.common.Pasteboard): Void;
+    function paste(from: omni.common.Pasteboard, parentNode: Null<omni.outliner.TreeNode>, childIndex: Null<Float>): Void;
 }

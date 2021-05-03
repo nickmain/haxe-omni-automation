@@ -4,8 +4,8 @@ package omni.outliner;
 
 @:native("Style")
 extern class Style {
-    var fontFillColor: omni.outliner.Color;
-    var link (default,never): Null<omni.outliner.URL>;
+    var fontFillColor: omni.common.Color;
+    var link (default,never): Null<omni.common.URL>;
     var locallyDefinedAttributes (default,never): Array<omni.outliner.style.Attribute>;
     var namedStyles (default,never): Array<omni.outliner.NamedStyle>;
 

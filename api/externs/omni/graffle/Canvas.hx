@@ -46,5 +46,5 @@ extern class Canvas {
     function allGraphicsWithUserDataForKey(data: String, key: String): Array<omni.graffle.Graphic>;
     function graphicWithUserDataForKey(data: String, key: String): Null<omni.graffle.Graphic>;
     function combine(shapes: Array<omni.graffle.Shape>, operation: omni.graffle.ShapeCombination, replaceOriginal: Null<Bool>): Null<omni.graffle.Shape>;
-    function onGraphicChanged(handler: omni.graffle.plugin.Handler): Null<omni.graffle.plugin.handler.Registration>;
+    function onGraphicChanged(handler: omni.common.plugin.Handler): Null<omni.graffle.plugin.handler.Registration>;
 }

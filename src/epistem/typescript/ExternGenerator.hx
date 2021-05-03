@@ -6,6 +6,7 @@ package epistem.typescript;
 import haxe.Template;
 import sys.io.File;
 import sys.FileSystem;
+import haxe.ds.StringMap;
 
 using StringTools;
 
@@ -18,28 +19,33 @@ typedef HaxeName = {
 
 class ExternGenerator {
 
-    public var rootDir = "";
-    public var packageName = "";
+    var rootDir: String;
+    var haxeNames = new StringMap<HaxeName>();
 
     var definition: Definition;
+    var packageName: String;
     var memberName: String; // for function specialization
     var argName: String; // for function specialization
 
-    public function new() {}
+    public function new(rootDir: String) {
+        this.rootDir = rootDir;
+    }
 
-    public function generate(typeDefFile: String) {
-        final parser = new Parser();
-        parser.parse(File.read(typeDefFile));
+    public function generate(defs: StringMap<Definition>) {
+        // pre-calc haxe names
+        for(definition in defs) {
+            haxeNames.set(definition.name, haxeName(definition.targetName));
+        }
 
-        final defs = parser.definitions;
-        for(key in defs.keys()) {
-            definition = defs.get(key);
-            generateDef();
+        for(definition in defs) {
+            if(definition.shouldGenerate) generateDef(definition);
         }
     }
 
-    public function generateDef() {
-        final name = haxeName(definition.name);
+    public function generateDef(definition: Definition) {
+        this.definition = definition;
+        final name = haxeNames.get(definition.name);
+        this.packageName = name.pkg;
 
         final dirname = rootDir + "/" + name.pkgParts.join("/");
         final filename = dirname + "/" + name.name + ".hx";
@@ -48,14 +54,19 @@ class ExternGenerator {
 
         var superName: String = null;
         if(definition.superclass != null) {
-            final sup = haxeName(definition.superclass);
-            superName = (sup.pkg != name.pkg) ? sup.fullName : sup.name;
+            final sup = haxeNames.get(definition.superclass);
+            if(sup == null) {
+                superName = definition.superclass;
+            }
+            else {
+                superName = (sup.pkg != name.pkg) ? sup.fullName : sup.name;
+            }
         }
 
         final params = {
             pkg: name.pkg,
             name: name.name,
-            nativeName: definition.name,
+            nativeName: definition.nativeName,
             superName: superName,
             props: getProps(definition.members),
             classProps: getProps(definition.statics),
@@ -127,7 +138,7 @@ class ExternGenerator {
             case name("Error")   : "js.lib.Error";
             case name("Function"): functionSpecialization();
             case name("number")  : "Float";
-            case name(n)         : haxeName(n).fullName;
+            case name(n)         : haxeNames.get(n).fullName;
             case nullable(t)     : 'Null<${typeString(t)}>';
             case generic(t, ps)  : '${typeString(t)}<${ps.map(typeString).join(",")}>';
             case union(types)    : unionTypeString(types);
@@ -151,9 +162,9 @@ class ExternGenerator {
         }
     }
 
-    function haxeName(name: String): HaxeName {
+    function haxeName(name: String): HaxeName {        
         final parts = name.split(".");
-        var packageParts = packageName.split(".");
+        var packageParts = new Array<String>();
         for(i in 0...(parts.length - 1)) {
             packageParts.push(parts[i].toLowerCase());
         }

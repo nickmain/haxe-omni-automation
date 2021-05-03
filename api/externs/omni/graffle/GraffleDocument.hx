@@ -3,7 +3,7 @@
 package omni.graffle;
 
 @:native("GraffleDocument")
-extern class GraffleDocument extends Document {
+extern class GraffleDocument extends omni.common.Document {
     var portfolio (default,never): omni.graffle.Portfolio;
     var windows (default,never): Array<omni.graffle.NSWindow>;
 

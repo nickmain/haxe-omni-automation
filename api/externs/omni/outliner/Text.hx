@@ -4,12 +4,12 @@ package omni.outliner;
 
 @:native("Text")
 extern class Text {
-    static function makeFileAttachment(fileWrapper: omni.outliner.FileWrapper, style: omni.outliner.Style): omni.outliner.Text;
+    static function makeFileAttachment(fileWrapper: omni.common.FileWrapper, style: omni.outliner.Style): omni.outliner.Text;
     var attachments (default,never): Array<omni.outliner.Text>;
     var attributeRuns (default,never): Array<omni.outliner.Text>;
     var characters (default,never): Array<omni.outliner.Text>;
     var end (default,never): omni.outliner.text.Position;
-    var fileWrapper (default,never): Null<omni.outliner.FileWrapper>;
+    var fileWrapper (default,never): Null<omni.common.FileWrapper>;
     var paragraphs (default,never): Array<omni.outliner.Text>;
     var range (default,never): omni.outliner.text.Range;
     var sentences (default,never): Array<omni.outliner.Text>;

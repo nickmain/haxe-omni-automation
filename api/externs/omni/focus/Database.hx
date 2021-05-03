@@ -38,7 +38,7 @@ extern class Database {
     function undo(): Void;
     function redo(): Void;
     function deleteObject(object: omni.focus.DatabaseObject): Void;
-    function copyTasksToPasteboard(tasks: Array<omni.focus.Task>, pasteboard: omni.focus.Pasteboard): Void;
-    function canPasteTasks(pasteboard: omni.focus.Pasteboard): Bool;
-    function pasteTasksFromPasteboard(pasteboard: omni.focus.Pasteboard): Array<omni.focus.Task>;
+    function copyTasksToPasteboard(tasks: Array<omni.focus.Task>, pasteboard: omni.common.Pasteboard): Void;
+    function canPasteTasks(pasteboard: omni.common.Pasteboard): Bool;
+    function pasteTasksFromPasteboard(pasteboard: omni.common.Pasteboard): Array<omni.focus.Task>;
 }
