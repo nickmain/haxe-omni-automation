@@ -1,19 +1,19 @@
 package samples;
 
 import js.lib.Error;
-import omni.graffle.Color;
-import omni.graffle.Form;
-import omni.graffle.form.field.StringField;
-import omni.graffle.form.field.MultipleOptions;
-import omni.graffle.Pasteboard;
-import omni.graffle.TypeIdentifier;
+import omni.common.Color;
+import omni.common.Form;
+import omni.common.form.field.StringField;
+import omni.common.form.field.MultipleOptions;
+import omni.common.Pasteboard;
+import omni.common.TypeIdentifier;
 import omni.graffle.HierarchicalDirection;
 import omni.graffle.LayoutType;
 import omni.graffle.Selection;
 import epistem.omni.graffle.Action;
 import epistem.omni.graffle.Globals;
-import omni.graffle.ToolbarItem;
-import omni.graffle.MenuItem;
+import omni.common.ToolbarItem;
+import omni.common.MenuItem;
 import epistem.typescript.Helpers.Union2;
 
 @:expose

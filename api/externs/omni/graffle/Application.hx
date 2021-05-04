@@ -15,5 +15,5 @@ extern class Application {
     var userVersion (default,never): omni.common.Version;
     var version (default,never): String;
 
-    function openDocument(from: Null<omni.common.Document>, url: omni.common.URL, completed: (epistem.typescript.Helpers.Union2<omni.graffle.Document, js.lib.Error>, Bool) -> Void): Void;
+    function openDocument(from: Null<omni.common.Document>, url: omni.common.URL, completed: (epistem.typescript.Helpers.Union2<omni.common.Document, js.lib.Error>, Bool) -> Void): Void;
 }

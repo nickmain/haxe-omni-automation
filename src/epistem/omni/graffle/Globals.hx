@@ -4,9 +4,9 @@
 package epistem.omni.graffle;
 
 import js.Syntax;
-import omni.graffle.PlugIn;
+import omni.common.PlugIn;
 import omni.graffle.GraffleDocument;
-import omni.graffle.Console;
+import omni.common.Console;
 import omni.graffle.Application;
 
 // Access to the global objects defined in Omnigraffle
