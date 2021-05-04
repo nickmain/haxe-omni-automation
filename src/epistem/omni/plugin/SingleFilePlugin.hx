@@ -30,7 +30,8 @@ typedef Info =  {
     description: String,
     menuLabel: String,
     paletteLabel: String,
-    includedHaxeJS: String
+    includedHaxeJS: String,
+    imageName: String
 }
 
 // Generate a single-file plugin from a compiled Action subclass
@@ -51,7 +52,8 @@ class SingleFilePlugin {
 	"version": "::version::",
 	"description": "::description::",
 	"label": "::menuLabel::",
-	"paletteLabel": "::paletteLabel::"
+	"paletteLabel": "::paletteLabel::",
+    "image": "::imageName::"
 }*/
 
 (() => {

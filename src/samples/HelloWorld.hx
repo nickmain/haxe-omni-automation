@@ -29,11 +29,10 @@ class HelloWorld extends Action {
             if( Std.isOfType(sender, MenuItem)) {
                 final form = new Form();
                 form.addField(new StringField("name", "Name", "do not type capitals in this field", null), null);
-                form.addField(new StringField("alias", "Alias", null, null), null);
+                form.addField(new StringField("alias", "Alias", "", null), null);
                 form.addField(new MultipleOptions("opts", "Things", [1,2,3], ["One", "Two", "Three"], [2]), null);
                 form.validate = (form) -> {
-                    form.values.alias = form.values.name;
-                    
+
                     if(Std.string(form.values.name).toLowerCase() != form.values.name) {
                         throw new Error("No uppercase allowed!");
                     }

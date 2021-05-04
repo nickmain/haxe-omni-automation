@@ -20,7 +20,8 @@ class MakePlugins {
                 description: "Hello world from Haxe",
                 menuLabel: "Haxe Hello",
                 paletteLabel: "HX Hello",
-                includedHaxeJS: js
+                includedHaxeJS: js,
+                imageName: "function"
             }
         );
     }

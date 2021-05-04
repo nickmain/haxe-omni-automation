@@ -6,7 +6,8 @@
 	"version": "0.1",
 	"description": "Hello world from Haxe",
 	"label": "Haxe Hello",
-	"paletteLabel": "HX Hello"
+	"paletteLabel": "HX Hello",
+    "image": "function"
 }*/
 
 (() => {
@@ -150,19 +151,18 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 			if(((sender) instanceof MenuItem)) {
 				var form = new Form();
 				form.addField(new Form.Field.String("name","Name","do not type capitals in this field",null),null);
-				form.addField(new Form.Field.String("alias","Alias",null,null),null);
+				form.addField(new Form.Field.String("alias","Alias","",null),null);
 				form.addField(new Form.Field.MultipleOptions("opts","Things",[1,2,3],["One","Two","Three"],[2]),null);
 				form.validate = function(form) {
-					form.values.alias = form.values.name;
 					if(Std.string(form.values.name).toLowerCase() != form.values.name) {
 						throw new Error("No uppercase allowed!");
 					}
 					return true;
 				};
 				form.show("Test Form","Do It").then(function(form) {
-					console.log("src/samples/HelloWorld.hx:46:",form.values.opts);
+					console.log("src/samples/HelloWorld.hx:45:",form.values.opts);
 				},function(err) {
-					console.log("src/samples/HelloWorld.hx:47:",err.message);
+					console.log("src/samples/HelloWorld.hx:46:",err.message);
 				});
 				return;
 			}
@@ -206,7 +206,7 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 			}
 		} catch( _g ) {
 			var e = haxe_Exception.caught(_g);
-			console.log("src/samples/HelloWorld.hx:214:",e.get_message());
+			console.log("src/samples/HelloWorld.hx:213:",e.get_message());
 		}
 	}
 	,validate: function(selection,sender) {
