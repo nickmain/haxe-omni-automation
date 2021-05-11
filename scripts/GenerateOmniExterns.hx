@@ -3,7 +3,6 @@
 
 import haxe.display.Display.Define;
 import epistem.typescript.Definition;
-import haxe.ds.StringMap;
 import epistem.typescript.Parser;
 import epistem.typescript.ExternGenerator;
 
@@ -42,7 +41,7 @@ class GenerateOmniExterns {
         trace("... done");
     }
 
-    static function separateTypeIdentifiers(defs: StringMap<Definition>, prefix: String) {
+    static function separateTypeIdentifiers(defs: Map<String, Definition>, prefix: String) {
         final typeIdentifier = defs.get("TypeIdentifier");
 
         // move static consts into a new product-specific definition
@@ -55,7 +54,7 @@ class GenerateOmniExterns {
         defs.set(newName, newDef);
     }
 
-    static function addPackage(packageName: String, defs: StringMap<Definition>) {
+    static function addPackage(packageName: String, defs: Map<String, Definition>) {
         for(def in defs) {
             def.targetName = '${packageName}.${def.name}';
         }
@@ -63,8 +62,8 @@ class GenerateOmniExterns {
 
     // Find defs that match in all of the given definition sets
     // Replace the common defs in each set with a single shared instance
-    static function findCommonDefs(defs: Array<StringMap<Definition>>): StringMap<Definition> {
-        final common = new StringMap<Definition>();
+    static function findCommonDefs(defs: Array<Map<String, Definition>>): Map<String, Definition> {
+        final common = new Map<String, Definition>();
         final first = defs[0];
 
         for(name in first.keys()) {

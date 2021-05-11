@@ -7,7 +7,6 @@ import epistem.typescript.Definition.Argument;
 import epistem.typescript.Lexer.Token;
 import sys.io.File;
 import haxe.io.Input;
-import haxe.ds.StringMap;
 
 enum Result {    
     finished;
@@ -16,13 +15,13 @@ enum Result {
 
 // Minimum viable parser for Omni typescript definitions
 class Parser {
-    public static function parseFile(fileName: String): StringMap<Definition> {
+    public static function parseFile(fileName: String): Map<String, Definition> {
         final parser = new Parser();
         parser.parse(File.read(fileName));
         return parser.definitions;
     }
 
-    public var definitions = new StringMap<Definition>();
+    public var definitions = new Map<String, Definition>();
 
     var lexer: Lexer;
     var tokens = new Array<Token>();
