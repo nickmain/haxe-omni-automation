@@ -6,7 +6,6 @@ package epistem.typescript;
 import haxe.Template;
 import sys.io.File;
 import sys.FileSystem;
-import haxe.ds.StringMap;
 
 using StringTools;
 
@@ -20,7 +19,7 @@ typedef HaxeName = {
 class ExternGenerator {
 
     var rootDir: String;
-    var haxeNames = new StringMap<HaxeName>();
+    var haxeNames = new Map<String, HaxeName>();
 
     var definition: Definition;
     var packageName: String;
@@ -31,7 +30,7 @@ class ExternGenerator {
         this.rootDir = rootDir;
     }
 
-    public function generate(defs: StringMap<Definition>) {
+    public function generate(defs: Map<String, Definition>) {
         // pre-calc haxe names
         for(definition in defs) {
             haxeNames.set(definition.name, haxeName(definition.targetName));
