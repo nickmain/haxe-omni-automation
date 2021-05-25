@@ -9,5 +9,12 @@ samples.HelloWorld
 
 --next
 
+-cp api/externs
+samples.HScriptTest
+-js build/hscriptAction.js
+-dce full
+
+--next
+
 -main samples.MakePlugins
 --interp

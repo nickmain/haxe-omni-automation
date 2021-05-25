@@ -9,7 +9,6 @@ import epistem.omni.plugin.SingleFilePlugin;
 class MakePlugins {
     public static function main() {
         
-        final js = File.getContent("build/testAction.js");
         SingleFilePlugin.generate("plugins/test.omnigrafflejs",
             {
                 actionClassName: "samples.HelloWorld",
@@ -20,8 +19,23 @@ class MakePlugins {
                 description: "Hello world from Haxe",
                 menuLabel: "Haxe Hello",
                 paletteLabel: "HX Hello",
-                includedHaxeJS: js,
+                includedHaxeJS: File.getContent("build/testAction.js"),
                 imageName: "function"
+            }
+        );
+
+        SingleFilePlugin.generate("plugins/hscript_test.omnigrafflejs",
+            {
+                actionClassName: "samples.HScriptTest",
+                target: omnigraffle,
+                author: "Nick Main",
+                identifier: "HScriptTest239482349",
+                version: "0.1",
+                description: "HScript Testbed",
+                menuLabel: "HScript",
+                paletteLabel: "HScript",
+                includedHaxeJS: File.getContent("build/hscriptAction.js"),
+                imageName: "h.square"
             }
         );
     }
