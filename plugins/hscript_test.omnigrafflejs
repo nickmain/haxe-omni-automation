@@ -3823,16 +3823,26 @@ samples_HScriptTest.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 					var ast = parser.parseString(text1);
 					var interp = new hscript_Interp();
 					interp.variables.h["this"] = solid;
+					var this1 = interp.variables;
+					var v = document;
+					this1.h["document"] = v;
+					var this11 = interp.variables;
+					var v1 = app;
+					this11.h["app"] = v1;
+					interp.variables.h["selection"] = selection;
 					interp.varResolver = function(id) {
 						return eval(id);
 					};
-					haxe_Log.trace(interp.execute(ast),{ fileName : "src/samples/HScriptTest.hx", lineNumber : 43, className : "samples.HScriptTest", methodName : "perform"});
+					var result = interp.execute(ast);
+					if(result != null) {
+						haxe_Log.trace(result,{ fileName : "src/samples/HScriptTest.hx", lineNumber : 48, className : "samples.HScriptTest", methodName : "perform"});
+					}
 				}
 				return;
 			}
 		} catch( _g ) {
 			var e = haxe_Exception.caught(_g);
-			haxe_Log.trace(e.get_message(),{ fileName : "src/samples/HScriptTest.hx", lineNumber : 50, className : "samples.HScriptTest", methodName : "perform"});
+			haxe_Log.trace(e.get_message(),{ fileName : "src/samples/HScriptTest.hx", lineNumber : 55, className : "samples.HScriptTest", methodName : "perform"});
 		}
 	}
 	,validate: function(selection,sender) {
