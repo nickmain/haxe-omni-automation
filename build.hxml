@@ -1,20 +1,21 @@
--cp src
+--class-path src
 
 --each
 
--cp api/externs
+--class-path api/externs
 samples.HelloWorld
--js build/testAction.js
--dce full
+--js build/testAction.js
+--dce full
 
 --next
 
--cp api/externs
+--class-path api/externs
 samples.HScriptTest
--js build/hscriptAction.js
--dce full
+--js build/hscriptAction.js
+--dce full
+--define hscriptPos=true
 
 --next
 
--main samples.MakePlugins
+--main samples.MakePlugins
 --interp
