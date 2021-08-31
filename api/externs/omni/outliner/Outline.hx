@@ -5,10 +5,12 @@ package omni.outliner;
 @:native("Outline")
 extern class Outline {
     var alternateRowColor: Null<omni.common.Color>;
+    var app (default,never): omni.outliner.Application;
     var backgroundColor: omni.common.Color;
     var baseStyle (default,never): omni.outliner.Style;
     var columnTitleStyle (default,never): omni.outliner.Style;
     var columns (default,never): omni.outliner.ColumnArray;
+    var console (default,never): omni.common.Console;
     var document (default,never): Null<omni.outliner.OutlineDocument>;
     var horizontalGridColor: Null<omni.common.Color>;
     var levelStyles (default,never): Array<omni.outliner.Style>;

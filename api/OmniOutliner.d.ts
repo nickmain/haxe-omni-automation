@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniOutliner 5.8.4 (206.10) on macOS 11.2.3
-// Generated on 2021-04-26 19:12:34 +0000
+// TypeScript definitions for OmniOutliner 5.8.5 (206.14) on macOS 12
+// Generated on 2021-08-31 17:42:36 +0000
 
 // To use these definitions, save this file as `OmniOutliner.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -692,10 +692,12 @@ declare class Outline {
     itemsSortedByPosition(items: Array<Item>): Array<Item>;
     onCellChanged(handler: PlugIn.Handler): PlugIn.Handler.Registration | null;
     alternateRowColor: Color | null;
+    readonly app: Application;
     backgroundColor: Color;
     readonly baseStyle: Style;
     readonly columnTitleStyle: Style;
     readonly columns: ColumnArray;
+    readonly console: Console;
     readonly document: OutlineDocument | null;
     horizontalGridColor: Color | null;
     readonly levelStyles: Array<Style>;
