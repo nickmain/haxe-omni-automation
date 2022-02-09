@@ -1,8 +1,6 @@
 package samples;
 
 import epistem.omni.graffle.Globals;
-import omni.outliner.Application;
-import omni.common.Color;
 import omni.graffle.Selection;
 import epistem.omni.graffle.Action;
 import omni.common.ToolbarItem;
@@ -40,7 +38,9 @@ class HScriptTest extends Action {
                     interp.variables["document"] = Globals.document;
                     interp.variables["app"] = Globals.app;
                     interp.variables["selection"] = selection;
+                    interp.variables["Std"] = Std;
                     interp.varResolver = function(id: String): Dynamic {
+                        // trace("Resolving: " + id);
                         return js.Lib.eval(id);
                     }
 

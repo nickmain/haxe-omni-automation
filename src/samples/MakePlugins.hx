@@ -38,5 +38,20 @@ class MakePlugins {
                 imageName: "h.square"
             }
         );
+
+        SingleFilePlugin.generate("plugins/split.omnigrafflejs",
+            {
+                actionClassName: "samples.Split",
+                target: omnigraffle,
+                author: "Nick Main",
+                identifier: "split234234342",
+                version: "0.1",
+                description: "Split Text Lines",
+                menuLabel: "Split Lines",
+                paletteLabel: "Split Lines",
+                includedHaxeJS: File.getContent("build/splitAction.js"),
+                imageName: "rectangle.split.1x2.fill"
+            }
+        );
     }
 }

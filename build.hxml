@@ -12,8 +12,15 @@ samples.HelloWorld
 --class-path api/externs
 samples.HScriptTest
 --js build/hscriptAction.js
---dce full
+--dce no
 --define hscriptPos=true
+
+--next
+
+--class-path api/externs
+samples.Split
+--js build/splitAction.js
+--dce full
 
 --next
 

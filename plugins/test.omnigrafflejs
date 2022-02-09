@@ -31,9 +31,6 @@ Std.string = function(s) {
 var epistem_omni_graffle_Action = function() {
 };
 epistem_omni_graffle_Action.__name__ = true;
-epistem_omni_graffle_Action.prototype = {
-	__class__: epistem_omni_graffle_Action
-};
 var haxe_Exception = function(message,previous,native) {
 	Error.call(this,message);
 	this.message = message;
@@ -55,7 +52,6 @@ haxe_Exception.prototype = $extend(Error.prototype,{
 	get_message: function() {
 		return this.message;
 	}
-	,__class__: haxe_Exception
 });
 var haxe_ValueException = function(value,previous,native) {
 	haxe_Exception.call(this,String(value),previous,native);
@@ -64,7 +60,6 @@ var haxe_ValueException = function(value,previous,native) {
 haxe_ValueException.__name__ = true;
 haxe_ValueException.__super__ = haxe_Exception;
 haxe_ValueException.prototype = $extend(haxe_Exception.prototype,{
-	__class__: haxe_ValueException
 });
 var haxe_iterators_ArrayIterator = function(array) {
 	this.current = 0;
@@ -78,7 +73,6 @@ haxe_iterators_ArrayIterator.prototype = {
 	,next: function() {
 		return this.array[this.current++];
 	}
-	,__class__: haxe_iterators_ArrayIterator
 };
 var js_Boot = function() { };
 js_Boot.__name__ = true;
@@ -218,13 +212,11 @@ samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 	,validate: function(selection,sender) {
 		return true;
 	}
-	,__class__: samples_HelloWorld
 });
-String.prototype.__class__ = String;
 String.__name__ = true;
 Array.__name__ = true;
 js_Boot.__toStr = ({ }).toString;
-})(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+})(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, {});
 
     
 	const hxaction = new exports.samples.HelloWorld();
