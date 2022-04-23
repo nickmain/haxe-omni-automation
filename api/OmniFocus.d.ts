@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniFocus 3.11.7 (149.14) on macOS 11.2.3
-// Generated on 2021-04-18 05:46:27 +0000
+// TypeScript definitions for OmniFocus 3.12.2 (149.17.43) on macOS 12.3
+// Generated on 2022-04-19 21:50:30 +0000
 
 // To use these definitions, save this file as `OmniFocus.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -245,8 +245,10 @@ declare class Database {
     copyTasksToPasteboard(tasks: Array<Task>, pasteboard: Pasteboard);
     canPasteTasks(pasteboard: Pasteboard): boolean;
     pasteTasksFromPasteboard(pasteboard: Pasteboard): Array<Task>;
+    readonly app: Application;
     readonly canRedo: boolean;
     readonly canUndo: boolean;
+    readonly console: Console;
     readonly document: DatabaseDocument | null;
     readonly flattenedFolders: FolderArray;
     readonly flattenedProjects: ProjectArray;
@@ -1494,6 +1496,7 @@ declare class SidebarTree extends Tree {
 // TreeNode
 
 declare class TreeNode {
+    childAtIndex(childIndex: number): TreeNode;
     expand(completely: boolean | null);
     collapse(completely: boolean | null);
     expandNote(completely: boolean | null);
@@ -1502,6 +1505,7 @@ declare class TreeNode {
     apply(f: Function);
     readonly canCollapse: boolean;
     readonly canExpand: boolean;
+    readonly childCount: number;
     readonly children: Array<TreeNode>;
     readonly index: number;
     readonly isExpanded: boolean;

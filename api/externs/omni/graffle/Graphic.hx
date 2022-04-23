@@ -4,7 +4,7 @@ package omni.graffle;
 
 @:native("Graphic")
 extern class Graphic {
-    var actionURL: Null<omni.common.URL>;
+    var actionURL: Null<omni.graffle.URL>;
     var alignsEdgesToGrid: Bool;
     var allowsConnections: Bool;
     var automationAction: Array<String>;
@@ -23,11 +23,11 @@ extern class Graphic {
     var plasticCurve: Null<Float>;
     var plasticHighlightAngle: Null<Float>;
     var rotation: Float;
-    var shadowColor: Null<omni.common.Color>;
+    var shadowColor: Null<omni.graffle.Color>;
     var shadowFuzziness: Float;
     var shadowVector: omni.graffle.Point;
     var strokeCap: omni.graffle.LineCap;
-    var strokeColor: Null<omni.common.Color>;
+    var strokeColor: Null<omni.graffle.Color>;
     var strokeJoin: omni.graffle.LineJoin;
     var strokePattern: omni.graffle.StrokeDash;
     var strokeThickness: Float;

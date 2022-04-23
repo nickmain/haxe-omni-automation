@@ -4,8 +4,8 @@ package omni.focus;
 
 @:native("Style")
 extern class Style {
-    var fontFillColor: omni.common.Color;
-    var link (default,never): Null<omni.common.URL>;
+    var fontFillColor: omni.focus.Color;
+    var link (default,never): Null<omni.focus.URL>;
     var locallyDefinedAttributes (default,never): Array<omni.focus.style.Attribute>;
     var namedStyles (default,never): Array<omni.focus.NamedStyle>;
 

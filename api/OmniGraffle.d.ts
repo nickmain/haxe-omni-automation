@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniGraffle 7.18.5 (204.16) on macOS 11.2.3
-// Generated on 2021-04-18 05:48:32 +0000
+// TypeScript definitions for OmniGraffle 7.20 (205.26.4) on macOS 12.3
+// Generated on 2022-04-22 18:35:47 +0000
 
 // To use these definitions, save this file as `OmniGraffle.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -16,14 +16,14 @@
 
 declare class Alert {
     constructor (title: string, message: string);
-    show(callback: Function | null): Promise<number>;
-    addOption(string: string);
+    show(callback: (option: number) => void | null): Promise<number>;
+    addOption(string: string): void;
 }
 
 // Application
 
 declare class Application {
-    openDocument(from: Document | null, url: URL, completed: Function);
+    openDocument(from: Document | null, url: URL, completed: (documentOrError: Document | Error, alreadyOpen: boolean) => void): void;
     readonly buildVersion: Version;
     readonly commandKeyDown: boolean;
     readonly controlKeyDown: boolean;
@@ -34,6 +34,23 @@ declare class Application {
     readonly stencils: Array<Stencil>;
     readonly userVersion: Version;
     readonly version: string;
+}
+
+// Audio
+
+declare namespace Audio {
+    function playAlert(alert: Audio.Alert | null, completed: () => void | null): void;
+}
+
+declare class Audio {
+}
+
+// Audio.Alert
+
+declare namespace Audio {
+    class Alert {
+        constructor (url: URL);
+    }
 }
 
 // Calendar
@@ -72,8 +89,8 @@ declare class Calendar {
 // Canvas
 
 declare class Canvas {
-    layout();
-    layoutGraphics(graphics: Array<Graphic>);
+    layout(): void;
+    layoutGraphics(graphics: Array<Graphic>): void;
     addShape(shapeName: string, bounds: Rect): Shape;
     newShape(): Shape;
     newLayer(): Layer;
@@ -82,9 +99,9 @@ declare class Canvas {
     addText(text: string, origin: Point): Solid;
     connect(from: Graphic, to: Graphic): Line;
     duplicate(graphics: Array<Graphic>): Array<Graphic>;
-    orderBefore(model: Canvas);
-    orderAfter(model: Canvas);
-    remove();
+    orderBefore(model: Canvas): void;
+    orderAfter(model: Canvas): void;
+    remove(): void;
     graphicWithId(id: number): Graphic | null;
     graphicWithName(name: string): Graphic | null;
     allGraphicsWithUserDataForKey(data: string, key: string): Array<Graphic>;
@@ -182,11 +199,11 @@ declare class ColorSpace {
 // Console
 
 declare class Console {
-    log(message: Object, additional: Array<Object | null>);
-    error(message: Object, additional: Array<Object | null>);
-    info(message: Object, additional: Array<Object | null>);
-    warn(message: Object, additional: Array<Object | null>);
-    clear();
+    log(message: Object, additional: Array<Object | null>): void;
+    error(message: Object, additional: Array<Object | null>): void;
+    info(message: Object, additional: Array<Object | null>): void;
+    warn(message: Object, additional: Array<Object | null>): void;
+    clear(): void;
 }
 
 // Credentials
@@ -194,21 +211,60 @@ declare class Console {
 declare class Credentials {
     constructor ();
     read(service: string): object | null;
-    write(service: string, username: string, password: string);
-    remove(service: string);
+    write(service: string, username: string, password: string): void;
+    remove(service: string): void;
     readBookmark(service: string): URL.Bookmark | null;
-    writeBookmark(service: string, bookmark: URL.Bookmark);
+    writeBookmark(service: string, bookmark: URL.Bookmark): void;
+}
+
+// Crypto
+
+declare namespace Crypto {
+    function randomData(length: number): Data;
+}
+
+declare class Crypto {
+}
+
+// Crypto.SHA256
+
+declare namespace Crypto {
+    class SHA256 {
+        constructor ();
+        update(data: Data): void;
+        finalize(): Data;
+    }
+}
+
+// Crypto.SHA384
+
+declare namespace Crypto {
+    class SHA384 {
+        constructor ();
+        update(data: Data): void;
+        finalize(): Data;
+    }
+}
+
+// Crypto.SHA512
+
+declare namespace Crypto {
+    class SHA512 {
+        constructor ();
+        update(data: Data): void;
+        finalize(): Data;
+    }
 }
 
 // Data
 
 declare namespace Data {
-    function fromString(string: string): Data;
+    function fromString(string: string, encoding: StringEncoding | null): Data;
     function fromBase64(string: string): Data;
 }
 
 declare class Data {
-    toString(): string;
+    toString(encoding: StringEncoding | null): string;
     toBase64(): string;
     readonly length: number;
     readonly toObject: Object | null;
@@ -280,18 +336,18 @@ declare class DeviceType {
 // Document
 
 declare namespace Document {
-    function makeNew(resultFunction: Function | null): Promise<Document>;
-    function makeNewAndShow(resultFunction: Function | null): Promise<Document>;
+    function makeNew(resultFunction: (document: Document | Error) => void | null): Promise<Document>;
+    function makeNewAndShow(resultFunction: (document: Document | Error) => void | null): Promise<Document>;
 }
 
 declare class Document {
-    close(didCancel: Function | null);
-    save();
+    close(didCancel: (document: Document) => void | null): void;
+    save(): void;
     fileWrapper(type: string | null): FileWrapper;
     makeFileWrapper(baseName: string, type: string | null): Promise<FileWrapper>;
-    undo();
-    redo();
-    show(resultFunction: Function | null);
+    undo(): void;
+    redo(): void;
+    show(completed: () => void | null): void;
     readonly canRedo: boolean;
     readonly canUndo: boolean;
     readonly fileType: string | null;
@@ -302,7 +358,7 @@ declare class Document {
 // GraffleDocument
 
 declare class GraffleDocument extends Document {
-    addLocalizations(text: string);
+    addLocalizations(text: string): void;
     readonly portfolio: Portfolio;
     readonly windows: Array<NSWindow>;
 }
@@ -311,7 +367,7 @@ declare class GraffleDocument extends Document {
 
 declare class Email {
     constructor ();
-    generate();
+    generate(): void;
     blindCarbonCopy: string | Array<string> | null;
     body: string | null;
     carbonCopy: string | Array<string> | null;
@@ -347,16 +403,32 @@ declare class FileSaver {
 declare namespace FileWrapper {
     function withContents(name: string | null, contents: Data): FileWrapper;
     function withChildren(name: string | null, children: Array<FileWrapper>): FileWrapper;
+    function fromURL(url: URL, options: Array<FileWrapper.ReadingOptions> | null): FileWrapper;
 }
 
 declare class FileWrapper {
+    childNamed(name: string): FileWrapper | null;
     filenameForChild(child: FileWrapper): string | null;
+    write(url: URL, options: Array<FileWrapper.WritingOptions> | null, originalContentsURL: URL | null): void;
     readonly children: Array<FileWrapper>;
     readonly contents: Data | null;
     readonly destination: URL | null;
     filename: string | null;
     preferredFilename: string | null;
     readonly type: FileWrapper.Type;
+}
+
+// FileWrapper.ReadingOptions
+
+declare namespace FileWrapper.ReadingOptions {
+    const Immediate: FileWrapper.ReadingOptions;
+    const WihtoutMapping: FileWrapper.ReadingOptions;
+    const all: Array<FileWrapper.ReadingOptions>;
+}
+
+declare namespace FileWrapper {
+    class ReadingOptions {
+    }
 }
 
 // FileWrapper.Type
@@ -370,6 +442,19 @@ declare namespace FileWrapper.Type {
 
 declare namespace FileWrapper {
     class Type {
+    }
+}
+
+// FileWrapper.WritingOptions
+
+declare namespace FileWrapper.WritingOptions {
+    const Atomic: FileWrapper.WritingOptions;
+    const UpdateNames: FileWrapper.WritingOptions;
+    const all: Array<FileWrapper.WritingOptions>;
+}
+
+declare namespace FileWrapper {
+    class WritingOptions {
     }
 }
 
@@ -393,11 +478,11 @@ declare class FillType {
 
 declare class Form {
     constructor ();
-    addField(field: Form.Field, index: number | null);
-    removeField(field: Form.Field);
+    addField(field: Form.Field, index: number | null): void;
+    removeField(field: Form.Field): void;
     show(title: string, confirmTitle: string): Promise<Form>;
     readonly fields: Array<Form.Field>;
-    validate: Function | null;
+    validate: (Form: Form) => boolean | null;
     readonly values: Object;
 }
 
@@ -540,10 +625,10 @@ declare namespace Formatter.Date {
 // Graphic
 
 declare class Graphic {
-    orderAbove(graphic: Graphic);
-    orderBelow(graphic: Graphic);
-    remove();
-    setUserData(key: string, value: string | null);
+    orderAbove(graphic: Graphic): void;
+    orderBelow(graphic: Graphic): void;
+    remove(): void;
+    setUserData(key: string, value: string | null): void;
     duplicateTo(location: Point, canvas: Canvas | null): Graphic | null;
     actionURL: URL | null;
     alignsEdgesToGrid: boolean;
@@ -604,8 +689,8 @@ declare namespace Table {
 declare class Table extends Group {
     constructor (graphic: Graphic);
     graphicAt(row: number, column: number): Graphic | null;
-    setRowHeight(pts: number, ofRow: number);
-    setColumnWidth(pts: number, ofColumn: number);
+    setRowHeight(pts: number, ofRow: number): void;
+    setColumnWidth(pts: number, ofColumn: number): void;
     columns: number;
     rows: number;
 }
@@ -678,9 +763,9 @@ declare class Shape extends Solid {
 // GraphicView
 
 declare class GraphicView {
-    select(graphics: Array<Graphic>, extending: boolean | null);
-    deselect(graphics: Array<Graphic>);
-    edit(solid: Solid);
+    select(graphics: Array<Graphic>, extending: boolean | null): void;
+    deselect(graphics: Array<Graphic>): void;
+    edit(solid: Solid): void;
     canvas: Canvas;
     visibleRect: Rect;
 }
@@ -758,6 +843,10 @@ declare class HorizontalTextAlignment {
 
 // Image
 
+declare namespace Image {
+    function symbolNamed(name: string): Image | null;
+}
+
 declare class Image {
 }
 
@@ -784,9 +873,9 @@ declare class ImageSizing {
 // Layer
 
 declare class Layer {
-    orderAbove(layer: Layer);
-    orderBelow(layer: Layer);
-    remove();
+    orderAbove(layer: Layer): void;
+    orderBelow(layer: Layer): void;
+    remove(): void;
     addShape(shapeName: string, bounds: Rect): Shape;
     newShape(): Shape;
     readonly graphics: Array<Graphic>;
@@ -877,17 +966,27 @@ declare class Locale {
 
 declare class MenuItem {
     checked: boolean;
+    image: Image | null;
     label: string;
 }
 
 // NSWindow
 
 declare class NSWindow {
-    close();
-    setViewForCanvas(canvas: Canvas, zoom: number, center: Point);
+    close(): void;
+    setViewForCanvas(canvas: Canvas, zoom: number, center: Point): void;
     centerVisiblePoint: Point;
     readonly selection: Selection;
     zoom: number;
+}
+
+// Notification
+
+declare class Notification {
+    constructor (title: string);
+    show(): Promise<Notification>;
+    subtitle: string | null;
+    title: string;
 }
 
 // OGOutlineNode
@@ -906,12 +1005,12 @@ declare namespace Pasteboard {
 
 declare class Pasteboard {
     availableType(types: Array<TypeIdentifier>): TypeIdentifier | null;
-    addItems(items: Array<Pasteboard.Item>);
-    clear();
+    addItems(items: Array<Pasteboard.Item>): void;
+    clear(): void;
     dataForType(type: TypeIdentifier): Data | null;
-    setDataForType(data: Data, type: TypeIdentifier);
+    setDataForType(data: Data, type: TypeIdentifier): void;
     stringForType(type: TypeIdentifier): string | null;
-    setStringForType(string: string, type: TypeIdentifier);
+    setStringForType(string: string, type: TypeIdentifier): void;
     URL: URL | null;
     URLs: Array<URL> | null;
     color: Color | null;
@@ -934,9 +1033,9 @@ declare namespace Pasteboard {
     class Item {
         constructor ();
         dataForType(type: TypeIdentifier): Data | null;
-        setDataForType(data: Data, type: TypeIdentifier);
+        setDataForType(data: Data, type: TypeIdentifier): void;
         stringForType(type: TypeIdentifier): string | null;
-        setStringForType(string: string, type: TypeIdentifier);
+        setStringForType(string: string, type: TypeIdentifier): void;
         readonly types: Array<TypeIdentifier>;
     }
 }
@@ -954,6 +1053,7 @@ declare class PlugIn {
     handler(identifier: string): PlugIn.Handler | null;
     resourceNamed(name: string): URL | null;
     imageNamed(name: string): Image | null;
+    localizedResourceNamed(filename: string): FileWrapper | null;
     readonly URL: URL | null;
     readonly actions: Array<PlugIn.Action>;
     readonly author: string;
@@ -1000,7 +1100,7 @@ declare namespace PlugIn {
 
 declare namespace PlugIn.Handler {
     class Registration {
-        remove();
+        remove(): void;
     }
 }
 
@@ -1043,7 +1143,9 @@ declare class Portfolio {
     addCanvas(): Canvas | null;
     addImage(data: Data): ImageReference | null;
     copyImage(image: ImageReference): ImageReference | null;
+    readonly app: Application;
     readonly canvases: Array<Canvas>;
+    readonly console: Console;
     readonly document: GraffleDocument | null;
     readonly images: Array<ImageReference>;
 }
@@ -1058,8 +1160,8 @@ declare class Preferences {
     readNumber(key: string): number;
     readDate(key: string): Date | null;
     readData(key: string): Data | null;
-    write(key: string, value: boolean | string | number | Date | Data | null);
-    remove(key: string);
+    write(key: string, value: boolean | string | number | Date | Data | null): void;
+    remove(key: string): void;
     readonly identifier: string;
 }
 
@@ -1123,12 +1225,12 @@ declare class ShapeCombination {
 
 declare class SharePanel {
     constructor (items: Array<URL | string | Image | FileWrapper>);
-    addItem(shareItem: URL | string | Image | FileWrapper);
-    addItems(shareItems: Array<URL | string | Image | FileWrapper>);
-    removeItem(shareItem: URL | string | Image | FileWrapper);
-    removeItems(shareItems: Array<URL | string | Image | FileWrapper>);
-    clearItems();
-    show();
+    addItem(shareItem: URL | string | Image | FileWrapper): void;
+    addItems(shareItems: Array<URL | string | Image | FileWrapper>): void;
+    removeItem(shareItem: URL | string | Image | FileWrapper): void;
+    removeItems(shareItems: Array<URL | string | Image | FileWrapper>): void;
+    clearItems(): void;
+    show(): void;
     items: Array<URL | string | Image | FileWrapper>;
 }
 
@@ -1140,14 +1242,132 @@ declare class Size {
     width: number;
 }
 
+// Speech
+
+declare class Speech {
+}
+
+// Speech.Boundary
+
+declare namespace Speech.Boundary {
+    const Immediate: Speech.Boundary;
+    const Word: Speech.Boundary;
+    const all: Array<Speech.Boundary>;
+}
+
+declare namespace Speech {
+    class Boundary {
+    }
+}
+
+// Speech.Synthesizer
+
+declare namespace Speech {
+    class Synthesizer {
+        constructor ();
+        speakUtterance(utterance: Speech.Utterance): void;
+        stopSpeaking(boundary: Speech.Boundary): boolean;
+        pauseSpeaking(boundary: Speech.Boundary): boolean;
+        continueSpeaking(): boolean;
+        readonly paused: boolean;
+        readonly speaking: boolean;
+    }
+}
+
+// Speech.Utterance
+
+declare namespace Speech.Utterance {
+    const defaultSpeechRate: number;
+    const maximumSpeechRate: number;
+    const minimumSpeechRate: number;
+}
+
+declare namespace Speech {
+    class Utterance {
+        constructor (string: string);
+        pitchMultiplier: number;
+        postUtteranceDelay: number;
+        preUtteranceDelay: number;
+        prefersAssistiveTechnologySettings: boolean;
+        rate: number;
+        readonly string: string | null;
+        voice: Speech.Voice | null;
+        volume: number;
+    }
+}
+
+// Speech.Voice
+
+declare namespace Speech.Voice {
+    function withLanguage(code: string | null): Speech.Voice | null;
+    function withIdentifier(identifier: string): Speech.Voice | null;
+    const allVoices: Array<Speech.Voice>;
+    const currentLanguageCode: string;
+}
+
+declare namespace Speech {
+    class Voice {
+        readonly gender: Speech.Voice.Gender;
+        readonly identifier: string;
+        readonly language: string;
+        readonly name: string;
+    }
+}
+
+// Speech.Voice.Gender
+
+declare namespace Speech.Voice.Gender {
+    const Female: Speech.Voice.Gender;
+    const Male: Speech.Voice.Gender;
+    const Unspecified: Speech.Voice.Gender;
+    const all: Array<Speech.Voice.Gender>;
+}
+
+declare namespace Speech.Voice {
+    class Gender {
+    }
+}
+
 // Stencil
 
 declare class Stencil {
-    load(completed: Function);
+    load(completed: Function): void;
     readonly graphics: Array<Graphic>;
     readonly images: Array<ImageReference>;
     readonly isLoaded: boolean;
     readonly name: string;
+}
+
+// StringEncoding
+
+declare namespace StringEncoding {
+    const ASCII: StringEncoding;
+    const ISO2022JP: StringEncoding;
+    const ISOLatin1: StringEncoding;
+    const ISOLatin2: StringEncoding;
+    const JapaneseEUC: StringEncoding;
+    const MacOSRoman: StringEncoding;
+    const NextStep: StringEncoding;
+    const NonLossyASCII: StringEncoding;
+    const ShiftJIS: StringEncoding;
+    const Symbol: StringEncoding;
+    const UTF16: StringEncoding;
+    const UTF16BigEndian: StringEncoding;
+    const UTF16LittleEndian: StringEncoding;
+    const UTF32: StringEncoding;
+    const UTF32BigEndian: StringEncoding;
+    const UTF32LittleEndian: StringEncoding;
+    const UTF8: StringEncoding;
+    const Unicode: StringEncoding;
+    const WindowsCP1250: StringEncoding;
+    const WindowsCP1251: StringEncoding;
+    const WindowsCP1252: StringEncoding;
+    const WindowsCP1253: StringEncoding;
+    const WindowsCP1254: StringEncoding;
+    const all: Array<StringEncoding>;
+}
+
+declare class StringEncoding {
 }
 
 // StrokeDash
@@ -1242,12 +1462,12 @@ declare class TimeZone {
 // Timer
 
 declare namespace Timer {
-    function once(interval: number, action: Function): Timer;
-    function repeating(interval: number, action: Function): Timer;
+    function once(interval: number, action: (timer: Timer) => void): Timer;
+    function repeating(interval: number, action: (timer: Timer) => void): Timer;
 }
 
 declare class Timer {
-    cancel();
+    cancel(): void;
     readonly interval: number;
 }
 
@@ -1262,6 +1482,7 @@ declare class ToolbarItem {
 // TypeIdentifier
 
 declare namespace TypeIdentifier {
+    function fromPathExtension(pathExtension: string, isDirectory: boolean): TypeIdentifier;
     const URL: TypeIdentifier;
     const binaryPropertyList: TypeIdentifier;
     const csv: TypeIdentifier;
@@ -1295,22 +1516,43 @@ declare class TypeIdentifier {
 declare namespace URL {
     function choose(types: Array<string>): URL | null;
     function chooseFolder(): URL | null;
-    function fromString(string: string): URL | null;
+    function fromString(string: string, relativeToURL: URL | null): URL | null;
+    function fromPath(path: string, isDirectory: boolean, relativeToURL: URL | null): URL;
     function tellScript(app: string, js: string, arg: Object | null): URL | null;
     function tellFunction(app: string, jsFunction: Function, arg: Object | null): URL | null;
     const currentAppScheme: string;
+    const documentsDirectory: URL;
 }
 
 declare class URL {
-    fetch(success: Function, failure: Function | null);
-    call(success: Function, failure: Function | null);
-    open();
+    fetch(success: (contents: Data) => void, failure: (error: Error) => void | null): void;
+    call(success: Function, failure: Function | null): void;
+    open(): void;
     find(types: Array<TypeIdentifier>, recurse: boolean | null): Promise<Array<URL>>;
     toString(): string;
     appendingPathComponent(component: string): URL;
+    appendingPathExtension(pathExtension: string): URL;
+    deletingPathExtension(): URL;
     deletingLastPathComponent(): URL;
+    readonly absoluteString: string;
+    readonly absoluteURL: URL;
+    readonly baseURL: URL | null;
+    readonly fragment: string | null;
+    readonly hasDirectoryPath: boolean;
+    readonly host: string | null;
+    readonly isFileURL: boolean;
+    readonly lastPathComponent: string;
+    readonly password: string | null;
+    readonly path: string | null;
+    readonly pathComponents: Array<string>;
+    readonly pathExtension: string;
+    readonly port: number | null;
+    readonly query: string | null;
+    readonly relativePath: string | null;
+    readonly relativeString: string;
+    readonly scheme: string | null;
     readonly string: string;
-    readonly toObject: Object | null;
+    readonly user: string | null;
 }
 
 // URL.Access
@@ -1333,6 +1575,30 @@ declare namespace URL {
     }
 }
 
+// URL.Components
+
+declare namespace URL.Components {
+    function fromString(string: string): URL.Components | null;
+    function fromURL(url: URL, resolvingAgainstBaseURL: boolean): URL.Components | null;
+}
+
+declare namespace URL {
+    class Components {
+        constructor ();
+        urlRelativeTo(base: URL | null): URL | null;
+        fragment: string | null;
+        host: string | null;
+        password: string | null;
+        path: string;
+        port: number | null;
+        query: string | null;
+        queryItems: Array<URL.QueryItem> | null;
+        scheme: string | null;
+        readonly url: URL | null;
+        user: string | null;
+    }
+}
+
 // URL.FetchRequest
 
 declare namespace URL.FetchRequest {
@@ -1343,10 +1609,14 @@ declare namespace URL {
     class FetchRequest {
         constructor ();
         fetch(): Promise<URL.FetchResponse>;
+        allowsConstrainedNetworkAccess: boolean;
+        allowsExpensiveNetworkAccess: boolean;
         bodyData: Data | null;
         bodyString: string | null;
         cache: string | null;
         headers: object;
+        httpShouldHandleCookies: boolean;
+        httpShouldUsePipelining: boolean;
         method: string | null;
         url: URL | null;
     }
@@ -1363,6 +1633,16 @@ declare namespace URL {
         readonly statusCode: number;
         readonly textEncodingName: string | null;
         readonly url: URL | null;
+    }
+}
+
+// URL.QueryItem
+
+declare namespace URL {
+    class QueryItem {
+        constructor (name: string, value: string | null);
+        readonly name: string;
+        readonly value: string | null;
     }
 }
 
@@ -1399,4 +1679,98 @@ declare namespace VerticalTextPlacement {
 }
 
 declare class VerticalTextPlacement {
+}
+
+// XML
+
+declare class XML {
+}
+
+// XML.Document
+
+declare namespace XML.Document {
+    function fromData(data: Data, whitespaceBehavior: XML.WhitespaceBehavior | null): XML.Document;
+}
+
+declare namespace XML {
+    class Document {
+        constructor (rootElement: string | XML.Element, configuration: XML.Document.Configuration | null);
+        xmlData(): Data;
+        addElement(name: string, f: () => void | null): void;
+        appendString(string: string): void;
+        setAttribute(attribute: string, value: string | null): void;
+        readonly dtdPublicID: string | null;
+        readonly dtdSystemID: URL | null;
+        readonly rootElement: XML.Element;
+        readonly schemaID: URL | null;
+        readonly schemaNamespace: string | null;
+        readonly stringEncoding: StringEncoding;
+        readonly topElement: XML.Element;
+        readonly whitespaceBehavior: XML.WhitespaceBehavior;
+    }
+}
+
+// XML.Document.Configuration
+
+declare namespace XML.Document {
+    class Configuration {
+        constructor ();
+        dtdPublicID: string | null;
+        dtdSystemID: URL | null;
+        schemaID: URL | null;
+        schemaNamespace: string | null;
+        stringEncoding: StringEncoding;
+        whitespaceBehavior: XML.WhitespaceBehavior | null;
+    }
+}
+
+// XML.Element
+
+declare namespace XML {
+    class Element {
+        constructor (name: string);
+        childAtIndex(childIndex: number): string | XML.Element | null;
+        insertChild(child: string | XML.Element, childIndex: number): void;
+        appendChild(child: string | XML.Element): void;
+        removeChildAtIndex(childIndex: number): void;
+        removeAllChildren(): void;
+        firstChildNamed(name: string): XML.Element | null;
+        firstChildAtPath(path: string): XML.Element | null;
+        firstChildWithAttribute(attribute: string, value: string): XML.Element | null;
+        attributeNamed(name: string): string | null;
+        setAttribute(name: string, value: string | null): void;
+        apply(f: (node: string | XML.Element) => _omnijs_AnonymousProxy | null): _omnijs_AnonymousProxy | null;
+        readonly attributeCount: number;
+        readonly attributeNames: Array<string>;
+        children: Array<string | XML.Element>;
+        readonly childrenCount: number;
+        readonly lastChild: string | XML.Element | null;
+        readonly name: string;
+        readonly stringContents: string;
+    }
+}
+
+// XML.WhitespaceBehavior
+
+declare namespace XML {
+    class WhitespaceBehavior {
+        constructor (defaultBehavior: XML.WhitespaceBehavior.Type);
+        setBehaviorForElementName(behavior: XML.WhitespaceBehavior.Type, elementName: string): void;
+        behaviorForElementName(elementName: string): XML.WhitespaceBehavior.Type;
+        readonly defaultBehavior: XML.WhitespaceBehavior.Type;
+    }
+}
+
+// XML.WhitespaceBehavior.Type
+
+declare namespace XML.WhitespaceBehavior.Type {
+    const Auto: XML.WhitespaceBehavior.Type;
+    const Ignore: XML.WhitespaceBehavior.Type;
+    const Preserve: XML.WhitespaceBehavior.Type;
+    const all: Array<XML.WhitespaceBehavior.Type>;
+}
+
+declare namespace XML.WhitespaceBehavior {
+    class Type {
+    }
 }

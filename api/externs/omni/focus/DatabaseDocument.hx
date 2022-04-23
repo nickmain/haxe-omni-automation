@@ -3,7 +3,7 @@
 package omni.focus;
 
 @:native("DatabaseDocument")
-extern class DatabaseDocument extends omni.common.Document {
+extern class DatabaseDocument extends Document {
     var windows (default,never): Array<omni.focus.DocumentWindow>;
 
     function newWindow(): js.lib.Promise<omni.focus.DocumentWindow>;

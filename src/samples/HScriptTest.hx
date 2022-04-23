@@ -3,8 +3,8 @@ package samples;
 import epistem.omni.graffle.Globals;
 import omni.graffle.Selection;
 import epistem.omni.graffle.Action;
-import omni.common.ToolbarItem;
-import omni.common.MenuItem;
+import omni.graffle.ToolbarItem;
+import omni.graffle.MenuItem;
 import epistem.typescript.Helpers.Union2;
 
 @:expose

@@ -54,6 +54,7 @@ enum Type {
     nullable(type: Type);
     generic(type: Type, params: Array<Type>);
     union(types: Array<Type>);
+    func(args: Array<Argument>, result: Type);
 }
 
 function memberEquals(a: Member, b: Member): Bool {
@@ -88,6 +89,11 @@ function typeEquals(a: Type, b: Type): Bool {
         }
         case union(ts): switch b {
             case union(ts2): typeArrayEquals(ts, ts2);
+            default: false;
+        }
+        case func(args1, res1): switch b {
+            case func(args2, res2): argumentArrayEquals(args1, args2) 
+                                    && typeEquals(res1, res2);
             default: false;
         }
     }

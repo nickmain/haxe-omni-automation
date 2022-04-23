@@ -117,7 +117,13 @@ class Parser {
         var types = new Array<Definition.Type>();
 
         while(true) {
-            types.push(parseSimpleType());
+            final func = parseFunctionType();
+            if(func != null) {
+                types.push(func);
+            }
+            else {
+                types.push(parseSimpleType());                
+            }
 
             final token = nextToken();
             switch(token) {
@@ -142,6 +148,25 @@ class Parser {
         }
 
         return union(types);
+    }
+
+    function parseFunctionType(): Null<Definition.Type> {
+        var token = nextToken();
+        if(token != openParen) {
+            pushBack(token);
+            return null;
+        }
+
+        final args = parseArgList();
+
+        token = nextToken();
+        if(token != arrow) {
+            throw msg(token, "expected arrow after args in function type");
+        }
+
+        final result = parseType();
+
+        return func(args, result);
     }
 
     function parseGenericType(name: String): Definition.Type {
@@ -196,7 +221,7 @@ class Parser {
                 expectSemicolon();
                 definition.members.push(func(name, args, retType));
             }
-            case semicolon: definition.members.push(func(name, args, null));
+            case semicolon: definition.members.push(func(name, args, Definition.Type.name("void")));
             default: throw msg(token, "colon or semicolonn");
         }
     }

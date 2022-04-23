@@ -30,7 +30,7 @@ extern class Item {
 
     function setValueForColumn(value: Null<Dynamic>, column: omni.outliner.Column): Void;
     function valueForColumn(column: omni.outliner.Column): Null<Dynamic>;
-    function addChild(position: Null<omni.outliner.ItemPosition>, configure: Null<(Dynamic) -> Void>): omni.outliner.Item;
+    function addChild(position: Null<omni.outliner.ItemPosition>, configure: (child: omni.outliner.Item) -> Null<Void>): omni.outliner.Item;
     function remove(): Void;
-    function apply(f: (Dynamic) -> Void): Void;
+    function apply(f: (item: omni.outliner.Item) -> Null<omni.outliner.item.ApplyResult>): Void;
 }

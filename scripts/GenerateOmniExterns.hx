@@ -29,10 +29,10 @@ class GenerateOmniExterns {
         addPackage("omni.outliner", ooDefs);
 
         // generate shared common defs separately
-        final common = findCommonDefs([ogDefs, ooDefs, ofDefs]);
-        addPackage("omni.common", common);
-        new ExternGenerator("api/externs").generate(common);
-        for(def in common) def.shouldGenerate = false;
+        // final common = findCommonDefs([ogDefs, ooDefs, ofDefs]);
+        // addPackage("omni.common", common);
+        // new ExternGenerator("api/externs").generate(common);
+        // for(def in common) def.shouldGenerate = false;
 
         new ExternGenerator("api/externs").generate(ogDefs);
         new ExternGenerator("api/externs").generate(ofDefs);
@@ -79,9 +79,12 @@ class GenerateOmniExterns {
                 }
             }
 
+            if(theseDefs.length > 1 && theseDefs.length != defs.length) {
+                trace('Definition $name is only common to some');
+            }
+
             if(theseDefs.length == defs.length) {
                 common.set(name, firstDef);
-
                 for(defSet in defs) {
                     defSet.set(name, firstDef);
                 }

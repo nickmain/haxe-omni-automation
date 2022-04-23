@@ -135,12 +135,26 @@ class ExternGenerator {
             case name("Array")   : "Array";
             case name("Date")    : "js.lib.Date";
             case name("Error")   : "js.lib.Error";
+            case name("void")    : "Void";
             case name("Function"): functionSpecialization();
             case name("number")  : "Float";
-            case name(n)         : haxeNames.get(n).fullName;
             case nullable(t)     : 'Null<${typeString(t)}>';
             case generic(t, ps)  : '${typeString(t)}<${ps.map(typeString).join(",")}>';
             case union(types)    : unionTypeString(types);
+
+            case name("_omnijs_AnonymousProxy")  : "Dynamic";
+            
+            case name(n): { 
+                final haxeName = haxeNames.get(n);
+                if(haxeName == null) {
+                    throw('Could not find HaxeName $n');
+                }
+
+                haxeName.fullName; 
+            }
+
+            case func(args, result): 
+                '(${args.map(argString).join(", ")}) -> ${typeString(result)}';
         }
     }
 

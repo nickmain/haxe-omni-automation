@@ -5,7 +5,7 @@ package omni.outliner;
 @:native("Column")
 extern class Column {
     var enumeration (default,never): Null<omni.outliner.Enumeration>;
-    var formatter: Null<omni.common.Formatter>;
+    var formatter: Null<omni.outliner.Formatter>;
     var outline (default,never): omni.outliner.Outline;
     var style (default,never): omni.outliner.Style;
     var textAlignment: omni.outliner.TextAlignment;

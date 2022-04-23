@@ -8,7 +8,7 @@ extern class Task extends ActiveObject {
     static function byIdentifier(identifier: String): Null<omni.focus.Task>;
     var after (default,never): omni.focus.task.ChildInsertionLocation;
     var assignedContainer: Null<epistem.typescript.Helpers.Union3<omni.focus.Project, omni.focus.Task, omni.focus.Inbox>>;
-    var attachments: Array<omni.common.FileWrapper>;
+    var attachments: Array<omni.focus.FileWrapper>;
     var before (default,never): omni.focus.task.ChildInsertionLocation;
     var beginning (default,never): omni.focus.task.ChildInsertionLocation;
     var children (default,never): omni.focus.TaskArray;
@@ -31,7 +31,7 @@ extern class Task extends ActiveObject {
     var flattenedTasks (default,never): omni.focus.TaskArray;
     var hasChildren (default,never): Bool;
     var inInbox (default,never): Bool;
-    var linkedFileURLs (default,never): Array<omni.common.URL>;
+    var linkedFileURLs (default,never): Array<omni.focus.URL>;
     var name: String;
     var note: String;
     var notifications (default,never): Array<omni.focus.task.Notification>;
@@ -49,9 +49,9 @@ extern class Task extends ActiveObject {
     function taskNamed(name: String): Null<omni.focus.Task>;
     function childNamed(name: String): Null<omni.focus.Task>;
     function appendStringToNote(stringToAppend: String): Void;
-    function addLinkedFileURL(url: omni.common.URL): Void;
-    function removeLinkedFileWithURL(url: omni.common.URL): Void;
-    function addAttachment(attachment: omni.common.FileWrapper): Void;
+    function addLinkedFileURL(url: omni.focus.URL): Void;
+    function removeLinkedFileWithURL(url: omni.focus.URL): Void;
+    function addAttachment(attachment: omni.focus.FileWrapper): Void;
     function removeAttachmentAtIndex(index: Float): Void;
     function addTag(tag: omni.focus.Tag): Void;
     function addTags(tags: Array<omni.focus.Tag>): Void;

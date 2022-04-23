@@ -4,12 +4,12 @@ package omni.focus;
 
 @:native("Text")
 extern class Text {
-    static function makeFileAttachment(fileWrapper: omni.common.FileWrapper, style: omni.focus.Style): omni.focus.Text;
+    static function makeFileAttachment(fileWrapper: omni.focus.FileWrapper, style: omni.focus.Style): omni.focus.Text;
     var attachments (default,never): Array<omni.focus.Text>;
     var attributeRuns (default,never): Array<omni.focus.Text>;
     var characters (default,never): Array<omni.focus.Text>;
     var end (default,never): omni.focus.text.Position;
-    var fileWrapper (default,never): Null<omni.common.FileWrapper>;
+    var fileWrapper (default,never): Null<omni.focus.FileWrapper>;
     var paragraphs (default,never): Array<omni.focus.Text>;
     var range (default,never): omni.focus.text.Range;
     var sentences (default,never): Array<omni.focus.Text>;

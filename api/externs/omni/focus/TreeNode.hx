@@ -6,6 +6,7 @@ package omni.focus;
 extern class TreeNode {
     var canCollapse (default,never): Bool;
     var canExpand (default,never): Bool;
+    var childCount (default,never): Float;
     var children (default,never): Array<omni.focus.TreeNode>;
     var index (default,never): Float;
     var isExpanded (default,never): Bool;
@@ -19,6 +20,7 @@ extern class TreeNode {
     var parent (default,never): Null<omni.focus.TreeNode>;
     var rootNode (default,never): omni.focus.TreeNode;
 
+    function childAtIndex(childIndex: Float): omni.focus.TreeNode;
     function expand(completely: Null<Bool>): Void;
     function collapse(completely: Null<Bool>): Void;
     function expandNote(completely: Null<Bool>): Void;

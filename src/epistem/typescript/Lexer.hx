@@ -18,6 +18,7 @@ enum Token {
     openAngle;
     closeAngle;
     period;
+    arrow;
 
     finished;
 }
@@ -35,13 +36,15 @@ class Char {
     public static inline final closeAngle  = ">";
     public static inline final period      = ".";
     public static inline final slash       = "/";
+    public static inline final equals      = "=";
+    public static inline final greaterThan = ">";
 
     public static inline function isAlphanumeric(char: String): Bool {
         return isLetter(char) || isDecimalDigit(char) || char == "_";
     }
 
     public static inline function isLetter(char: String): Bool {
-        return isCapitalLetter(char) || isSmallLetter(char);
+        return isCapitalLetter(char) || isSmallLetter(char) || char == "_";
     }
 
     public static inline function isDecimalDigit(char: String): Bool {
@@ -114,6 +117,7 @@ class Lexer {
 
                 if(Char.isLayout(c)) skipWhitespace();
                 else if(Char.isLetter(c)) collectWord();
+                else if(c == Char.equals) collectArrow();
                 else switch(c) {
                     case Char.slash: skipComment();
                     case Char.openParen: openParen;
@@ -136,6 +140,16 @@ class Lexer {
     function skipWhitespace(): Token {
         while(Char.isLayout(line.charAt(index))) index++;
         return read();
+    }
+
+    function collectArrow(): Token {
+        final c = line.charAt(index++);
+        if(c == Char.greaterThan) {
+            return arrow;
+        }
+        else {
+            throw 'Expected ">" after "=" but found "$c" in line $lineNum';
+        }
     }
 
     function collectWord(): Token {
