@@ -30,36 +30,6 @@ Std.string = function(s) {
 var epistem_omni_graffle_Action = function() {
 };
 epistem_omni_graffle_Action.__name__ = true;
-var haxe_Exception = function(message,previous,native) {
-	Error.call(this,message);
-	this.message = message;
-	this.__previousException = previous;
-	this.__nativeException = native != null ? native : this;
-};
-haxe_Exception.__name__ = true;
-haxe_Exception.caught = function(value) {
-	if(((value) instanceof haxe_Exception)) {
-		return value;
-	} else if(((value) instanceof Error)) {
-		return new haxe_Exception(value.message,null,value);
-	} else {
-		return new haxe_ValueException(value,null,value);
-	}
-};
-haxe_Exception.__super__ = Error;
-haxe_Exception.prototype = $extend(Error.prototype,{
-	get_message: function() {
-		return this.message;
-	}
-});
-var haxe_ValueException = function(value,previous,native) {
-	haxe_Exception.call(this,String(value),previous,native);
-	this.value = value;
-};
-haxe_ValueException.__name__ = true;
-haxe_ValueException.__super__ = haxe_Exception;
-haxe_ValueException.prototype = $extend(haxe_Exception.prototype,{
-});
 var haxe_iterators_ArrayIterator = function(array) {
 	this.current = 0;
 	this.array = array;
@@ -146,66 +116,23 @@ samples_HelloWorld.__name__ = true;
 samples_HelloWorld.__super__ = epistem_omni_graffle_Action;
 samples_HelloWorld.prototype = $extend(epistem_omni_graffle_Action.prototype,{
 	perform: function(selection,sender) {
-		try {
-			if(((sender) instanceof MenuItem)) {
-				var form = new Form();
-				form.addField(new Form.Field.String("name","Name","do not type capitals in this field",null),null);
-				form.addField(new Form.Field.String("alias","Alias","",null),null);
-				form.addField(new Form.Field.MultipleOptions("opts","Things",[1,2,3],["One","Two","Three"],[2]),null);
-				form.validate = function(form) {
-					if(Std.string(form.values.name).toLowerCase() != form.values.name) {
-						throw new Error("No uppercase allowed!");
-					}
-					return true;
-				};
-				form.show("Test Form","Do It").then(function(form) {
-					console.log("src/samples/HelloWorld.hx:45:",form.values.opts);
-				},function(err) {
-					console.log("src/samples/HelloWorld.hx:46:",err.message);
+		var _gthis = this;
+		if(selection.solids.length > 0) {
+			var text = selection.solids[0].text;
+			var wrapper = FileWrapper.withContents("test.txt",Data.fromString(text,StringEncoding.UTF8));
+			if(this.file == null) {
+				new FileSaver().show(wrapper).then(function(url) {
+					console.log("src/samples/HelloWorld.hx:34:","url = " + Std.string(url));
+					return _gthis.file = url;
 				});
-				return;
+			} else {
+				console.log("src/samples/HelloWorld.hx:38:","saving to " + Std.string(this.file));
+				wrapper.write(this.file,null,null);
 			}
-			if(selection.solids.length == 1) {
-				var text = selection.solids[0].text;
-				var graphic = "\n                <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n\t<key>Color</key>\n\t<dict>\n\t\t<key>b</key>\n\t\t<string>1</string>\n\t\t<key>g</key>\n\t\t<string>1</string>\n\t\t<key>r</key>\n\t\t<string>1</string>\n\t\t<key>space</key>\n\t\t<string>srgb</string>\n\t</dict>\n\t<key>DocumentSettings</key>\n\t<dict>\n\t\t<key>ApplicationVersion</key>\n\t\t<array>\n\t\t\t<string>com.omnigroup.OmniGraffle7</string>\n\t\t\t<string>204.8.0</string>\n\t\t</array>\n\t\t<key>CreationDate</key>\n\t\t<string>2021-02-12 21:29:19 +0000</string>\n\t\t<key>Creator</key>\n\t\t<string>Nick Main</string>\n\t\t<key>FileName</key>\n\t\t<string>Untitled</string>\n\t\t<key>GraphDocumentVersion</key>\n\t\t<integer>16</integer>\n\t\t<key>ModelIndex</key>\n\t\t<integer>0</integer>\n\t\t<key>ModificationDate</key>\n\t\t<string>2021-02-14 03:40:21 +0000</string>\n\t\t<key>Modifier</key>\n\t\t<string>Nick Main</string>\n\t\t<key>SheetTitle</key>\n\t\t<string>Canvas 1</string>\n\t</dict>\n\t<key>GraphicsList</key>\n\t<array>\n\t\t<dict>\n\t\t\t<key>AbsoluteRotation</key>\n\t\t\t<true/>\n\t\t\t<key>Bounds</key>\n\t\t\t<string>{{360, 288}, {72, 72}}</string>\n\t\t\t<key>Class</key>\n\t\t\t<string>ShapedGraphic</string>\n\t\t\t<key>ID</key>\n\t\t\t<integer>52</integer>\n\t\t\t<key>LayerIndex</key>\n\t\t\t<integer>0</integer>\n\t\t\t<key>Shape</key>\n\t\t\t<string>AdjustableStar</string>\n\t\t\t<key>ShapeData</key>\n\t\t\t<dict>\n\t\t\t\t<key>innerRadius</key>\n\t\t\t\t<real>0.2258594207291687</real>\n\t\t\t\t<key>starPoints</key>\n\t\t\t\t<real>" + text.length + "</real>\n\t\t\t</dict>\n\t\t\t<key>Style</key>\n\t\t\t<dict>\n\t\t\t\t<key>shadow</key>\n\t\t\t\t<dict>\n\t\t\t\t\t<key>Draws</key>\n\t\t\t\t\t<string>NO</string>\n\t\t\t\t</dict>\n\t\t\t</dict>\n\t\t\t<key>Text</key>\n\t\t\t<dict>\n\t\t\t\t<key>Pad</key>\n\t\t\t\t<real>0.0</real>\n\t\t\t\t<key>Text</key>\n\t\t\t\t<string>{\\rtf1\\ansi\\ansicpg1252\\cocoartf2578\n\\cocoatextscaling0\\cocoaplatform0{\\fonttbl\\f0\\fnil\\fcharset0 HelveticaNeue;}\n{\\colortbl;\\red255\\green255\\blue255;\\red0\\green0\\blue0;}\n{\\*\\expandedcolortbl;;\\csgray\\c0;}\n\\pard\\tx560\\tx\\tx2800\\tx3360\\tx3920\\tx4480\\tx5040\\tx5600\\tx6160\\tx6720\\pardirnatural\\qc\\partightenfactor0\n\n\\f0\\fs32 \\cf2 " + text + "}</string>\n\t\t\t\t<key>TextAlongPathGlyphAnchor</key>\n\t\t\t\t<string>center</string>\n\t\t\t\t<key>VerticalPad</key>\n\t\t\t\t<real>0.0</real>\n\t\t\t</dict>\n\t\t\t<key>TextPlacement</key>\n\t\t\t<integer>2</integer>\n\t\t\t<key>TextRelativeArea</key>\n\t\t\t<string>{{-0.49999999999999994, 0.26000000000000001}, {2, 1}}</string>\n\t\t</dict>\n\t</array>\n\t<key>Layers</key>\n\t<array>\n\t\t<dict>\n\t\t\t<key>Artboards</key>\n\t\t\t<false/>\n\t\t\t<key>Lock</key>\n\t\t\t<false/>\n\t\t\t<key>Name</key>\n\t\t\t<string>Layer 1</string>\n\t\t\t<key>Print</key>\n\t\t\t<true/>\n\t\t\t<key>View</key>\n\t\t\t<true/>\n\t\t</dict>\n\t</array>\n\t<key>Origin</key>\n\t<string>{0, 0}</string>\n\t<key>Scale</key>\n\t<string>No scale</string>\n\t<key>ZoomLevel</key>\n\t<real>1</real>\n</dict>\n</plist>\n";
-				Pasteboard.general.clear();
-				Pasteboard.general.setStringForType(graphic,new TypeIdentifier("com.omnigroup.OmniGraffle.GraphicType"));
-				return;
-			}
-			if(selection.solids.length > 0) {
-				var _g = 0;
-				var _g1 = selection.solids;
-				while(_g < _g1.length) {
-					var solid = _g1[_g];
-					++_g;
-					var color = solid.fillColor;
-					if(color != null) {
-						solid.fillColor = Color.RGB(color.green,color.blue,color.red,color.alpha);
-					}
-				}
-				return;
-			}
-			var canvas = document.portfolio.canvases[0];
-			if(canvas != null) {
-				var layoutInfo = canvas.layoutInfo;
-				if(layoutInfo.type == LayoutType.Hierarchical) {
-					var dirs = HierarchicalDirection.all;
-					var dirIndex = dirs.indexOf(layoutInfo.direction);
-					if(dirIndex < dirs.length - 1) {
-						layoutInfo.direction = dirs[dirIndex + 1];
-						canvas.layout();
-						return;
-					} else {
-						layoutInfo.direction = dirs[0];
-					}
-				}
-				var allTypes = LayoutType.all;
-				layoutInfo.type = allTypes[(allTypes.indexOf(layoutInfo.type) + 1) % allTypes.length];
-				canvas.layout();
-			}
-		} catch( _g ) {
-			var e = haxe_Exception.caught(_g);
-			console.log("src/samples/HelloWorld.hx:213:",e.get_message());
+		} else {
+			document.makeFileWrapper("test.svg","public.image-svg").then(function(fw) {
+				return new FileSaver().show(fw);
+			});
 		}
 	}
 	,validate: function(selection,sender) {
