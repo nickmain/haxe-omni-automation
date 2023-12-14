@@ -27,5 +27,5 @@ extern class Folder extends ActiveObject {
     function projectNamed(name: String): Null<omni.focus.Project>;
     function sectionNamed(name: String): Null<epistem.typescript.Helpers.Union2<omni.focus.Project, omni.focus.Folder>>;
     function childNamed(name: String): Null<epistem.typescript.Helpers.Union2<omni.focus.Project, omni.focus.Folder>>;
-    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
+    function apply(f: (folder: omni.focus.Folder) -> Null<omni.focus.ApplyResult>): Null<omni.focus.ApplyResult>;
 }

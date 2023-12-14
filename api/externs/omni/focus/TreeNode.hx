@@ -26,5 +26,5 @@ extern class TreeNode {
     function expandNote(completely: Null<Bool>): Void;
     function collapseNote(completely: Null<Bool>): Void;
     function reveal(): Void;
-    function apply(f: (Dynamic) -> Void): Void;
+    function apply(f: (node: omni.focus.TreeNode) -> Null<omni.focus.ApplyResult>): Null<omni.focus.ApplyResult>;
 }

@@ -26,5 +26,6 @@ extern class FocusTypeIdentifier {
     static var tiff (default,never): omni.focus.TypeIdentifier;
     static var writableTypes (default,never): Array<omni.focus.TypeIdentifier>;
     static var xmlPropertyList (default,never): omni.focus.TypeIdentifier;
+    static function fromPathExtension(pathExtension: String, isDirectory: Bool): omni.focus.TypeIdentifier;
 
 }

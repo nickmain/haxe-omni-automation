@@ -5,6 +5,7 @@ package omni.focus;
 @:native("Database")
 extern class Database {
     var app (default,never): omni.focus.Application;
+    var baseStyle (default,never): omni.focus.Style;
     var canRedo (default,never): Bool;
     var canUndo (default,never): Bool;
     var console (default,never): omni.focus.Console;

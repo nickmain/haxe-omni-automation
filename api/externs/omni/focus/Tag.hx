@@ -11,8 +11,10 @@ extern class Tag extends ActiveObject {
     var availableTasks (default,never): omni.focus.TaskArray;
     var before (default,never): omni.focus.tag.ChildInsertionLocation;
     var beginning (default,never): omni.focus.tag.ChildInsertionLocation;
+    var beginningOfTasks (default,never): omni.focus.tag.TaskInsertionLocation;
     var children (default,never): omni.focus.TagArray;
     var ending (default,never): omni.focus.tag.ChildInsertionLocation;
+    var endingOfTasks (default,never): omni.focus.tag.TaskInsertionLocation;
     var flattenedChildren (default,never): omni.focus.TagArray;
     var flattenedTags (default,never): omni.focus.TagArray;
     var name: String;
@@ -27,5 +29,9 @@ extern class Tag extends ActiveObject {
 
     function tagNamed(name: String): Null<omni.focus.Tag>;
     function childNamed(name: String): Null<omni.focus.Tag>;
-    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
+    function beforeTask(task: Null<omni.focus.Task>): omni.focus.tag.TaskInsertionLocation;
+    function afterTask(task: Null<omni.focus.Task>): omni.focus.tag.TaskInsertionLocation;
+    function moveTask(task: omni.focus.Task, location: omni.focus.tag.TaskInsertionLocation): Void;
+    function moveTasks(tasks: Array<omni.focus.Task>, location: omni.focus.tag.TaskInsertionLocation): Void;
+    function apply(f: (tag: omni.focus.Tag) -> Null<omni.focus.ApplyResult>): Null<omni.focus.ApplyResult>;
 }

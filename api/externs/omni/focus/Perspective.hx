@@ -5,5 +5,6 @@ package omni.focus;
 @:native("Perspective")
 extern class Perspective {
     static var all (default,never): Array<epistem.typescript.Helpers.Union2<omni.focus.perspective.BuiltIn, omni.focus.perspective.Custom>>;
+    static var favorites (default,never): Array<epistem.typescript.Helpers.Union2<omni.focus.perspective.BuiltIn, omni.focus.perspective.Custom>>;
 
 }

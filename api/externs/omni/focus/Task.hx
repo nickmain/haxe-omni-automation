@@ -11,6 +11,7 @@ extern class Task extends ActiveObject {
     var attachments: Array<omni.focus.FileWrapper>;
     var before (default,never): omni.focus.task.ChildInsertionLocation;
     var beginning (default,never): omni.focus.task.ChildInsertionLocation;
+    var beginningOfTags (default,never): omni.focus.task.TagInsertionLocation;
     var children (default,never): omni.focus.TaskArray;
     var completed (default,never): Bool;
     var completedByChildren: Bool;
@@ -20,11 +21,13 @@ extern class Task extends ActiveObject {
     var dropDate (default,never): Null<js.lib.Date>;
     var dueDate: Null<js.lib.Date>;
     var effectiveCompletedDate (default,never): Null<js.lib.Date>;
+    var effectiveCompletionDate (default,never): Null<js.lib.Date>;
     var effectiveDeferDate (default,never): Null<js.lib.Date>;
     var effectiveDropDate (default,never): Null<js.lib.Date>;
     var effectiveDueDate (default,never): Null<js.lib.Date>;
     var effectiveFlagged (default,never): Bool;
     var ending (default,never): omni.focus.task.ChildInsertionLocation;
+    var endingOfTags (default,never): omni.focus.task.TagInsertionLocation;
     var estimatedMinutes: Null<Float>;
     var flagged: Bool;
     var flattenedChildren (default,never): omni.focus.TaskArray;
@@ -34,6 +37,7 @@ extern class Task extends ActiveObject {
     var linkedFileURLs (default,never): Array<omni.focus.URL>;
     var name: String;
     var note: String;
+    var noteText: omni.focus.Text;
     var notifications (default,never): Array<omni.focus.task.Notification>;
     var parent (default,never): Null<omni.focus.Task>;
     var project (default,never): Null<omni.focus.Project>;
@@ -53,15 +57,19 @@ extern class Task extends ActiveObject {
     function removeLinkedFileWithURL(url: omni.focus.URL): Void;
     function addAttachment(attachment: omni.focus.FileWrapper): Void;
     function removeAttachmentAtIndex(index: Float): Void;
-    function addTag(tag: omni.focus.Tag): Void;
-    function addTags(tags: Array<omni.focus.Tag>): Void;
+    function beforeTag(tag: Null<omni.focus.Tag>): omni.focus.task.TagInsertionLocation;
+    function afterTag(tag: Null<omni.focus.Tag>): omni.focus.task.TagInsertionLocation;
+    function addTag(tag: omni.focus.Tag, location: Null<omni.focus.task.TagInsertionLocation>): Void;
+    function addTags(tags: Array<omni.focus.Tag>, location: Null<omni.focus.task.TagInsertionLocation>): Void;
+    function moveTag(tag: omni.focus.Tag, location: omni.focus.task.TagInsertionLocation): Void;
+    function moveTags(tags: Array<omni.focus.Tag>, location: omni.focus.task.TagInsertionLocation): Void;
     function removeTag(tag: omni.focus.Tag): Void;
     function removeTags(tags: Array<omni.focus.Tag>): Void;
     function clearTags(): Void;
     function markComplete(date: Null<js.lib.Date>): omni.focus.Task;
     function markIncomplete(): Void;
     function drop(allOccurrences: Bool): Void;
-    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
+    function apply(f: (task: omni.focus.Task) -> Null<omni.focus.ApplyResult>): Null<omni.focus.ApplyResult>;
     function addNotification(info: epistem.typescript.Helpers.Union2<Float, js.lib.Date>): omni.focus.task.Notification;
     function removeNotification(notification: omni.focus.task.Notification): Void;
 }

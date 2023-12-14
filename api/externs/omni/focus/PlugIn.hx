@@ -21,4 +21,5 @@ extern class PlugIn {
     function handler(identifier: String): Null<omni.focus.plugin.Handler>;
     function resourceNamed(name: String): Null<omni.focus.URL>;
     function imageNamed(name: String): Null<omni.focus.Image>;
+    function localizedResourceNamed(filename: String): Null<omni.focus.FileWrapper>;
 }

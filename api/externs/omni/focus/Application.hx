@@ -14,5 +14,5 @@ extern class Application {
     var userVersion (default,never): omni.focus.Version;
     var version (default,never): String;
 
-    function openDocument(from: Null<omni.focus.Document>, url: omni.focus.URL, completed: (epistem.typescript.Helpers.Union2<omni.common.Document, js.lib.Error>, Bool) -> Void): Void;
+    function openDocument(from: Null<omni.focus.Document>, url: omni.focus.URL, completed: (documentOrError: epistem.typescript.Helpers.Union2<omni.focus.Document, js.lib.Error>, alreadyOpen: Bool) -> Void): Void;
 }

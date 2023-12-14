@@ -5,7 +5,7 @@ package omni.focus;
 @:native("Form")
 extern class Form {
     var fields (default,never): Array<omni.focus.form.Field>;
-    var validate: Null<(Form) -> Null<Bool>>;
+    var validate: (Form: omni.focus.Form) -> Null<Bool>;
     var values (default,never): Dynamic;
 
     function new();

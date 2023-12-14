@@ -7,5 +7,5 @@ extern class Library extends SectionArray {
     var beginning (default,never): omni.focus.folder.ChildInsertionLocation;
     var ending (default,never): omni.focus.folder.ChildInsertionLocation;
 
-    function apply(f: (Dynamic) -> Void): Null<omni.focus.ApplyResult>;
+    function apply(f: (section: epistem.typescript.Helpers.Union2<omni.focus.Project, omni.focus.Folder>) -> Null<omni.focus.ApplyResult>): Null<omni.focus.ApplyResult>;
 }

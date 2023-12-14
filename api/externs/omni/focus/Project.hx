@@ -35,6 +35,7 @@ extern class Project extends DatabaseObject {
     var nextReviewDate: Null<js.lib.Date>;
     var nextTask (default,never): Null<omni.focus.Task>;
     var note: String;
+    var noteText: omni.focus.Text;
     var notifications (default,never): Array<omni.focus.task.Notification>;
     var parentFolder (default,never): Null<omni.focus.Folder>;
     var repetitionRule: Null<omni.focus.task.RepetitionRule>;
