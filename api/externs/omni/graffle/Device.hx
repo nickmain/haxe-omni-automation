@@ -10,5 +10,6 @@ extern class Device {
     var mac (default,never): Bool;
     var operatingSystemVersion (default,never): omni.graffle.Version;
     var type (default,never): Null<omni.graffle.DeviceType>;
+    var visionPro (default,never): Bool;
 
 }

@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniFocus 4 (174.2) on macOS 14.1.1
-// Generated on 2023-12-14 19:07:08 +0000
+// TypeScript definitions for OmniFocus 4.3.1 (177.3) on macOS 14.5
+// Generated on 2024-06-26 16:46:33 +0000
 
 // To use these definitions, save this file as `OmniFocus.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -521,8 +521,10 @@ declare namespace Perspective {
     class Custom extends DatedObject {
         fileWrapper(): FileWrapper;
         writeFileRepresentationIntoDirectory(parentURL: URL): URL;
+        archivedFilterRules: Object;
+        archivedTopLevelFilterAggregation: string | null;
         readonly identifier: string;
-        readonly name: string;
+        name: string;
     }
 }
 
@@ -666,6 +668,7 @@ declare class Device {
     readonly mac: boolean;
     readonly operatingSystemVersion: Version;
     readonly type: DeviceType | null;
+    readonly visionPro: boolean;
 }
 
 // DeviceType
@@ -675,6 +678,7 @@ declare namespace DeviceType {
     const iPad: DeviceType;
     const iPhone: DeviceType;
     const mac: DeviceType;
+    const visionPro: DeviceType;
 }
 
 declare class DeviceType {
@@ -2040,6 +2044,7 @@ declare class DocumentWindow extends Window {
     readonly content: ContentTree | null;
     focus: SectionArray | null;
     inspectorVisible: boolean;
+    readonly isCompact: boolean;
     readonly isTab: boolean;
     perspective: Perspective.BuiltIn | Perspective.Custom | null;
     readonly selection: Selection;

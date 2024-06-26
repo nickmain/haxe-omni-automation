@@ -1,5 +1,5 @@
-// TypeScript definitions for OmniOutliner 5.10 (212.0.29) on macOS 12.3
-// Generated on 2022-04-19 21:52:07 +0000
+// TypeScript definitions for OmniOutliner 5.12 (218) on macOS 14.5
+// Generated on 2024-06-26 16:48:52 +0000
 
 // To use these definitions, save this file as `OmniOutliner.d.ts`
 // and create a `tsconfig.json` file with compiler settings which indicate
@@ -1428,6 +1428,7 @@ declare class Editor extends Tree {
     scrollToNode(node: TreeNode): void;
     indentNodes(nodes: Array<TreeNode>): void;
     outdentNodes(nodes: Array<TreeNode>): void;
+    autosizeTopicColumn: boolean;
     focusedItems: Array<Item>;
     foldingEnabled: boolean;
     noteDisplay: NoteDisplay;

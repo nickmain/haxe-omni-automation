@@ -10,5 +10,6 @@ extern class Device {
     var mac (default,never): Bool;
     var operatingSystemVersion (default,never): omni.focus.Version;
     var type (default,never): Null<omni.focus.DeviceType>;
+    var visionPro (default,never): Bool;
 
 }

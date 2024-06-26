@@ -4,6 +4,7 @@ package omni.outliner;
 
 @:native("Editor")
 extern class Editor extends Tree {
+    var autosizeTopicColumn: Bool;
     var focusedItems: Array<omni.outliner.Item>;
     var foldingEnabled: Bool;
     var noteDisplay: omni.outliner.NoteDisplay;
