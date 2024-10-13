@@ -40,16 +40,19 @@ enum CTypedecl {
 	CTAbstract( a : CAbstract );
 }
 
+typedef CMetadata = Array<{ name : String, params : Null<Array<Expr>> }>;
+
 typedef CNamedType = {
 	var name : String;
 	var params : Array<TType>;
+	var ?meta : CMetadata;
 }
 
 typedef CClass = {> CNamedType,
-	@:optional var superClass : TType;
-	@:optional var constructor : CField;
-	@:optional var interfaces : Array<TType>;
-	@:optional var isInterface : Bool;
+	var ?superClass : TType;
+	var ?constructor : CField;
+	var ?interfaces : Array<TType>;
+	var ?isInterface : Bool;
 	var fields : Map<String,CField>;
 	var statics : Map<String,CField>;
 }
@@ -61,6 +64,7 @@ typedef CField = {
 	var params : Array<TType>;
 	var name : String;
 	var t : TType;
+	var ?meta : CMetadata;
 }
 
 typedef CEnum = {> CNamedType,
@@ -90,6 +94,7 @@ class CheckerTypes {
 	var types : Map<String,CTypedecl> = new Map();
 	var t_string : TType;
 	var localParams : Map<String,TType>;
+	var parser : hscript.Parser;
 
 	public function new() {
 		types = new Map();
@@ -98,6 +103,7 @@ class CheckerTypes {
 		types.set("Float",CTAlias(TFloat));
 		types.set("Bool",CTAlias(TBool));
 		types.set("Dynamic",CTAlias(TDynamic));
+		parser = new hscript.Parser();
 	}
 
 	public function addXmlApi( api : Xml ) {
@@ -109,6 +115,18 @@ class CheckerTypes {
 		for( f in todo )
 			f();
 		t_string = getType("String");
+	}
+
+	public function defineClass( name : String, ?ct : CClass ) {
+		if( ct == null )
+			ct = {
+				name : name,
+				fields : [],
+				statics : [],
+				params : [],
+			};
+		types.set(name, CTClass(ct));
+		return ct;
 	}
 
 	function addXmlType(x:haxe.rtti.CType.TypeTree,todo:Array<Void->Void>) {
@@ -123,6 +141,7 @@ class CheckerTypes {
 				fields : new Map(),
 				statics : new Map(),
 			};
+			addMeta(c,cl);
 			if( c.isInterface )
 				cl.isInterface = true;
 			for( p in c.params )
@@ -137,19 +156,15 @@ class CheckerTypes {
 						cl.interfaces.push(getType(i.path, [for( t in i.params ) makeXmlType(t)]));
 				}
 				var pkeys = [];
-				for( f in c.fields ) {
-					if( f.isOverride || f.name.substr(0,4) == "get_" || f.name.substr(0,4) == "set_" ) continue;
-					var skip = false;
+				function initField(f:haxe.rtti.CType.ClassField, fields) {
+					if( f.isOverride || f.name.substr(0,4) == "get_" || f.name.substr(0,4) == "set_" ) return;
 					var complete = !StringTools.startsWith(f.name,"__"); // __uid, etc. (no metadata in such fields)
 					for( m in f.meta ) {
-						if( m.name == ":noScript"  ) {
-							skip = true;
-							break;
-						}
+						if( m.name == ":noScript"  )
+							return;
 						if( m.name == ":noCompletion" )
 							complete = false;
 					}
-					if( skip ) continue;
 					var fl : CField = { isPublic : f.isPublic, canWrite : f.set.match(RNormal | RCall(_) | RDynamic), complete : complete, params : [], name : f.name, t : null };
 					for( p in f.params ) {
 						var pt = TParam(p);
@@ -159,13 +174,22 @@ class CheckerTypes {
 						localParams.set(key, pt);
 					}
 					fl.t = makeXmlType(f.type);
+					if( f.meta != null && f.meta.length > 0 ) {
+						fl.meta = [];
+						for( m in f.meta )
+							fl.meta.push({ name : m.name, params : [for( p in m.params ) try parser.parseString(p) catch( e : hscript.Expr.Error ) null] });
+					}
 					while( pkeys.length > 0 )
 						localParams.remove(pkeys.pop());
 					if( fl.name == "new" )
 						cl.constructor = fl;
 					else
-						cl.fields.set(f.name, fl);
+						fields.set(f.name, fl);
 				}
+				for( f in c.fields )
+					initField(f, cl.fields);
+				for( f in c.statics )
+					initField(f, cl.statics);
 				localParams = null;
 			});
 			types.set(cl.name, CTClass(cl));
@@ -176,6 +200,7 @@ class CheckerTypes {
 				params : [],
 				constructors: [],
 			};
+			addMeta(e,en);
 			for( p in e.params )
 				en.params.push(TParam(p));
 			todo.push(function() {
@@ -209,6 +234,7 @@ class CheckerTypes {
 				params : [],
 				t : null,
 			};
+			addMeta(a,ta);
 			for( p in a.params )
 				ta.params.push(TParam(p));
 			todo.push(function() {
@@ -218,6 +244,14 @@ class CheckerTypes {
 			});
 			types.set(a.path, CTAbstract(ta));
 		}
+	}
+
+	function addMeta( src : haxe.rtti.CType.TypeInfos, to : CNamedType ) {
+		if( src.meta == null || src.meta.length == 0 )
+			return;
+		to.meta = [];
+		for( m in src.meta )
+			to.meta.push({ name : m.name, params : [for( p in m.params ) try parser.parseString(p) catch( e : hscript.Expr.Error ) null] });
 	}
 
 	function makeXmlType( t : haxe.rtti.CType.CType ) : TType {
@@ -344,8 +378,12 @@ class Checker {
 	public function check( expr : Expr, ?withType : WithType, ?isCompletion = false ) {
 		if( withType == null ) withType = NoValue;
 		locals = new Map();
+		if( types.t_string == null )
+			types.t_string = types.getType("String");
 		allowDefine = allowGlobalsDefine;
 		this.isCompletion = isCompletion;
+		if( edef(expr).match(EFunction(_)) )
+			expr = mk(EBlock([expr]), expr); // single function might be self recursive
 		switch( edef(expr) ) {
 		case EBlock(el):
 			var delayed = [];
@@ -443,6 +481,24 @@ class Checker {
 		case TNull(t): "Null<"+typeStr(t)+">";
 		case TUnresolved(name): "?"+name;
 		default: t.getName().substr(1);
+		}
+	}
+
+	public static function typeIter( t : TType, callb : TType -> Void ) {
+		switch( t ) {
+		case TMono(r) if( r.r != null ): callb(r.r);
+		case TNull(t): callb(t);
+		case TInst(_,tl), TAbstract(_,tl), TEnum(_,tl), TType(_,tl):
+			for( t in tl ) callb(t);
+		case TFun(args,ret):
+			for( t in args ) callb(t.t);
+			callb(ret);
+		case TAnon(fl):
+			for( f in fl )
+				callb(f.t);
+		case TLazy(f):
+			callb(f());
+		default:
 		}
 	}
 
@@ -556,7 +612,7 @@ class Checker {
 		return false;
 	}
 
-	function tryUnify( t1 : TType, t2 : TType ) {
+	public function tryUnify( t1 : TType, t2 : TType ) {
 		if( t1 == t2 )
 			return true;
 		switch( [t1,t2] ) {
@@ -597,6 +653,8 @@ class Checker {
 		case [TDynamic, _]:
 			return true;
 		case [TAnon(a1),TAnon(a2)]:
+			if( a2.length == 0 ) // always unify with {}
+				return true;
 			var m = new Map();
 			for( f in a1 )
 				m.set(f.name, f);
@@ -972,7 +1030,7 @@ class Checker {
 			return TVoid;
 		case EObject(fl):
 			switch( withType ) {
-			case WithType(follow(_) => TAnon(tfields)):
+			case WithType(follow(_) => TAnon(tfields)) if( tfields.length > 0 ):
 				var map = [for( f in tfields ) f.name => f];
 				return TAnon([for( f in fl ) {
 					var ft = map.get(f.name);
@@ -1062,7 +1120,7 @@ class Checker {
 			this.locals = locals;
 			if( ft == null ) {
 				ft = TFun(targs, tret);
-				locals.set(name, ft);
+				if( name != null ) locals.set(name, ft);
 			}
 			return ft;
 		case EUnop(op, _, e):
@@ -1079,29 +1137,7 @@ class Checker {
 		case EFor(v, it, e):
 			var locals = saveLocals();
 			var itt = typeExpr(it, Value);
-			var vt = switch( follow(itt) ) {
-			case TInst({name:"Array"},[t]):
-				t;
-			default:
-				var ft = getField(itt,"iterator", it);
-				if( ft == null )
-					switch( itt ) {
-					case TAbstract(a, args):
-						// special case : we allow unconditional access
-						// to an abstract iterator() underlying value (eg: ArrayProxy)
-						ft = getField(apply(a.t,a.params,args),"iterator",it);
-					default:
-					}
-				if( ft != null )
-					switch( ft ) {
-					case TFun([],ret): ft = ret;
-					default: ft = null;
-					}
-				var t = makeMono();
-				var iter = makeIterator(t);
-				unify(ft != null ? ft : itt,iter,it);
-				t;
-			}
+			var vt = getIteratorType(it, itt);
 			this.locals.set(v, vt);
 			typeExpr(e, NoValue);
 			this.locals = locals;
@@ -1234,6 +1270,32 @@ class Checker {
 		}
 		error("Don't know how to type "+edef(expr).getName(), expr);
 		return TDynamic;
+	}
+
+	function getIteratorType( it : Expr, itt : TType ) {
+		switch( follow(itt) ) {
+		case TInst({name:"Array"},[t]):
+			return t;
+		default:
+		}
+		var ft = getField(itt,"iterator", it);
+		if( ft == null )
+			switch( itt ) {
+			case TAbstract(a, args):
+				// special case : we allow unconditional access
+				// to an abstract iterator() underlying value (eg: ArrayProxy)
+				ft = getField(apply(a.t,a.params,args),"iterator",it);
+			default:
+			}
+		if( ft != null )
+			switch( ft ) {
+			case TFun([],ret): ft = ret;
+			default: ft = null;
+			}
+		var t = makeMono();
+		var iter = makeIterator(t);
+		unify(ft != null ? ft : itt,iter,it);
+		return t;
 	}
 
 }

@@ -29,23 +29,13 @@ import haxe.macro.Expr;
 class Macro {
 
 	var p : Position;
-	#if haxe3
 	var binops : Map<String,Binop>;
 	var unops : Map<String,Unop>;
-	#else
-	var binops : Hash<Binop>;
-	var unops : Hash<Unop>;
-	#end
 
 	public function new(pos) {
 		p = pos;
-		#if haxe3
 		binops = new Map();
 		unops = new Map();
-		#else
-		binops = new Hash();
-		unops = new Hash();
-		#end
 		for( c in Type.getEnumConstructs(Binop) ) {
 			if( c == "OpAssignOp" ) continue;
 			var op = Type.createEnum(Binop, c);
@@ -73,12 +63,12 @@ class Macro {
 			case OpMod: assign = true; "%";
 			case OpAssignOp(_): "";
 			case OpInterval: "...";
-			#if haxe3
 			case OpArrow: "=>";
-			#end
 			#if (haxe_ver >= 4)
 			case OpIn: "in";
 			#end
+			default:
+				continue;
 			};
 			binops.set(str, op);
 			if( assign )
@@ -99,13 +89,6 @@ class Macro {
 			unops.set(str, op);
 		}
 	}
-
-	#if !haxe3
-	function isType(v:String) {
-		var c0 = v.charCodeAt(0);
-		return c0 >= 'A'.code && c0 <= 'Z'.code;
-	}
-	#end
 
 	function map < T, R > ( a : Array<T>, f : T -> R ) : Array<R> {
 		var b = new Array();
@@ -154,17 +137,9 @@ class Macro {
 					case CInt(v): CInt(Std.string(v));
 					case CFloat(f): CFloat(Std.string(f));
 					case CString(s): CString(s);
-					#if !haxe3
-					case CInt32(v): CInt(Std.string(v));
-					#end
 				});
 			case EIdent(v):
-				#if !haxe3
-				if( isType(v) )
-					EConst(CType(v));
-				else
-				#end
-					EConst(CIdent(v));
+				EConst(CIdent(v));
 			case EVar(n, t, e):
 				EVars([ { name : n, expr : if( e == null ) null else convert(e), type : if( t == null ) null else convertType(t) } ]);
 			case EParent(e):
@@ -172,12 +147,7 @@ class Macro {
 			case EBlock(el):
 				EBlock(map(el,convert));
 			case EField(e, f):
-				#if !haxe3
-				if( isType(f) )
-					EType(convert(e), f);
-				else
-				#end
-					EField(convert(e), f);
+				EField(convert(e), f);
 			case EBinop(op, e1, e2):
 				var b = binops.get(op);
 				if( b == null ) throw EInvalidOp(op);
@@ -196,13 +166,11 @@ class Macro {
 				EWhile(convert(c), convert(e), false);
 			case EFor(v, it, efor):
 				#if (haxe_ver >= 4)
-					var p = #if hscriptPos { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
+					var p = #if (!macro && hscriptPos) { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
 					EFor({ expr : EBinop(OpIn,{ expr : EConst(CIdent(v)), pos : p },convert(it)), pos : p }, convert(efor));
-				#elseif (haxe_211 || haxe3)
-					var p = #if hscriptPos { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
-					EFor({ expr : EIn({ expr : EConst(CIdent(v)), pos : p },convert(it)), pos : p }, convert(efor));
 				#else
-					EFor(v, convert(it), convert(efor));
+					var p = #if (!macro && hscriptPos) { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
+					EFor({ expr : EIn({ expr : EConst(CIdent(v)), pos : p },convert(it)), pos : p }, convert(efor));
 				#end
 			case EBreak:
 				EBreak;
@@ -217,7 +185,7 @@ class Macro {
 						opt : false,
 						value : null,
 					});
-				EFunction(#if haxe4 FNamed(name,false) #else name #end, {
+				EFunction(#if haxe4 name != null ? FNamed(name,false) : FAnonymous #else name #end, {
 					params : [],
 					args : targs,
 					expr : convert(e),
@@ -246,11 +214,11 @@ class Macro {
 			case ESwitch(e, cases, edef):
 				ESwitch(convert(e), [for( c in cases ) { values : [for( v in c.values ) convert(v)], expr : convert(c.expr) } ], edef == null ? null : convert(edef));
 			case EMeta(m, params, esub):
-				var mpos = #if hscriptPos { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
+				var mpos = #if (!macro && hscriptPos) { file : p.file, min : e.pmin, max : e.pmax } #else p #end;
 				EMeta({ name : m, params : params == null ? [] : [for( p in params ) convert(p)], pos : mpos }, convert(esub));
 			case ECheckType(e, t):
 				ECheckType(convert(e), convertType(t));
-		}, pos : #if hscriptPos { file : p.file, min : e.pmin, max : e.pmax } #else p #end }
+		}, pos : #if (!macro && hscriptPos) { file : p.file, min : e.pmin, max : e.pmax } #else p #end }
 	}
 
 }

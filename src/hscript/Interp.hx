@@ -32,17 +32,9 @@ private enum Stop {
 
 class Interp {
 
-	public var varResolver: Null<(String) -> Dynamic>;
-
-	#if haxe3
 	public var variables : Map<String,Dynamic>;
 	var locals : Map<String,{ r : Dynamic }>;
 	var binops : Map<String, Expr -> Expr -> Dynamic >;
-	#else
-	public var variables : Hash<Dynamic>;
-	var locals : Hash<{ r : Dynamic }>;
-	var binops : Hash< Expr -> Expr -> Dynamic >;
-	#end
 
 	var depth : Int;
 	var inTry : Bool;
@@ -54,23 +46,14 @@ class Interp {
 	#end
 
 	public function new() {
-		#if haxe3
 		locals = new Map();
-		#else
-		locals = new Hash();
-		#end
 		declared = new Array();
 		resetVariables();
 		initOps();
 	}
 
 	private function resetVariables(){
-		#if haxe3
 		variables = new Map<String,Dynamic>();
-		#else
-		variables = new Hash();
-		#end
-
 		variables.set("null",null);
 		variables.set("true",true);
 		variables.set("false",false);
@@ -92,11 +75,7 @@ class Interp {
 
 	function initOps() {
 		var me = this;
-		#if haxe3
 		binops = new Map();
-		#else
-		binops = new Hash();
-		#end
 		binops.set("+",function(e1,e2) return me.expr(e1) + me.expr(e2));
 		binops.set("-",function(e1,e2) return me.expr(e1) - me.expr(e2));
 		binops.set("*",function(e1,e2) return me.expr(e1) * me.expr(e2));
@@ -117,7 +96,8 @@ class Interp {
 		binops.set("||",function(e1,e2) return me.expr(e1) == true || me.expr(e2) == true);
 		binops.set("&&",function(e1,e2) return me.expr(e1) == true && me.expr(e2) == true);
 		binops.set("=",assign);
-		binops.set("...",function(e1,e2) return new #if (haxe_211 || haxe3) IntIterator #else IntIter #end(me.expr(e1),me.expr(e2)));
+		binops.set("...",function(e1,e2) return new IntIterator(me.expr(e1),me.expr(e2)));
+		binops.set("is",function(e1,e2) return #if (haxe_ver >= 4.2) Std.isOfType #else Std.is #end (me.expr(e1), me.expr(e2)));
 		assignOp("+=",function(v1:Dynamic,v2:Dynamic) return v1 + v2);
 		assignOp("-=",function(v1:Float,v2:Float) return v1 - v2);
 		assignOp("*=",function(v1:Float,v2:Float) return v1 * v2);
@@ -133,6 +113,7 @@ class Interp {
 
 	function setVar( name : String, v : Dynamic ) {
 		variables.set(name, v);
+		return v;
 	}
 
 	function assign( e1 : Expr, e2 : Expr ) : Dynamic {
@@ -252,11 +233,7 @@ class Interp {
 
 	public function execute( expr : Expr ) : Dynamic {
 		depth = 0;
-		#if haxe3
 		locals = new Map();
-		#else
-		locals = new Hash();
-		#end
 		declared = new Array();
 		return exprReturn(expr);
 	}
@@ -277,12 +254,8 @@ class Interp {
 		return null;
 	}
 
-	function duplicate<T>( h : #if haxe3 Map < String, T > #else Hash<T> #end ) {
-		#if haxe3
+	function duplicate<T>( h : Map<String,T> ) {
 		var h2 = new Map();
-		#else
-		var h2 = new Hash();
-		#end
 		for( k in h.keys() )
 			h2.set(k,h.get(k));
 		return h2;
@@ -310,20 +283,9 @@ class Interp {
 	}
 
 	function resolve( id : String ) : Dynamic {
-		var l = locals.get(id);
-		if( l != null )
-			return l.r;
 		var v = variables.get(id);
-
-		if( v == null && !variables.exists(id) ) {
-			if(varResolver != null) {
-				v = varResolver(id);
-				if(v != null) return v;
-			}
-
-			return error(EUnknownVariable(id));
-		}
-
+		if( v == null && !variables.exists(id) )
+			error(EUnknownVariable(id));
 		return v;
 	}
 
@@ -338,11 +300,11 @@ class Interp {
 			case CInt(v): return v;
 			case CFloat(f): return f;
 			case CString(s): return s;
-			#if !haxe3
-			case CInt32(v): return v;
-			#end
 			}
 		case EIdent(id):
+			var l = locals.get(id);
+			if( l != null )
+				return l.r;
 			return resolve(id);
 		case EVar(n,_,e):
 			declared.push({ n : n, old : locals.get(n) });
@@ -374,11 +336,7 @@ class Interp {
 			case "--":
 				return increment(e,prefix,-1);
 			case "~":
-				#if (neko && !haxe3)
-				return haxe.Int32.complement(expr(e));
-				#else
 				return ~expr(e);
-				#end
 			default:
 				error(EInvalidOp(op));
 			}
@@ -450,10 +408,12 @@ class Interp {
 				for( i in 0...params.length )
 					me.locals.set(params[i].name,{ r : args[i] });
 				var r = null;
+				var oldDecl = declared.length;
 				if( inTry )
 					try {
 						r = me.exprReturn(fexpr);
 					} catch( e : Dynamic ) {
+						restore(oldDecl);
 						me.locals = old;
 						me.depth = depth;
 						#if neko
@@ -464,6 +424,7 @@ class Interp {
 					}
 				else
 					r = me.exprReturn(fexpr);
+				restore(oldDecl);
 				me.locals = old;
 				me.depth = depth;
 				return r;
@@ -483,56 +444,34 @@ class Interp {
 			}
 			return f;
 		case EArrayDecl(arr):
-			if (arr.length > 0 && Tools.expr(arr[0]).match(EBinop("=>", _))) {
-				var isAllString:Bool = true;
-				var isAllInt:Bool = true;
-				var isAllObject:Bool = true;
-				var isAllEnum:Bool = true;
-				var keys:Array<Dynamic> = [];
-				var values:Array<Dynamic> = [];
-				for (e in arr) {
+			if( arr.length > 0 && Tools.expr(arr[0]).match(EBinop("=>", _)) ) {
+				var keys = [];
+				var values = [];
+				for( e in arr ) {
 					switch(Tools.expr(e)) {
-						case EBinop("=>", eKey, eValue): {
-							var key:Dynamic = expr(eKey);
-							var value:Dynamic = expr(eValue);
-							isAllString = isAllString && (key is String);
-							isAllInt = isAllInt && (key is Int);
-							isAllObject = isAllObject && Reflect.isObject(key);
-							isAllEnum = isAllEnum && Reflect.isEnumValue(key);
-							keys.push(key);
-							values.push(value);
-						}
-						default: throw("=> expected");
+					case EBinop("=>", eKey, eValue):
+						keys.push(expr(eKey));
+						values.push(expr(eValue));
+					default:
+						#if hscriptPos
+						curExpr = e;
+						#end
+						error(ECustom("Invalid map key=>value expression"));
 					}
 				}
-				var map:Dynamic = {
-					if (isAllInt) new haxe.ds.IntMap<Dynamic>();
-					else if (isAllString) new haxe.ds.StringMap<Dynamic>();
-					else if (isAllEnum) new haxe.ds.EnumValueMap<Dynamic, Dynamic>();
-					else if (isAllObject) new haxe.ds.ObjectMap<Dynamic, Dynamic>();
-					else throw 'Inconsistent key types';
-				}
-				for (n in 0...keys.length) {
-					setMapValue(map, keys[n], values[n]);
-				}
-				return map;
-			}
-			else {
+				return makeMap(keys,values);
+			} else {
 				var a = new Array();
-				for ( e in arr ) {
+				for( e in arr )
 					a.push(expr(e));
-				}
 				return a;
 			}
 		case EArray(e, index):
 			var arr:Dynamic = expr(e);
 			var index:Dynamic = expr(index);
-			if (isMap(arr)) {
+			if( isMap(arr) )
 				return getMapValue(arr, index);
-			}
-			else {
-				return arr[index];
-			}
+			return arr[index];
 		case ENew(cl,params):
 			var a = new Array();
 			for( e in params )
@@ -598,15 +537,8 @@ class Interp {
 	function doWhileLoop(econd,e) {
 		var old = declared.length;
 		do {
-			try {
-				expr(e);
-			} catch( err : Stop ) {
-				switch(err) {
-				case SContinue:
-				case SBreak: break;
-				case SReturn: throw err;
-				}
-			}
+			if( !loopRun(() -> expr(e)) )
+				break;
 		}
 		while( expr(econd) == true );
 		restore(old);
@@ -615,15 +547,8 @@ class Interp {
 	function whileLoop(econd,e) {
 		var old = declared.length;
 		while( expr(econd) == true ) {
-			try {
-				expr(e);
-			} catch( err : Stop ) {
-				switch(err) {
-				case SContinue:
-				case SBreak: break;
-				case SReturn: throw err;
-				}
-			}
+			if( !loopRun(() -> expr(e)) )
+				break;
 		}
 		restore(old);
 	}
@@ -631,19 +556,14 @@ class Interp {
 	function makeIterator( v : Dynamic ) : Iterator<Dynamic> {
 		#if ((flash && !flash9) || (php && !php7 && haxe_ver < '4.0.0'))
 		if ( v.iterator != null ) v = v.iterator();
+		#elseif js
+		// don't use try/catch (very slow)
+		if( v is Array )
+			return (v : Array<Dynamic>).iterator();
+		if( v.iterator != null ) v = v.iterator();
 		#else
 		try v = v.iterator() catch( e : Dynamic ) {};
 		#end
-
-		// IntIterator has inline methods so need to wrap to call them
-		if(Std.isOfType(v, IntIterator)) {
-			final intIterator = cast(v, IntIterator);
-			return {
-				hasNext: () -> intIterator.hasNext(),
-				next: () -> intIterator.next()
-			}
-		}
-
 		if( v.hasNext == null || v.next == null ) error(EInvalidIterator(v));
 		return v;
 	}
@@ -654,17 +574,26 @@ class Interp {
 		var it = makeIterator(expr(it));
 		while( it.hasNext() ) {
 			locals.set(n,{ r : it.next() });
-			try {
-				expr(e);
-			} catch( err : Stop ) {
-				switch( err ) {
-				case SContinue:
-				case SBreak: break;
-				case SReturn: throw err;
-				}
-			}
+			if( !loopRun(() -> expr(e)) )
+				break;
 		}
 		restore(old);
+	}
+
+	inline function loopRun( f : Void -> Void ) {
+		var cont = true;
+		try {
+			f();
+		} catch( err : Stop ) {
+			switch( err ) {
+			case SContinue:
+			case SBreak:
+				cont = false;
+			case SReturn:
+				throw err;
+			}
+		}
+		return cont;
 	}
 
 	inline function isMap(o:Dynamic):Bool {
@@ -677,6 +606,45 @@ class Interp {
 
 	inline function setMapValue(map:Dynamic, key:Dynamic, value:Dynamic):Void {
 		cast(map, haxe.Constraints.IMap<Dynamic, Dynamic>).set(key, value);
+	}
+
+	function makeMap( keys : Array<Dynamic>, values : Array<Dynamic> ) : Dynamic {
+		var isAllString:Bool = true;
+		var isAllInt:Bool = true;
+		var isAllObject:Bool = true;
+		var isAllEnum:Bool = true;
+		for( key in keys ) {
+			isAllString = isAllString && (key is String);
+			isAllInt = isAllInt && (key is Int);
+			isAllObject = isAllObject && Reflect.isObject(key);
+			isAllEnum = isAllEnum && Reflect.isEnumValue(key);
+		}
+		if( isAllInt ) {
+			var m = new Map<Int,Dynamic>();
+			for( i => key in keys )
+				m.set(key, values[i]);
+			return m;
+		}
+		if( isAllString ) {
+			var m = new Map<String,Dynamic>();
+			for( i => key in keys )
+				m.set(key, values[i]);
+			return m;
+		}
+		if( isAllEnum ) {
+			var m = new haxe.ds.EnumValueMap<Dynamic,Dynamic>();
+			for( i => key in keys )
+				m.set(key, values[i]);
+			return m;
+		}
+		if( isAllObject ) {
+			var m = new Map<{},Dynamic>();
+			for( i => key in keys )
+				m.set(key, values[i]);
+			return m;
+		}
+		error(ECustom("Invalid map keys "+keys));
+		return null;
 	}
 
 	function get( o : Dynamic, f : String ) : Dynamic {
