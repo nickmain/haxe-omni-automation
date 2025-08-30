@@ -1,5 +1,7 @@
 {
     "scripts": {
-        "Generate_Omni_Externs": "haxe -cp src -cp scripts --main GenerateOmniExterns --interp"
+        "Generate_Omni_Externs": "haxe -cp src -cp scripts --main GenerateOmniExterns --interp",
+        "Make Plugins": "haxe -cp src -cp scripts --main samples.MakePlugins --interp",
+        "Build": "haxe build.hxml"
     }
 }

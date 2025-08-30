@@ -33,19 +33,20 @@ class HScriptTest extends Action {
                     var parser = new hscript.Parser();
                     parser.allowMetadata = true;
                     var ast = parser.parseString(text);
-                    var interp = new hscript.Interp();
+                    var interp = new hscript.JsInterp();
                     interp.variables["this"] = solid;
                     interp.variables["document"] = Globals.document;
                     interp.variables["app"] = Globals.app;
                     interp.variables["selection"] = selection;
                     interp.variables["Std"] = Std;
-                    interp.varResolver = function(id: String): Dynamic {
-                        // trace("Resolving: " + id);
-                        return js.Lib.eval(id);
-                    }
 
-                    final result = interp.execute(ast);
-                    if(result != null) trace(result);
+                    try {
+                        trace("Calling interpreter...");
+                        final result = interp.execute(ast);
+                        if(result != null) trace(result);
+                    } catch(e) {
+                        trace(e);
+                    }
                 }
 
                 return;
