@@ -12,6 +12,7 @@ extern class Outline {
     var columns (default,never): omni.outliner.ColumnArray;
     var console (default,never): omni.outliner.Console;
     var document (default,never): Null<omni.outliner.OutlineDocument>;
+    var dynamicThemingEnabled (default,never): Bool;
     var horizontalGridColor: Null<omni.outliner.Color>;
     var levelStyles (default,never): Array<omni.outliner.Style>;
     var namedStyles (default,never): omni.outliner.namedstyle.List;
@@ -31,6 +32,9 @@ extern class Outline {
     function levelStyle(depth: Float): omni.outliner.Style;
     function group(items: Array<omni.outliner.Item>): Null<omni.outliner.Item>;
     function ungroup(items: Array<omni.outliner.Item>): Void;
+    function invertColors(): Void;
+    function enableDynamicThemingUsingCurrentColorsForDarkMode(useCurrentColorsForDarkMode: Bool): Void;
+    function disableDynamicTheming(retainDarkModeColors: Bool): Void;
     function organize(items: Array<omni.outliner.Item>, byColumns: Array<omni.outliner.Column>, underItem: omni.outliner.Item, pruneEmptyGroups: Null<Bool>): Void;
     function topItems(items: Array<omni.outliner.Item>): Array<omni.outliner.Item>;
     function bottomItems(items: Array<omni.outliner.Item>): Array<omni.outliner.Item>;

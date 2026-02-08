@@ -8,7 +8,9 @@ extern class Device {
     var iOS (default,never): Bool;
     var iPad (default,never): Bool;
     var mac (default,never): Bool;
+    var operatingSystemBuildNumber (default,never): String;
     var operatingSystemVersion (default,never): omni.outliner.Version;
     var type (default,never): Null<omni.outliner.DeviceType>;
+    var visionPro (default,never): Bool;
 
 }

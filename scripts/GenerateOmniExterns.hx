@@ -9,13 +9,15 @@ import epistem.typescript.ExternGenerator;
 class GenerateOmniExterns {
     public static function main() {
         trace("Generating externs for Omni typedefs...");
-        
+
         trace("OmniGraffle");
         final ogDefs = Parser.parseFile("api/OmniGraffle.d.ts");
-        trace("OmniOutliner");
-        final ooDefs = Parser.parseFile("api/OmniOutliner.d.ts");
+        // trace("OmniOutliner 3");
+        // final ooDefs = Parser.parseFile("api/OmniOutliner3.d.ts");
         trace("OmniFocus");
         final ofDefs = Parser.parseFile("api/OmniFocus.d.ts");
+        trace("OmniOutliner 6");
+        final ooDefs = Parser.parseFile("api/OmniOutliner6.d.ts");
 
         // separate out the type identifier constants so the common
         // classes can reference a common TypeIdentifier class and the

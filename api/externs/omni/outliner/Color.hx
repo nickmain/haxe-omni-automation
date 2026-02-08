@@ -20,6 +20,7 @@ extern class Color {
     static var white (default,never): omni.outliner.Color;
     static var yellow (default,never): omni.outliner.Color;
     static function RGB(r: Float, g: Float, b: Float, a: Null<Float>): omni.outliner.Color;
+    static function hex(hexString: String, a: Null<Float>): Null<omni.outliner.Color>;
     static function HSB(h: Float, s: Float, b: Float, a: Null<Float>): omni.outliner.Color;
     static function White(w: Float, a: Null<Float>): omni.outliner.Color;
     var alpha (default,never): Float;
@@ -27,6 +28,7 @@ extern class Color {
     var brightness (default,never): Float;
     var colorSpace (default,never): omni.outliner.ColorSpace;
     var green (default,never): Float;
+    var hex (default,never): String;
     var hue (default,never): Float;
     var red (default,never): Float;
     var saturation (default,never): Float;

@@ -20,6 +20,7 @@ extern class OutlinerTypeIdentifier {
     static var rtf (default,never): omni.outliner.TypeIdentifier;
     static var rtfd (default,never): omni.outliner.TypeIdentifier;
     static var tiff (default,never): omni.outliner.TypeIdentifier;
+    static var utf8PlainText (default,never): omni.outliner.TypeIdentifier;
     static var writableTypes (default,never): Array<omni.outliner.TypeIdentifier>;
     static var xmlPropertyList (default,never): omni.outliner.TypeIdentifier;
     static function fromPathExtension(pathExtension: String, isDirectory: Bool): omni.outliner.TypeIdentifier;

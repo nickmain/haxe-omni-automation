@@ -8,5 +8,6 @@ extern class DeviceType {
     static var iPad (default,never): omni.outliner.DeviceType;
     static var iPhone (default,never): omni.outliner.DeviceType;
     static var mac (default,never): omni.outliner.DeviceType;
+    static var visionPro (default,never): omni.outliner.DeviceType;
 
 }

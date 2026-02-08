@@ -9,7 +9,9 @@ extern class Document {
     var canRedo (default,never): Bool;
     var canUndo (default,never): Bool;
     var fileType (default,never): Null<String>;
+    var fileURL (default,never): Null<omni.outliner.URL>;
     var name (default,never): Null<String>;
+    var omniLink (default,never): Null<omni.outliner.URL>;
     var writableTypes (default,never): Array<String>;
 
     function close(didCancel: (document: omni.outliner.Document) -> Null<Void>): Void;
@@ -19,4 +21,5 @@ extern class Document {
     function undo(): Void;
     function redo(): Void;
     function show(completed: () -> Null<Void>): Void;
+    function createOmniLinkURL(additionalQueryItems: Null<Array<omni.outliner.url.QueryItem>>, additionalPromptMessage: Null<String>): js.lib.Promise<omni.outliner.URL>;
 }

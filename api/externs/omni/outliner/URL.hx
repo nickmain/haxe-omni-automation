@@ -12,6 +12,9 @@ extern class URL {
     static function fromPath(path: String, isDirectory: Bool, relativeToURL: Null<omni.outliner.URL>): omni.outliner.URL;
     static function tellScript(app: String, js: String, arg: Null<Dynamic>): Null<omni.outliner.URL>;
     static function tellFunction(app: String, jsFunction: (Dynamic) -> Void, arg: Null<Dynamic>): Null<omni.outliner.URL>;
+    static function omniLink(path: String, folderName: String): omni.outliner.URL;
+    static function resolveFileURLForOmniLink(omniLink: omni.outliner.URL, additionalPromptMessage: Null<String>, additionalQueryItems: Null<Array<omni.outliner.url.QueryItem>>): js.lib.Promise<omni.outliner.URL>;
+    static function omniLinkForFileURL(fileURL: omni.outliner.URL, additionalQueryItems: Null<Array<omni.outliner.url.QueryItem>>, additionalPromptMessage: Null<String>): js.lib.Promise<omni.outliner.URL>;
     var absoluteString (default,never): String;
     var absoluteURL (default,never): omni.outliner.URL;
     var baseURL (default,never): Null<omni.outliner.URL>;
@@ -35,6 +38,7 @@ extern class URL {
     function fetch(success: (contents: omni.outliner.Data) -> Void, failure: (error: js.lib.Error) -> Null<Void>): Void;
     function call(success: (Dynamic) -> Void, failure: Null<(Dynamic) -> Void>): Void;
     function open(): Void;
+    function revealFile(): js.lib.Promise<Bool>;
     function find(types: Array<omni.outliner.TypeIdentifier>, recurse: Null<Bool>): js.lib.Promise<Array<omni.outliner.URL>>;
     function toString(): String;
     function appendingPathComponent(component: String): omni.outliner.URL;

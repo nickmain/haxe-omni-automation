@@ -5,10 +5,14 @@ package omni.outliner;
 @:native("Editor")
 extern class Editor extends Tree {
     var autosizeTopicColumn: Bool;
+    var bottomBarVisible: Bool;
     var focusedItems: Array<omni.outliner.Item>;
     var foldingEnabled: Bool;
+    var inspectorVisible: Bool;
     var noteDisplay: omni.outliner.NoteDisplay;
     var selection (default,never): omni.outliner.Selection;
+    var sidebarVisible: Bool;
+    var toolbarVisible: Bool;
 
     function visibilityOfColumn(column: omni.outliner.Column): Bool;
     function setVisibilityOfColumn(column: omni.outliner.Column, visible: Bool): Void;
